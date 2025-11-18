@@ -1,0 +1,89 @@
+@use "../abstracts" as *;
+// Hero tags (navigation buttons)
+.hero__tag {
+  display: inline-block;
+  background: transparent;
+  color: $color-white;
+  padding: 0.2rem 1rem;
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: right;
+  white-space: nowrap;
+  text-decoration: none;
+  border-radius: 25px;
+
+  &:hover {
+    background: $color-primary;
+    font-weight: bold;
+    transform: translateX(-5px);
+  }
+
+  &--button {
+    background: transparent;
+
+    &:hover {
+      background: $color-primary;
+      font-weight: bold;
+      transform: translateX(-5px);
+    }
+    &:active {
+      transform: translateY(0);
+    }
+    &:focus {
+      outline: 2px solid #f70017;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Footer navigation buttons
+.footer__nav-button {
+  background: transparent;
+  color: $color-white;
+  padding: 0.4rem 1rem;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: right;
+  white-space: nowrap;
+  border-radius: 25px;
+
+  &:hover {
+    background: $color-primary;
+    font-weight: bold;
+    transform: translateX(-5px);
+  }
+
+  &--active {
+    font-weight: bold;
+  }
+}
+
+// Footer action buttons
+.footer__button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2.5rem;
+  background: rgb(99 99 99);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 30px;
+  color: $color-white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: $color-white;
+  }
+
+  &-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

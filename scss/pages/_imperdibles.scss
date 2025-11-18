@@ -1,0 +1,331 @@
+/* Estilos específicos sólo para la página imperdibles */
+.hero--imperdibles {
+  .hero__left--imperdibles {
+    height: 100%;
+    max-width: 900px;
+
+    .hero__title--red {
+      font-size: 68px;
+      line-height: 1;
+      display: block;
+    }
+
+    .hero__title--white {
+      font-size: 98px;
+      line-height: 1;
+      display: block;
+    }
+    .hero__description {
+      margin-top: 40px; // ajusta al valor que necesites (30px, 50px, etc.)
+    }
+  }
+
+  /* Responsive para pantallas pequeñas */
+  @media (max-width: 480px) {
+    .hero__left--imperdibles {
+      padding: 15px;
+
+      .hero__title--red {
+        font-size: 36px;
+        line-height: 1.1;
+      }
+
+      .hero__title--white {
+        font-size: 52px;
+        line-height: 1.1;
+      }
+    }
+  }
+
+  @media (max-width: 360px) {
+    .hero__left--imperdibles {
+      padding: 12px;
+
+      .hero__title--red {
+        font-size: 32px;
+        line-height: 1.1;
+      }
+
+      .hero__title--white {
+        font-size: 46px;
+        line-height: 1.1;
+      }
+    }
+  }
+}
+
+/* Lista de imperdibles: filas con imagen a pantalla completa y panel lateral a la derecha */
+.imperdibles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin: 40px 0;
+
+  .imperdible-row {
+    position: relative;
+    width: 100%;
+    /* Use CSS Grid for layout - image and panel in columns */
+    display: grid;
+    grid-template-columns: 1fr minmax(320px, 36%);
+    align-items: stretch;
+    gap: 0;
+    overflow: hidden;
+
+    /* suave overlay lateral para mejorar contraste bajo el panel */
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 40%;
+      z-index: 1;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.94) 95%
+      );
+      pointer-events: none;
+    }
+
+    /* imagen en la primera columna */
+    .imperdible-row__media {
+      grid-column: 1 / 2;
+      width: 100%;
+      height: 100%; /* se adapta a la altura fija del padre (520px) */
+      overflow: hidden;
+      display: block;
+    }
+
+    /* usar <img> para contenido: cubrir contenedor como background-size: cover */
+    .imperdible-row__media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* panel en la segunda columna (en flujo, no absolute) */
+    .imperdible-row__panel {
+      background-size: cover;
+      background-repeat: no-repeat;
+      grid-column: 2 / 3;
+      position: relative; /* mantiene en flujo - evita overflow */
+      height: 100%;
+      width: 100%;
+      max-width: 686px;
+      padding: 64px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      z-index: 3;
+      overflow: hidden; /* importante para contener pseudo-elementos */
+
+      /* Imagen de fondo (capa inferior) usando custom property del JS */
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: var(--panel-bg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+      }
+
+      /* Overlay blanco semi-transparente (capa superior sobre la imagen) */
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(255, 255, 255, 0.85);
+        z-index: -1;
+      }
+    }
+
+    .imperdible-row__title {
+      margin: 0 0 12px;
+      color: #1f1f1f;
+      text-transform: uppercase;
+      font-weight: 900;
+      line-height: 0.95;
+      font-size: 34px;
+
+      /* el acento en rojo debe ir en span dentro del h2 */
+      .imperdible-row__title--accent {
+        display: block;
+        color: #e21b1b;
+        font-size: 52px;
+        margin-top: 6px;
+        letter-spacing: -0.01em;
+      }
+    }
+
+    .imperdible-row__text {
+      font-size: 15px;
+      color: #333;
+      line-height: 1.6;
+      margin-bottom: 22px;
+      max-width: 36ch;
+    }
+
+    .imperdible-row__button {
+      display: inline-block;
+      background: #3c3c3b;
+      color: #ffffff;
+      padding: 6px 55px;
+      text-decoration: none;
+      border-radius: 26px;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+      align-self: flex-start; /* mantiene el ancho del texto, no estira */
+      width: auto;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      /* Estado hover */
+      &:hover {
+        background: #2a2a29;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+        transform: translateY(-2px);
+      }
+
+      /* Estado active (al hacer click) */
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Estado focus para accesibilidad (navegación con teclado) */
+      &:focus-visible {
+        outline: 2px solid #e21b1b;
+        outline-offset: 3px;
+      }
+    }
+  }
+
+  /* Responsive tablets: apilar pero con más espacio */
+  @media (max-width: 1024px) {
+    gap: 32px;
+
+    .imperdible-row {
+      /* cambiar a una sola columna para apilar */
+      display: flex;
+      flex-direction: column;
+      height: auto;
+
+      /* Eliminar el overlay lateral en tablets */
+      &::before {
+        display: none;
+      }
+
+      .imperdible-row__media {
+        width: 100%;
+        height: 360px; /* altura mayor para tablets */
+      }
+
+      .imperdible-row__panel {
+        position: relative;
+        width: 100%;
+        max-width: 100%; /* panel toma todo el ancho */
+        margin-left: 0;
+        padding: 40px 32px;
+        margin-top: -80px; /* solapado sobre la imagen */
+        box-shadow: 0 8px 26px rgba(6, 6, 6, 0.12);
+      }
+
+      .imperdible-row__title {
+        font-size: 28px;
+
+        .imperdible-row__title--accent {
+          font-size: 38px;
+        }
+      }
+
+      .imperdible-row__text {
+        font-size: 14px;
+        max-width: 100%;
+      }
+
+      .imperdible-row__button {
+        padding: 11px 24px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  /* Responsive móviles: más compacto */
+  @media (max-width: 600px) {
+    gap: 28px;
+
+    .imperdible-row {
+      .imperdible-row__media {
+        height: 240px; /* altura menor en móviles */
+      }
+
+      .imperdible-row__panel {
+        padding: 20px;
+        margin-top: -60px; /* menos solapado en móviles */
+      }
+
+      .imperdible-row__title {
+        font-size: 22px;
+
+        .imperdible-row__title--accent {
+          font-size: 26px;
+        }
+      }
+
+      .imperdible-row__text {
+        font-size: 13px;
+      }
+
+      .imperdible-row__button {
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  /* Responsive pantallas muy pequeñas */
+  @media (max-width: 400px) {
+    .imperdible-row {
+      .imperdible-row__media {
+        height: 200px;
+      }
+
+      .imperdible-row__panel {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 20px;
+        margin-top: 0;
+        margin-left: 0;
+
+        /* Eliminar el overlay blanco semi-transparente en móviles */
+        &::before {
+          background: rgba(255, 255, 255, 0.8);
+        }
+      }
+
+      .imperdible-row__title {
+        font-size: 22px;
+
+        .imperdible-row__title--accent {
+          font-size: 26px;
+        }
+      }
+
+      .imperdible-row__text {
+        font-size: 13px;
+      }
+
+      .imperdible-row__button {
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+    }
+  }
+}

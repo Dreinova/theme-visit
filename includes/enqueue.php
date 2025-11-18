@@ -13,56 +13,69 @@ function gamedugg_admin_scripts($hook) {
 }
 add_action('admin_enqueue_scripts', 'gamedugg_admin_scripts');
 
-/*
-========================
-FRONT-END ENQUEUE FUNCTIONS
-========================
-*/
+function gamedugg_load_assets() {
 
-function gamedugg_load_scripts() {
-    // === CSS externo (AOS) ===
+    // CSS
+    wp_enqueue_style(
+        'splide-css',
+        'https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css',
+        [],
+        null
+    );
+
     wp_enqueue_style(
         'aos-css',
         'https://unpkg.com/aos@2.3.1/dist/aos.css',
-        array(),
-        '2.3.1'
+        [],
+        null
     );
 
-    // === JS externo (AOS) ===
-    wp_enqueue_script(
-        'aos-js',
-        'https://unpkg.com/aos@2.3.1/dist/aos.js',
-        array(), // sin dependencias
-        '2.3.1',
-        true // cargar al final del body
-    );
-
-    // === JS personalizado ===
-    wp_enqueue_script(
-        'front_script',
-        get_template_directory_uri() . '/js/custom.js',
-        array('aos-js'),
-        '1.0.3',
-        true
-    );
-}
-add_action('wp_enqueue_scripts', 'gamedugg_load_scripts');
-
-
-function bureau_enqueue_styles() {
-    // Google Fonts
     wp_enqueue_style(
         'bureau-google-fonts',
         'https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap',
-        false
+        [],
+        null
     );
 
-    // Estilos del tema principal
     wp_enqueue_style(
         'bureau-style',
         get_stylesheet_uri(),
-        array('bureau-google-fonts', 'aos-css'), // depende del font y AOS
+        ['bureau-google-fonts','aos-css'],
         filemtime(get_template_directory() . '/style.css')
     );
+
+
+    // JS
+    wp_enqueue_script(
+        'splide-js',
+        'https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js',
+        [],
+        null,
+        true
+    );
+
+    wp_enqueue_script(
+        'splide-auto-scroll-js',
+        'https://cdn.jsdelivr.net/npm/@splidejs/splide-extension-auto-scroll@0.5.3/dist/js/splide-extension-auto-scroll.min.js',
+        ['splide-js'],
+        null,
+        true
+    );
+
+    wp_enqueue_script(
+        'aos-js',
+        'https://unpkg.com/aos@2.3.1/dist/aos.js',
+        [],
+        null,
+        true
+    );
+
+    wp_enqueue_script(
+        'front-script',
+        get_template_directory_uri() . '/js/custom.js',
+        ['aos-js','splide-js','splide-auto-scroll-js'],
+        filemtime(get_template_directory() . '/js/custom.js'),
+        true
+    );
 }
-add_action('wp_enqueue_scripts', 'bureau_enqueue_styles');
+add_action('wp_enqueue_scripts', 'gamedugg_load_assets');

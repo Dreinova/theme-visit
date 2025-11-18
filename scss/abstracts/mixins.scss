@@ -1,0 +1,62 @@
+// Responsive mixins
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == "mobile" {
+    @media (max-width: $breakpoint-mobile) {
+      @content;
+    }
+  } @else if $breakpoint == "tablet" {
+    @media (max-width: $breakpoint-tablet) {
+      @content;
+    }
+  } @else if $breakpoint == "desktop" {
+    @media (max-width: $breakpoint-desktop) {
+      @content;
+    }
+  }
+}
+
+// Flexbox mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Card hover effect
+@mixin card-hover($scale: 1.05) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px) scale($scale);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// Glassmorphism effect
+@mixin glass-effect($opacity: 0.85) {
+  background: rgba(90, 90, 90, $opacity);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+}
+
+@mixin font-face($name, $file, $weight, $style) {
+  @font-face {
+    font-family: "#{$name}";
+    font-style: "#{$style}";
+    font-weight: "#{$weight}";
+    src: url("fonts/#{$file}.eot");
+    src: url("fonts/#{$file}.eot?#iefix") format("embedded-opentype"),
+      url("fonts/#{$file}.woff") format("woff"),
+      url("fonts/#{$file}.ttf") format("truetype"),
+      url("fonts/#{$file}.svg?#webfont") format("svg"),
+      url("fonts/#{$file}.otf") format("opentype");
+    font-display: swap;
+  }
+}

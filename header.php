@@ -1,10 +1,4 @@
-<?php
-// Redirigir si el usuario no ha iniciado sesión
-if ( !is_user_logged_in() ) {
-    // Redirige a la página de login de WordPress
-    auth_redirect();
-}
-?>
+
 <!DOCTYPE html>
 <html <?php language_attributes(); ?> class="no-js">
 
@@ -20,33 +14,53 @@ if ( !is_user_logged_in() ) {
 </head>
 
 <body <?php body_class(); ?>>
-    <header class="site-header">
-  <div class="header-container">
-    <div class="site-branding">
-      <?php
-      if (has_custom_logo()) {
-          the_custom_logo();
-      } else {
-          echo '<a href="' . esc_url(home_url('/')) . '" class="site-title">' . get_bloginfo('name') . '</a>';
-      }
-      ?>
-    </div>
-   <nav class="main-navigation">
-  <button class="menu-toggle" aria-label="Abrir menú">
-    <span class="hamburger"></span>
-  </button>
+      <!-- Header estático -->
+    <header class="header">
+      <div class="header__container">
+        <div class="header__content">
+          <!-- Logo -->
+          <?php
+          if (has_custom_logo()) {
+              the_custom_logo();
+          } else {
+              echo '<a href="' . esc_url(home_url('/')) . '" class="site-title">' . get_bloginfo('name') . '</a>';
+          }
+          ?>
 
-  <?php
-  wp_nav_menu(
-    array(
-      'menu' => 'primary',
-      'container' => '',
-      'theme_location' => 'primary',
-      'items_wrap' => '<ul class="menu">%3$s</ul>'
-    )
-  );
-  ?>
-</nav>
+          <!-- Menú de navegación -->
+          <nav class="header__nav">
+            <ul class="header__menu">
+              <li class="header__menu-item">
+                <a href="#" class="header__menu-link">Qué hacer en tenjo</a>
+              </li>
+              <li class="header__menu-item">
+                <a href="#" class="header__menu-link">Donde dormir</a>
+              </li>
+              <li class="header__menu-item">
+                <a href="#" class="header__menu-link">Donde comer</a>
+              </li>
+              <li class="header__menu-item">
+                <a href="agenda.html" class="header__menu-link"
+                  >Agenda de eventos</a
+                >
+              </li>
+              <li class="header__menu-item">
+                <a href="faq.html" class="header__menu-link"
+                  >Preguntas frecuentes</a
+                >
+              </li>
+            </ul>
+          </nav>
 
-  </div>
-</header>
+          <!-- Botón menú móvil (hamburguesa) -->
+          <button class="header__toggle" aria-label="Abrir menú">
+            <span class="header__toggle-line"></span>
+            <span class="header__toggle-line"></span>
+            <span class="header__toggle-line"></span>
+          </button>
+
+          <!-- Línea horizontal (debajo del logo hasta el final del menú) -->
+          <div class="header__line"></div>
+        </div>
+      </div>
+    </header>
