@@ -1,13 +1,14 @@
 <?php
 
-function myPostTypes(){
+function myPostTypes()
+{
 
     // 1. Banners principales 
     create_post_types('Banners Principales', 'Banner', 'dashicons-slides', 'banners-visit');
 
     // 2. Nuevo único post type para SITUR
     create_post_types('Lugares', 'Lugar', 'dashicons-location-alt', 'lugares-visit');
-    
+
     // 3. Agenda 
     create_post_types('Agenda', 'Evento', 'dashicons-calendar-alt', 'eventos-visit');
 
@@ -25,7 +26,7 @@ function myPostTypes(){
     // ============================
 
     // Tipo de turismo
-    register_taxonomy('tipo_turismo', 'lugares', array(
+    register_taxonomy('tipo_turismo', 'lugares-visit', array(
         'label' => 'Tipo de Turismo',
         'hierarchical' => true,
         'show_ui' => true,
@@ -33,8 +34,8 @@ function myPostTypes(){
         'rewrite' => array('slug' => 'tipo-turismo')
     ));
 
-    // Categoría funcional (Qué hacer, Dónde comer, etc.)
-    register_taxonomy('categoria_funcional', 'lugares', array(
+    // Categoría funcional
+    register_taxonomy('categoria_funcional', 'lugares-visit', array(
         'label' => 'Categoría funcional',
         'hierarchical' => true,
         'show_ui' => true,
@@ -43,7 +44,8 @@ function myPostTypes(){
     ));
 }
 
-function create_post_types($name, $singularName, $icon, $slug){
+function create_post_types($name, $singularName, $icon, $slug)
+{
     register_post_type($slug, array(
         'labels' => array(
             'name' => $name,
@@ -52,8 +54,8 @@ function create_post_types($name, $singularName, $icon, $slug){
         'menu_icon' => $icon,
         'public' => true,
         'show_in_rest' => true,
-        'supports' => array('title','editor','thumbnail','excerpt'),
-        'rewrite' => array('slug'=>$slug)
+        'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'rewrite' => array('slug' => $slug)
     ));
 }
 
