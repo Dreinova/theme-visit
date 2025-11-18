@@ -1,0 +1,36 @@
+
+#adminmenu,
+#adminmenu .wp-submenu,
+#adminmenuback,
+#adminmenuwrap {
+  width: 200px;
+}
+
+#wpcontent,
+#wpfooter {
+  margin-left: 200px;
+}
+
+.tablenav .actions select{
+	margin:5px;
+}
+
+/* Estilos CSS para los filtros personalizados */
+.custom-filter-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.custom-filter-select {
+  width: 200px; /* Ancho personalizado para el filtro select */
+}
+
+.custom-filter-date-range label {
+  margin-right: 5px;
+}
+
+.custom-filter-date-range input[type="date"] {
+  width: 150px; /* Ancho personalizado para los campos de fecha */
+}
