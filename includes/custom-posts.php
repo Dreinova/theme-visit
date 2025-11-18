@@ -44,20 +44,48 @@ function myPostTypes()
     ));
 }
 
-function create_post_types($name, $singularName, $icon, $slug)
+// Agregar los submenús debajo de los CPTs principales
+function add_custom_submenus()
 {
-    register_post_type($slug, array(
-        'labels' => array(
-            'name' => $name,
-            'singular_name' => $singularName,
-        ),
-        'menu_icon' => $icon,
-        'public' => true,
-        'show_in_rest' => true,
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
-        'rewrite' => array('slug' => $slug)
-    ));
+    // add_submenu_page(
+    //     'edit.php?post_type=services', // Parent: Servicios
+    //     'Atributos Servicio', // Título de página
+    //     'Atributos Servicio', // Título del menú
+    //     'manage_options',
+    //     'edit.php?post_type=atserv-bcct' // Slug del post type
+    // );
 }
 
 add_action('init', 'myPostTypes');
+add_action('admin_menu', 'add_custom_submenus');
+
+// Registrar taxonomía exclusiva para Noticias
+// function create_noticias_taxonomy() {
+//     $labels = array(
+//         'name'              => 'Categorías de Noticias',
+//         'singular_name'     => 'Categoría de Noticia',
+//         'search_items'      => 'Buscar Categorías',
+//         'all_items'         => 'Todas las Categorías',
+//         'parent_item'       => 'Categoría superior',
+//         'parent_item_colon' => 'Categoría superior:',
+//         'edit_item'         => 'Editar Categoría',
+//         'update_item'       => 'Actualizar Categoría',
+//         'add_new_item'      => 'Agregar nueva Categoría',
+//         'new_item_name'     => 'Nombre de nueva Categoría',
+//         'menu_name'         => 'Categorías',
+//     );
+
+//     $args = array(
+//         'hierarchical'      => true, // como las categorías (si fuera false, serían como etiquetas)
+//         'labels'            => $labels,
+//         'show_ui'           => true,
+//         'show_admin_column' => true,
+//         'show_in_rest'      => true, // para que funcione con el editor de bloques
+//         'query_var'         => true,
+//         'rewrite'           => array('slug' => 'categoria-noticia'),
+//     );
+
+//     register_taxonomy('categoria-noticia', array('noticias-bureau'), $args);
+// }
+// add_action('init', 'create_noticias_taxonomy');
 
