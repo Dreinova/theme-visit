@@ -1,0 +1,233 @@
+@use "../abstracts" as *;
+/* Hero específico - adoptando estilos de parque-tenjo */
+.hero--juegos-pirotecnicos {
+  min-height: 50vh;
+
+  .hero__content {
+    padding-top: 190px;
+    max-width: 1200px;
+  }
+
+  .hero__title {
+    &--red {
+      font-size: 68px;
+    }
+
+    &--white {
+      font-size: 82px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    min-height: 40vh;
+
+    .hero__title {
+      &--red {
+        font-size: 48px;
+      }
+
+      &--white {
+        font-size: 50px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__title {
+      &--red {
+        font-size: 36px;
+      }
+
+      &--white {
+        font-size: 35px;
+      }
+    }
+  }
+}
+
+// Sección de galería (sin thumbnails)
+.juegos-galeria {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  &__main-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  &__description {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1000px;
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
+      text-align: justify;
+    }
+  }
+}
+
+// Sección de ubicación
+.juegos-ubicacion {
+  padding: 60px 0px 80px;
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    min-height: 500px;
+  }
+
+  &__mapa {
+    width: 100%;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 24px;
+    padding: 30px 0;
+  }
+
+  &__item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-white;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__details {
+    flex: 1;
+
+    h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.6;
+      color: #f70017;
+      margin: 0;
+
+      strong {
+        font-weight: 600;
+        color: #f70017;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .juegos-galeria {
+    padding: 40px 15px;
+
+    &__description {
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+
+  .juegos-ubicacion {
+    padding: 40px 15px;
+
+    &__container {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    &__mapa {
+      height: 350px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .juegos-galeria {
+    padding: 30px 10px;
+
+    &__main {
+      gap: 20px;
+    }
+
+    &__description {
+      gap: 15px;
+    }
+  }
+
+  .juegos-ubicacion {
+    padding: 30px 10px;
+
+    &__mapa {
+      height: 300px;
+    }
+
+    &__item {
+      gap: 12px;
+    }
+
+    &__icon {
+      width: 40px;
+      height: 40px;
+    }
+
+    &__details {
+      h4 {
+        font-size: 16px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+    }
+  }
+}

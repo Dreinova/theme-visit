@@ -1,0 +1,192 @@
+@use "../abstracts" as *;
+// Splide Slider - Los 10 Imperdibles
+// Botón Play/Pause con iconos SVG
+.splide__toggle {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #f70017;
+  border: none;
+  border-radius: 50%; // Botón circular
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: #f70017;
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  // Ocultar/mostrar según el estado del autoplay
+  &[aria-pressed="true"] {
+    .splide__toggle__play {
+      display: none !important; // ← AÑADIR !important
+    }
+    .splide__toggle__pause {
+      display: flex !important; // ← CAMBIAR a flex y añadir !important
+    }
+  }
+
+  &[aria-pressed="false"] {
+    .splide__toggle__play {
+      display: flex !important; // ← CAMBIAR a flex y añadir !important
+    }
+    .splide__toggle__pause {
+      display: none !important; // ← AÑADIR !important
+    }
+  }
+}
+
+.splide__toggle__play,
+.splide__toggle__pause {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+}
+
+.hero__imperdibles-item {
+  width: 355px;
+  height: 450px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  }
+}
+.hero__imperdibles-link {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+
+  &:focus {
+    outline: 3px solid #575253;
+    outline-offset: 2px;
+  }
+
+  // Overlay opcional al hacer hover
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      rgba(0, 0, 0, 0.2) 70%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+
+  &:hover::before {
+    opacity: 1; // Muestra el overlay al hacer hover
+  }
+}
+
+.hero__imperdibles-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+// Deprecated imperdibles section
+.imperdibles {
+  position: relative;
+  padding: 4rem 2rem;
+  background: url("/placeholder.svg?height=800&width=1920") center/cover
+    no-repeat;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  &__title {
+    position: relative;
+    z-index: 2;
+    font-size: 3rem;
+    font-weight: 900;
+    margin-bottom: 3rem;
+    padding-left: 2rem;
+
+    &--red {
+      color: $color-primary;
+      display: block;
+    }
+
+    &--white {
+      color: $color-white;
+      display: block;
+    }
+  }
+
+  &__gallery {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 0 2rem 2rem;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $color-primary;
+      border-radius: 4px;
+    }
+  }
+
+  &__item {
+    flex: 0 0 300px;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-10px);
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

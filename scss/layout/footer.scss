@@ -1,0 +1,190 @@
+.footer {
+  position: relative;
+  padding: 3rem 2rem 2rem;
+  background: #3c3c3b;
+  color: white;
+  overflow: hidden;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  // Header con logo y redes sociales en la misma fila
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+  }
+
+  // Logo principal (izquierda)
+  &__logo {
+    img {
+      height: 65px;
+      width: auto;
+
+      @media (max-width: 768px) {
+        height: 50px;
+      }
+    }
+  }
+
+  // Iconos de redes sociales (derecha - mitad de pantalla)
+  &__social {
+    display: flex;
+    justify-content: center;
+    gap: 75px;
+    flex: 0 0 50%;
+    max-width: 600px;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      flex: 1;
+      max-width: 100%;
+      gap: 1.25rem;
+    }
+  }
+
+  &__social-link {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  // Línea blanca debajo de redes sociales
+  &__line {
+    width: 100%;
+    max-width: 610px;
+    height: 2px;
+    background: #fff;
+    margin: 0 auto;
+    margin-bottom: 20px; // ← 1.5rem arriba, 2.5rem abajo, centrada con auto
+
+    @media (max-width: 768px) {
+      max-width: 90%; // ← En móvil usa el 90% del ancho disponible
+      margin: 1rem auto 2rem;
+    }
+  }
+
+  // Información de contacto
+  &__info {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+  }
+
+  &__address {
+    margin-bottom: 20px;
+    max-width: 600px;
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+
+  &__contact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 900px;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      text-align: center;
+    }
+  }
+
+  &__contact-item {
+    h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 0 0.5rem 0;
+      text-transform: none;
+
+      @media (max-width: 768px) {
+        font-size: 15px;
+      }
+    }
+
+    p {
+      font-size: 14px;
+      margin: 0;
+      opacity: 0.95;
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+      }
+    }
+  }
+
+  // Logo marca de agua grande (fondo)
+  &__watermark {
+    position: absolute;
+    bottom: -60px;
+    right: 2px;
+    opacity: 2;
+    z-index: 1;
+    pointer-events: none;
+
+    img {
+      width: 288px;
+      height: auto;
+
+      @media (max-width: 1024px) {
+        width: 400px;
+      }
+
+      @media (max-width: 768px) {
+        width: 300px;
+        right: -30px;
+        bottom: -30px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      right: -30px;
+      bottom: -30px;
+    }
+  }
+}

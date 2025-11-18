@@ -1,0 +1,125 @@
+@use "../abstracts" as *;
+// Qué Hacer Cards
+.que-hacer__card {
+  position: relative;
+  height: 450px;
+  overflow: hidden;
+  border-radius: 0;
+  cursor: pointer;
+  box-shadow: none;
+
+  &:hover {
+    .que-hacer__image {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.que-hacer__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.que-hacer__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: flex-start;
+  padding: 2rem;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  transition: background 0.3s ease;
+}
+
+.que-hacer__card-title {
+  color: $color-white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  align-items: center;
+  width: 100%;
+}
+
+.que-hacer__card-line {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: 2px;
+  background: $color-white;
+}
+
+// Services Cards
+.services__card {
+  background: rgba(90, 90, 90, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: rgb(110 110 110 / 0%);
+    border-color: $color-secondary;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.services__icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 2rem;
+  color: $color-white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    stroke-width: 1.5;
+  }
+}
+
+.services__icon-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: 0 auto;
+}
+
+.services__title {
+  font-size: 24px;
+  line-height: 1.2;
+
+  &--orange {
+    color: $color-secondary;
+    font-weight: bold;
+    display: block;
+  }
+
+  &--white {
+    color: $color-white;
+    font-weight: 500;
+    display: block;
+  }
+}

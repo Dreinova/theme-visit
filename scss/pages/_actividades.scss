@@ -1,0 +1,348 @@
+@use "../abstracts" as *;
+/* Estilos específicos para la página de Faunáticos Granja Pedagógica */
+
+/* Hero específico */
+.hero--actividades {
+  min-height: 50vh;
+
+  .hero__content {
+    padding-top: 190px;
+  }
+
+  .hero__title {
+    &--red {
+      font-size: 57px;
+    }
+
+    &--white {
+      font-size: 44px;
+      line-height: 0.85;
+    }
+  }
+
+  @media (max-width: 768px) {
+    min-height: 40vh;
+
+    .hero__title {
+      &--red {
+        font-size: 48px;
+      }
+
+      &--white {
+        font-size: 50px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero__title {
+      &--red {
+        font-size: 36px;
+      }
+
+      &--white {
+        font-size: 35px;
+      }
+    }
+  }
+}
+
+/* Sección de galería - 4 thumbnails */
+.actividades-galeria {
+  padding: 60px 20px;
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 135px;
+    gap: 10px;
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__main-image {
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  &__description {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #333;
+    text-align: justify;
+
+    p {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__thumbnails {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__thumbnail {
+    width: 140px;
+    height: 120px;
+    padding: 0;
+    border: 2px solid transparent;
+    background: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    &:focus {
+      outline-offset: 2px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    &__container {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    &__main {
+      display: contents;
+    }
+
+    &__main-image {
+      order: 1;
+      margin-bottom: 20px;
+    }
+
+    &__thumbnails {
+      order: 2;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+
+    &__description {
+      order: 3;
+    }
+
+    &__thumbnail {
+      width: 120px;
+      height: 100px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 20px;
+
+    &__main-image {
+      max-height: 400px;
+      margin-bottom: 16px;
+    }
+
+    &__thumbnails {
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    &__description {
+      font-size: 13px;
+    }
+
+    &__thumbnail {
+      width: 100px;
+      height: 85px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 15px;
+
+    &__main-image {
+      max-height: 300px;
+      margin-bottom: 12px;
+    }
+
+    &__thumbnails {
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    &__thumbnail {
+      width: 80px;
+      height: 68px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    &__thumbnail {
+      width: 70px;
+      height: 60px;
+    }
+  }
+}
+
+/* Sección de ubicación y contacto */
+.actividades-ubicacion {
+  padding: 60px 20px 80px;
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 40px;
+    min-height: 500px;
+  }
+
+  &__mapa {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    background: #e0e0e0;
+    position: relative;
+    overflow: hidden;
+
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 24px;
+    padding: 30px 0;
+  }
+
+  &__item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $color-primary;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__details {
+    flex: 1;
+
+    h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 4px;
+    }
+
+    p {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.6;
+      color: #f70017;
+      margin: 0;
+
+      strong {
+        font-weight: 600;
+        color: #f70017;
+      }
+    }
+  }
+
+  @media (max-width: 1024px) {
+    &__container {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    &__info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 20px 60px;
+
+    &__mapa {
+      min-height: 350px;
+    }
+
+    &__info {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 30px 15px 50px;
+
+    &__mapa {
+      min-height: 300px;
+    }
+
+    &__item {
+      gap: 12px;
+    }
+
+    &__icon {
+      width: 32px;
+      height: 32px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    &__details {
+      h4 {
+        font-size: 14px;
+      }
+
+      p {
+        font-size: 13px;
+      }
+    }
+  }
+}

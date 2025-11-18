@@ -1,0 +1,167 @@
+// Responsive Design
+@media (max-width: 1024px) {
+  .hero {
+    &__content {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    &__title {
+      font-size: 3.5rem;
+
+      &--red {
+        font-size: 80px;
+      }
+
+      &--white {
+        font-size: 80px;
+      }
+    }
+
+    &__tags {
+      align-items: center;
+    }
+
+    &__imperdibles-title {
+      font-size: 2.5rem;
+    }
+  }
+
+  .imperdibles__title,
+  .que-hacer__title {
+    font-size: 2.5rem;
+  }
+
+  .que-hacer__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .services__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    &__title {
+      font-size: 2.5rem;
+
+      &--red {
+        font-size: 60px;
+      }
+
+      &--white {
+        font-size: 60px;
+      }
+    }
+
+    &__description {
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    &__imperdibles {
+      margin-top: 2rem;
+    }
+
+    &__imperdibles-title {
+      font-size: 2rem;
+      padding-left: 0;
+      text-align: center;
+    }
+
+    &__imperdibles-slider {
+      padding: 0 1rem 1rem;
+    }
+
+    &__imperdibles-item {
+      flex: 0 0 250px;
+      height: 350px;
+    }
+  }
+
+  .imperdibles__title,
+  .que-hacer__title {
+    font-size: 2rem;
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .que-hacer__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .services__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    &__content {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    &__nav {
+      align-items: center;
+    }
+
+    &__nav-button {
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    &__logo {
+      &-image {
+        max-width: 100px;
+      }
+    }
+
+    &__title {
+      font-size: 2rem;
+
+      &--red {
+        font-size: 45px;
+      }
+
+      &--white {
+        font-size: 45px;
+      }
+    }
+
+    &__description {
+      font-size: 0.7rem;
+      line-height: 1.4;
+    }
+
+    &__left {
+      padding-left: 1rem;
+      max-width: 100%;
+    }
+
+    &__imperdibles-title {
+      font-size: 1.5rem;
+    }
+
+    &__imperdibles-item {
+      flex: 0 0 200px;
+      height: 300px;
+    }
+  }
+
+  .que-hacer__title {
+    font-size: 1.8rem;
+  }
+
+  .que-hacer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .que-hacer__card {
+    height: 300px;
+  }
+}

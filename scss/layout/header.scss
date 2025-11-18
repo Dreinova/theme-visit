@@ -1,0 +1,224 @@
+// Header
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  // background: url("/wp-content/uploads/2025/11/hero bg.png") top center/cover no-repeat;
+  z-index: 1000;
+  padding: 1rem 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      rgba(0, 0, 0, 0.2) 70%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    z-index: -1;
+  }
+
+  &.is-scrolled {
+    &::before {
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.6) 0%,
+        rgba(0, 0, 0, 0.4) 40%,
+        rgba(0, 0, 0, 0.2) 70%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+  }
+
+  &__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  // Contenedor de contenido (logo y menú lado a lado)
+  &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    padding-bottom: 0.5rem; // Espacio para la línea
+
+    @media (max-width: 1024px) {
+      padding: 0 2rem;
+    }
+  }
+
+  // Logo
+  &__logo {
+    flex-shrink: 0;
+    display: block;
+    z-index: 2;
+  }
+
+  &__logo-image {
+    height: 60px;
+    width: auto;
+    display: block;
+
+    @media (max-width: 768px) {
+      height: 50px;
+    }
+  }
+
+  // Línea horizontal (debajo del logo hasta el final del menú)
+  &__line {
+    position: absolute;
+    bottom: 18px; // 16px pero escalable
+    left: 143px; // Tu valor deseado
+    right: 0;
+    height: 2px;
+    background: white;
+    z-index: 5; // ← Menor que los enlaces del menú (z-index: 10)
+
+    // Ajustes por tamaño de pantalla
+    @media (max-width: 1200px) {
+      left: 120px;
+      bottom: 0.75rem;
+    }
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+  }
+
+  // Navegación
+  &__nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 10 !important; // ← El contenedor del nav también debe estar encima
+
+    @media (max-width: 1024px) {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 300px;
+      height: 100vh;
+      background: linear-gradient(135deg, #3c3c3b 0%, #554e4e 100%);
+      padding: 6rem 2rem 2rem;
+      transition: right 0.3s ease;
+      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+
+      &.is-active {
+        right: 0;
+      }
+    }
+  }
+
+  &__menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media (max-width: 1024px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+  }
+
+  &__menu-item {
+    margin: 0;
+  }
+
+  &__menu-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    position: relative;
+    display: inline-block;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    z-index: 10; // ← Se superpone a la línea blanca del header
+
+    // Línea inferior en hover ROJA (para todos los elementos)
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 5px; // ← Aumentado de 3px a 5px para cubrir la línea blanca
+      background: #f70017; // ← Color rojo en hover
+      transition: width 0.3s ease;
+      z-index: 10 !important; // ← Se superpone a la línea blanca
+    }
+
+    &:hover::after {
+      width: 100%; // ← Anima la línea roja en hover
+    }
+
+    // Estado activo (con línea roja permanente)
+    &--active {
+      position: relative;
+
+      &::after {
+        width: 100%; // ← Línea roja siempre visible en estado activo
+        background: #f70017;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      font-size: 18px;
+      padding: 0.75rem 0;
+    }
+  }
+
+  // Botón hamburguesa (móvil)
+  &__toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+  }
+
+  &__toggle-line {
+    width: 25px;
+    height: 3px;
+    background: white;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+  }
+
+  // Animación del botón hamburguesa cuando está activo
+  &__toggle.is-active {
+    .header__toggle-line:nth-child(1) {
+      transform: rotate(45deg) translate(7px, 7px);
+    }
+
+    .header__toggle-line:nth-child(2) {
+      opacity: 0;
+    }
+
+    .header__toggle-line:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+  }
+}

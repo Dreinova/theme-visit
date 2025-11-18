@@ -1,0 +1,145 @@
+@use "../abstracts" as *;
+.hero {
+  position: relative;
+  min-height: 85vh;
+  background: url("/wp-content/uploads/2025/11/hero bg.png") top center/cover
+    no-repeat;
+  display: flex;
+  flex-direction: column;
+  padding: 60px 0;
+  overflow: hidden;
+  // padding-top: 120px;
+
+  @media (max-width: 768px) {
+    padding-top: 100px; // Menos padding en móviles
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: linear-gradient(
+      to right,
+      /* ← Dirección de izquierda a derecha */ rgb(0 0 0 / 62%) 0%,
+      /* Opacidad 60% a la izquierda */ rgb(0 0 0 / 35%) 50%,
+      /* Transparente después del 40% */ rgb(0 0 0 / 0%) 100%
+    );
+  }
+
+  &__logo {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0;
+    max-width: 1200px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: flex-end;
+    gap: 2.5rem;
+
+    &-image {
+      max-width: 150px;
+      height: auto;
+      display: block;
+    }
+
+    &-line {
+      flex: 1;
+      height: 2px;
+      background: $color-white;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding-top: 200px;
+  }
+
+  &__left {
+    flex: 1;
+    max-width: 650px;
+  }
+
+  &__title {
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 0.85;
+    // margin-bottom: 1.5rem;
+
+    &--red {
+      color: $color-primary;
+      display: block;
+      font-size: 103px;
+    }
+
+    &--white {
+      color: $color-white;
+      display: block;
+      font-size: 140px;
+    }
+  }
+
+  &__description {
+    font-size: 20px;
+    line-height: 1.5;
+    color: $color-white;
+    max-width: 680px;
+    margin-top: 70px;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    padding-top: 0;
+  }
+
+  &__tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    align-items: flex-end;
+  }
+
+  // Los 10 Imperdibles dentro del Hero
+  &__imperdibles {
+    position: relative;
+    z-index: 2;
+    margin-top: 2rem;
+    padding: 2rem 0;
+    max-width: 1440px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__imperdibles-title {
+    font-size: 3rem;
+    font-weight: 900;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 5rem;
+    line-height: 0.9;
+
+    &--red {
+      color: $color-primary;
+    }
+
+    &--white {
+      color: $color-white;
+    }
+  }
+}

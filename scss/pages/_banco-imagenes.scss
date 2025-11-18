@@ -1,0 +1,460 @@
+// Hero del Banco de Imágenes
+.banco-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  &__logo {
+    img {
+      width: 180px;
+      height: auto;
+
+      @media (max-width: 768px) {
+        width: 140px;
+      }
+
+      @media (max-width: 480px) {
+        width: 120px;
+      }
+    }
+  }
+
+  &__line {
+    width: 100%;
+    max-width: 800px;
+    height: 2px;
+    background: white;
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      max-width: 600px;
+    }
+
+    @media (max-width: 480px) {
+      max-width: 90%;
+    }
+  }
+
+  &__search {
+    width: 100%;
+    max-width: 1050px;
+    background: white;
+    border-radius: 20px;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+      border-radius: 20px;
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 1rem;
+    }
+  }
+
+  &__search-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    @media (max-width: 900px) {
+      width: 100%;
+    }
+  }
+
+  &__search-icon {
+    width: 40px;
+    height: 35px;
+    flex-shrink: 0;
+
+    @media (max-width: 480px) {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-style: italic;
+    color: #666;
+    background: transparent;
+
+    &::placeholder {
+      color: #999;
+      font-style: italic;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 14px;
+    }
+  }
+
+  &__divider {
+    width: 2px;
+    height: 40px;
+    background: #3c3c3b;
+
+    @media (max-width: 900px) {
+      width: 100%;
+      height: 2px;
+    }
+  }
+
+  &__select-wrapper {
+    position: relative;
+
+    @media (max-width: 900px) {
+      width: 100%;
+    }
+  }
+
+  &__select {
+    padding: 0.5rem 2.5rem 0.5rem 1rem;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 8'%3E%3Cpath fill='%23333' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 12px;
+    min-width: 180px;
+
+    &::-ms-expand {
+      display: none;
+    }
+
+    &:focus {
+      color: #e30613;
+    }
+
+    option {
+      font-weight: 600;
+      padding: 0.5rem;
+    }
+
+    @media (max-width: 900px) {
+      width: 100%;
+      text-align: center;
+      padding: 0.75rem 2.5rem;
+      font-size: 15px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 14px;
+      min-width: auto;
+    }
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    min-height: 80vh;
+    padding-top: 80px;
+  }
+
+  @media (max-width: 480px) {
+    min-height: 70vh;
+    padding-top: 70px;
+  }
+}
+
+// Sección Galería de Imágenes
+.galeria {
+  padding: 0;
+  margin-bottom: 30px;
+
+  &__container {
+    max-width: 100vw;
+    width: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+
+    @media (max-width: 1200px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media (max-width: 900px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:hover {
+      .galeria__image {
+        transform: scale(1.05);
+      }
+
+      .galeria__overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__checkbox {
+    display: none;
+  }
+
+  &__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    cursor: pointer;
+    display: block;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+
+      .galeria__overlay {
+        opacity: 1;
+      }
+
+      .galeria__image {
+        transform: scale(1.05);
+      }
+    }
+
+    @media (max-width: 768px) {
+      height: 250px;
+    }
+
+    @media (max-width: 480px) {
+      height: 200px;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &__btn-view {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: white;
+    border-radius: 50%;
+    color: #333;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      background: #f70017;
+      color: white;
+    }
+
+    svg {
+      pointer-events: none;
+    }
+  }
+
+  // ============================================
+  // LIGHTBOX (Solo CSS)
+  // ============================================
+
+  &__lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    padding: 2rem;
+
+    @media (max-width: 768px) {
+      padding: 1rem;
+    }
+  }
+
+  // Cuando el checkbox está checked, mostrar lightbox
+  &__checkbox:checked ~ &__lightbox {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  // Botón cerrar
+  &__lightbox-close {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 32px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    line-height: 1;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+
+    @media (max-width: 768px) {
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      font-size: 28px;
+    }
+  }
+
+  // Contenido del lightbox
+  &__lightbox-content {
+    max-width: 95vw;
+    max-height: 95vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: zoomIn 0.3s ease;
+  }
+
+  // Imagen ampliada
+  &__lightbox-image {
+    max-width: 95vh;
+    max-height: 85vh;
+    object-fit: contain;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+
+    @media (max-width: 768px) {
+      max-height: 88vh;
+    }
+    @media (max-width: 480px) {
+      max-height: 85vh;
+    }
+  }
+
+  // Mensaje sin resultados (para cuando se usa el filtro)
+  &__sin-resultados {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border-radius: 12px;
+    margin: 2rem 0;
+
+    p {
+      font-size: 18px;
+      color: #666;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-limpiar {
+      padding: 12px 30px;
+      background: #e30613;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: #e30613;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+// Prevenir scroll cuando lightbox está abierto
+.galeria__checkbox:checked {
+  & ~ .galeria__lightbox {
+    overflow: hidden;
+  }
+}
+
+body:has(.galeria__checkbox:checked) {
+  overflow: hidden;
+}
