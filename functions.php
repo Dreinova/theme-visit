@@ -250,27 +250,41 @@ function visit_theme_customize_register($wp_customize) {
     'priority'    => 30,
     'description' => 'Configura la información general del sitio.',
   ));
-
-  // Campo: Teléfono
-  $wp_customize->add_setting('visit_telefono', array(
+   $wp_customize->add_setting('visit_direccion', array(
     'default' => '',
     'transport' => 'refresh',
   ));
-  $wp_customize->add_control('visit_telefono', array(
-    'label'   => __('Teléfono', 'visit-theme'),
+  $wp_customize->add_control('visit_direccion', array(
+    'label'   => __('Dirección', 'visit-theme'),
     'section' => 'visit_info_general',
     'type'    => 'text',
   ));
-
-  // Campo: Correo electrónico
-  $wp_customize->add_setting('visit_email', array(
+   $wp_customize->add_setting('visit_subCulTel', array(
     'default' => '',
     'transport' => 'refresh',
   ));
-  $wp_customize->add_control('visit_email', array(
-    'label'   => __('Correo electrónico', 'visit-theme'),
+  $wp_customize->add_control('visit_subCulTel', array(
+    'label'   => __('Subdirección de Cultura', 'visit-theme'),
     'section' => 'visit_info_general',
-    'type'    => 'email',
+    'type'    => 'text',
+  ));
+   $wp_customize->add_setting('visit_subTur', array(
+    'default' => '',
+    'transport' => 'refresh',
+  ));
+  $wp_customize->add_control('visit_subTur', array(
+    'label'   => __('Subdirección de Turismo', 'visit-theme'),
+    'section' => 'visit_info_general',
+    'type'    => 'text',
+  ));
+   $wp_customize->add_setting('visit_lineaCorr', array(
+    'default' => '',
+    'transport' => 'refresh',
+  ));
+  $wp_customize->add_control('visit_lineaCorr', array(
+    'label'   => __('Línea anticorrupción', 'visit-theme'),
+    'section' => 'visit_info_general',
+    'type'    => 'text',
   ));
 
   // 🌐 Sección: Redes Sociales
@@ -280,7 +294,7 @@ function visit_theme_customize_register($wp_customize) {
     'description' => 'Agrega los enlaces de tus redes sociales.',
   ));
 
-  $redes = ['facebook', 'instagram', 'twitter', 'youtube'];
+  $redes = ['facebook', 'instagram', 'twitter', 'youtube', 'whatsapp'];
 
   foreach ($redes as $red) {
     $wp_customize->add_setting("visit_{$red}_url", array(
@@ -295,3 +309,138 @@ function visit_theme_customize_register($wp_customize) {
   }
 }
 add_action('customize_register', 'visit_theme_customize_register');
+
+
+function add_menu_item_classes($classes, $item, $args) {
+    if ($args->theme_location === 'primary') {
+        $classes[] = 'header__menu-item';
+    }
+    return $classes;
+}
+add_filter('nav_menu_css_class', 'add_menu_item_classes', 10, 3);
+
+function add_menu_link_classes($atts, $item, $args) {
+    if ($args->theme_location === 'primary') {
+        $atts['class'] = 'header__menu-link';
+    }
+    return $atts;
+}
+add_filter('nav_menu_link_attributes', 'add_menu_link_classes', 10, 3);
+
+register_post_type('proyectos', array(
+    'label' => 'Proyectos',
+    'public' => true,
+    'capability_type' => 'proyecto',
+    'map_meta_cap' => true,
+    'capabilities' => array(
+        'edit_post'             => 'edit_proyecto',
+        'read_post'             => 'read_proyecto',
+        'delete_post'           => 'delete_proyecto',
+
+        'edit_posts'            => 'edit_proyectos',
+        'edit_others_posts'     => 'edit_others_proyectos',
+        'publish_posts'         => 'publish_proyectos',
+        'read_private_posts'    => 'read_private_proyectos',
+
+        'delete_posts'              => 'delete_proyectos',
+        'delete_others_posts'       => 'delete_others_proyectos',
+        'edit_published_posts'      => 'edit_published_proyectos',
+        'delete_published_posts'    => 'delete_published_proyectos',
+    ),
+));
+
+
+add_role('gestor_proyectos', 'Gestor de Proyectos', [
+    'read' => true,
+
+    'edit_proyecto' => true,
+    'read_proyecto' => true,
+    'edit_proyectos' => true,
+    'publish_proyectos' => true,
+    'read_private_proyectos' => true,
+]);
+
+add_action('init', function() {
+    $admin = get_role('administrator');
+
+    if ($admin) {
+        $caps = [
+            'edit_proyecto',
+            'read_proyecto',
+            'delete_proyecto',
+
+            'edit_proyectos',
+            'edit_others_proyectos',
+            'publish_proyectos',
+            'read_private_proyectos',
+
+            'delete_proyectos',
+            'delete_others_proyectos',
+            'edit_published_proyectos',
+            'delete_published_proyectos',
+        ];
+
+        foreach ($caps as $cap) {
+            $admin->add_cap($cap);
+        }
+    }
+});
+
+
+
+// SITUR
+add_action('init', function() {
+
+    if (!get_page_by_path('panel-situr')) {
+        wp_insert_post([
+            'post_title'   => 'Panel SITUR',
+            'post_name'    => 'panel-situr',
+            'post_status'  => 'publish',
+            'post_type'    => 'page',
+            'post_content' => '[situr_profile_form]', // shortcode por defecto
+        ]);
+    }
+
+});
+
+add_action('init', function() {
+
+    if (!isset($_POST['_wpnonce'])) return;
+    if (!wp_verify_nonce($_POST['_wpnonce'], 'situr_save_profile')) return;
+    if (!is_user_logged_in()) return;
+
+    $user_id = get_current_user_id();
+
+    $fields = [
+        'nombre_comercial',
+        'nit',
+        'telefono',
+        'direccion'
+    ];
+
+    foreach ($fields as $f) {
+        if (isset($_POST[$f])) {
+            update_field($f, sanitize_text_field($_POST[$f]), 'user_' . $user_id);
+        }
+    }
+});
+
+
+
+add_action('admin_init', function() {
+    if (current_user_can('situr_user') && !defined('DOING_AJAX')) {
+        wp_redirect(home_url('/panel-situr/'));
+        exit;
+    }
+});
+
+add_filter('login_redirect', function($redirect, $req, $user) {
+
+    if (!is_wp_error($user) && isset($user->roles) && in_array('situr_user', $user->roles)) {
+        return home_url('/panel-situr/');
+    }
+
+    return $redirect;
+
+}, 10, 3);
+

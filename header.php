@@ -28,29 +28,18 @@
           ?>
 
           <!-- Menú de navegación -->
-          <nav class="header__nav">
-            <ul class="header__menu">
-              <li class="header__menu-item">
-                <a href="#" class="header__menu-link">Qué hacer en tenjo</a>
-              </li>
-              <li class="header__menu-item">
-                <a href="#" class="header__menu-link">Donde dormir</a>
-              </li>
-              <li class="header__menu-item">
-                <a href="#" class="header__menu-link">Donde comer</a>
-              </li>
-              <li class="header__menu-item">
-                <a href="agenda.html" class="header__menu-link"
-                  >Agenda de eventos</a
-                >
-              </li>
-              <li class="header__menu-item">
-                <a href="faq.html" class="header__menu-link"
-                  >Preguntas frecuentes</a
-                >
-              </li>
-            </ul>
-          </nav>
+         <nav class="header__nav">
+  <?php
+  wp_nav_menu(array(
+    'theme_location' => 'primary',
+    'container' => false,
+    'menu_class' => 'header__menu', // ul
+    'items_wrap' => '<ul class="%2$s">%3$s</ul>', // usa tu clase
+    'fallback_cb' => false
+  ));
+  ?>
+</nav>
+
 
           <!-- Botón menú móvil (hamburguesa) -->
           <button class="header__toggle" aria-label="Abrir menú">

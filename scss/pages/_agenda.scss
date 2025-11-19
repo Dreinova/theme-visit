@@ -164,6 +164,22 @@
     }
   }
 }
+.evento-card {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease, height 0.3s ease,
+    margin 0.3s ease;
+}
+
+/* Estado oculto */
+.evento-card.hide {
+  opacity: 0;
+  transform: translateY(10px);
+  height: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+}
 
 // Tarjeta de evento
 .evento-card {

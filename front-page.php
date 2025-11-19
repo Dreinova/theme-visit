@@ -1,3 +1,32 @@
+<?php
+$args = array(
+    'post_type' => 'pantalla',
+    'posts_per_page' => -1,
+    'meta_query' => array(
+        array(
+            'key'   => 'aparece_en_el_home',
+            'value' => 1,            // ACF True/False guarda 1 (true) y 0 (false)
+            'compare' => '='
+        )
+    )
+);
+
+$query = new WP_Query($args);
+
+$argsImperdibles = array(
+    'post_type' => 'lugares-visit',
+    'posts_per_page' => -1,
+    'meta_query' => array(
+        array(
+            'key'     => 'pantalla_relacionada',
+            'value'   => '"' . 231 . '"', // ACF guarda arrays serializados
+            'compare' => 'LIKE'
+        )
+    )
+);
+
+$queryImperdibles = new WP_Query($argsImperdibles);
+?>
 <?php get_header(); ?>
 <!-- Hero Section -->
     <section class="hero hero--home" style="background:url(<?=get_field("imagen_fondo")?>) top center/cover no-repeat;">
@@ -18,10 +47,17 @@
 
         <div class="hero__right">
           <div class="hero__tags">
-            <a href="#" class="hero__tag">Turismo Cultural</a>
-            <a href="#" class="hero__tag">Turismo de Naturaleza y Aventura</a>
-            <a href="#" class="hero__tag">Turismo de Bienestar</a>
-            <a href="#" class="hero__tag">Turismo de Negocios y Eventos</a>
+            <?php if ($query->have_posts()) : ?>
+  <?php 
+  while ($query->have_posts()) : $query->the_post(); 
+  $titulo_superior = "turismo"; 
+      $titulo_inferior = get_the_title(); 
+      $link = get_permalink(); 
+  ?>
+  <a href="<?php echo esc_url($link); ?>" class="hero__tag"> <?php echo esc_html($titulo_inferior); ?></a>
+  <?php endwhile; ?>
+  <?php wp_reset_postdata(); ?>
+<?php endif; ?>
           </div>
         </div>
       </div>
@@ -41,54 +77,26 @@
         >
           <div class="splide__track">
             <ul class="splide__list">
-              <li class="splide__slide hero__imperdibles-item">
-                <a href="#" class="hero__imperdibles-link">
-                  <img
-                    src="/wp-content/uploads/2025/11/mesa_flores.png"
-                    alt="Mesa de Flores"
-                    class="hero__imperdibles-image"
-                /></a>
-              </li>
-              <li class="splide__slide hero__imperdibles-item">
-                <a href="#" class="hero__imperdibles-link">
-                  <img
-                    src="/wp-content/uploads/2025/11/parque.png"
-                    alt="Parque"
-                    class="hero__imperdibles-image"
-                /></a>
-              </li>
-              <li class="splide__slide hero__imperdibles-item">
-                <a href="#" class="hero__imperdibles-link"
-                  ><img
-                    src="/wp-content/uploads/2025/11/iglesia.png"
-                    alt="Iglesia"
-                    class="hero__imperdibles-image"
-                /></a>
-              </li>
-              <li class="splide__slide hero__imperdibles-item">
-                <a href="#" class="hero__imperdibles-link"
-                  ><img
-                    src="/wp-content/uploads/2025/11/pueblo_antiguo.png"
-                    alt="Pueblo Antiguo"
-                    class="hero__imperdibles-image"
-                /></a>
-              </li>
-              <li class="splide__slide hero__imperdibles-item">
-                <a href="#" class="hero__imperdibles-link"
-                  ><img
-                    src="/wp-content/uploads/2025/11/sendero.png"
-                    alt="Sendero"
-                    class="hero__imperdibles-image"
-                /></a>
-              </li>
-              <li class="splide__slide hero__imperdibles-item">
-                <a href="#" class="hero__imperdibles-link"
-                  ><img
-                    src="/wp-content/uploads/2025/11/vista_panoramica.png"
-                    alt="Vista Panorámica"
-                    class="hero__imperdibles-image"
-                /></a>
-              </li>
+              <?php if ($queryImperdibles->have_posts()) : ?>
+  <?php while ($queryImperdibles->have_posts()) : $queryImperdibles->the_post(); ?>
+
+    <?php 
+      $imagen = get_field('imagen_listado'); // tu imagen ACF
+      $titulo_superior = "turismo"; 
+      $titulo_inferior = get_the_title(); 
+      $link = get_permalink(); 
+    ?>
+  <li class="splide__slide hero__imperdibles-item">
+    <a href="<?php echo esc_url($link); ?>" class="hero__imperdibles-link">
+      <img
+        src="<?php echo esc_url($imagen); ?>"
+        alt="Mesa de Flores"
+        class="hero__imperdibles-image"
+    /></a>
+  </li>
+  <?php endwhile; ?>
+  <?php wp_reset_postdata(); ?>
+<?php endif; ?>
             </ul>
           </div>
 
@@ -126,57 +134,38 @@
         <span class="que-hacer__title--gray"> EN TENJO?</span>
       </h2>
 
+
       <div class="que-hacer__grid">
-        <a href="#" class="que-hacer__card">
-          <img src="/wp-content/uploads/2025/11/turismo.png" alt="Turismo" class="que-hacer__image" />
-          <div class="que-hacer__overlay">
-            <h3 class="que-hacer__card-title">
-              TURISMO
-              <span class="que-hacer__card-line"></span>
-            </h3>
-          </div>
-        </a>
+        
+<?php if ($query->have_posts()) : ?>
+  <?php while ($query->have_posts()) : $query->the_post(); ?>
 
-        <a href="#" class="que-hacer__card">
-          <img
-            src="/wp-content/uploads/2025/11/naturaleza.png"
-            alt="Naturaleza"
-            class="que-hacer__image"
-          />
-          <div class="que-hacer__overlay">
-            <h3 class="que-hacer__card-title">
-              TURISMO
-              <span class="que-hacer__card-line"></span>
-              DE NATURALEZA Y AVENTURA
-            </h3>
-          </div>
-        </a>
+    <?php 
+      $imagen = get_field('imagen_listado'); // tu imagen ACF
+      $titulo_superior = "turismo"; 
+      $titulo_inferior = get_the_title(); 
+      $link = get_permalink(); 
+    ?>
 
-        <a href="#" class="que-hacer__card">
-          <img
-            src="/wp-content/uploads/2025/11/bienestar.png"
-            alt="Bienestar"
-            class="que-hacer__image"
-          />
-          <div class="que-hacer__overlay">
-            <h3 class="que-hacer__card-title">
-              TURISMO
-              <span class="que-hacer__card-line"></span>
-              DE BIENESTAR
-            </h3>
-          </div>
-        </a>
+    <a href="<?php echo esc_url($link); ?>" class="que-hacer__card">
+      <img
+        src="<?php echo esc_url($imagen); ?>"
+        alt="<?php echo esc_attr(get_the_title()); ?>"
+        class="que-hacer__image"
+      />
 
-        <a href="#" class="que-hacer__card">
-          <img src="/wp-content/uploads/2025/11/negocios.png" alt="Negocios" class="que-hacer__image" />
-          <div class="que-hacer__overlay">
-            <h3 class="que-hacer__card-title">
-              TURISMO
-              <span class="que-hacer__card-line"></span>
-              DE NEGOCIOS Y EVENTOS
-            </h3>
-          </div>
-        </a>
+      <div class="que-hacer__overlay">
+        <h3 class="que-hacer__card-title">
+          <span class="que-hacer__card-line"></span>
+          <?php echo esc_html($titulo_inferior); ?>
+        </h3>
+      </div>
+    </a>
+
+  <?php endwhile; ?>
+  <?php wp_reset_postdata(); ?>
+<?php endif; ?>
+
       </div>
     </section>
 
@@ -184,7 +173,7 @@
     <section class="services">
       <div class="services__container">
         <!-- Card 1: Dónde Comer -->
-        <a href="#" class="services__card">
+        <a href="/pantalla/donde-comer-en-tenjo/" class="services__card">
           <div class="services__image-wrapper">
             <img
               src="/wp-content/uploads/2025/11/donde_comer.png"
@@ -208,7 +197,7 @@
         </a>
 
         <!-- Card 2: Dónde Dormir -->
-        <a href="#" class="services__card">
+        <a href="/pantalla/donde-dormir-en-tenjo/" class="services__card">
           <div class="services__image-wrapper">
             <img
               src="/wp-content/uploads/2025/11/habitacion.png"
@@ -232,7 +221,7 @@
         </a>
 
         <!-- Card 3: Agenda de Eventos -->
-        <a href="agenda.html" class="services__card">
+        <a href="/agenda-de-eventos/" class="services__card">
           <div class="services__image-wrapper">
             <img
               src="/wp-content/uploads/2025/11/juegos_artificiales.png"
@@ -256,7 +245,7 @@
         </a>
 
         <!-- Card 4: Recorridos y Actividades -->
-        <a href="#" class="services__card">
+        <a href="/recorridos-y-actividades-predisenadas/" class="services__card">
           <div class="services__image-wrapper">
             <img
               src="/wp-content/uploads/2025/11/recorridos.png"
@@ -285,7 +274,7 @@
       <!-- Sección banco de imagenes -->
       <div class="banco-imagenes">
         <a
-          href="banco-imagenes.html"
+          href="/banco-de-imagenes/"
           class="banco-imagenes__header"
           aria-label="Ir al banco de imágenes"
         >
@@ -304,7 +293,7 @@
         <nav class="banco-imagenes__nav">
           <ul class="banco-imagenes__menu">
             <li class="banco-imagenes__item">
-              <a href="faq.html" class="banco-imagenes__link">
+              <a href="/preguntas-frecuentes/" class="banco-imagenes__link">
                 <img
                   src="/wp-content/uploads/2025/11/preguntas.png"
                   alt=""
@@ -314,7 +303,7 @@
               </a>
             </li>
             <li class="banco-imagenes__item">
-              <a href="#" class="banco-imagenes__link">
+              <a href="/banco-de-imagenes/" class="banco-imagenes__link">
                 <img
                   src="/wp-content/uploads/2025/11/grafico.png"
                   alt=""
