@@ -6,7 +6,6 @@
   width: 100%;
   // background: url("/wp-content/uploads/2025/11/hero bg.png") top center/cover no-repeat;
   z-index: 1000;
-  padding: 1rem 0;
 
   &::before {
     content: "";
@@ -26,14 +25,15 @@
   }
 
   &.is-scrolled {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    background: rgba(20, 20, 20, 0.75);
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+
     &::before {
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.6) 0%,
-        rgba(0, 0, 0, 0.4) 40%,
-        rgba(0, 0, 0, 0.2) 70%,
-        rgba(0, 0, 0, 0) 100%
-      );
+      opacity: 0; // Quitamos el degradado cuando hace scroll
     }
   }
 
@@ -49,7 +49,7 @@
     align-items: center;
     justify-content: space-between;
     position: relative;
-    padding-bottom: 0.5rem; // Espacio para la línea
+    padding: 0.5rem 0; // Espacio para la línea
 
     @media (max-width: 1024px) {
       padding: 0 2rem;

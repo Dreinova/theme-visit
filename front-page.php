@@ -76,7 +76,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
           aria-label="Los 10 Imperdibles de Tenjo"
         >
           <div class="splide__track">
-            <ul class="splide__list">
+            <ul class="splide__list" style="transform: translateX(-2100px) !important;">
               <?php if ($queryImperdibles->have_posts()) : ?>
   <?php while ($queryImperdibles->have_posts()) : $queryImperdibles->the_post(); ?>
 
