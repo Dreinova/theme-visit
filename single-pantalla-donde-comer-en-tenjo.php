@@ -5,7 +5,7 @@
   style="background-image: url('/wp-content/uploads/2025/11/turismo_gastronomico_bg.png')"
 >
   <div class="hero__overlay"></div>
-  <div class="hero__content">
+  <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
       <h1 class="hero__title">
         <span class="hero__title--red">TURISMO</span>

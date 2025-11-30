@@ -398,6 +398,7 @@
 
   // Imagen ampliada
   &__lightbox-image {
+    border-radius: 12px;
     max-width: 95vh;
     max-height: 85vh;
     object-fit: contain;

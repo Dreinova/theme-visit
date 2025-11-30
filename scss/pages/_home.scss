@@ -75,6 +75,7 @@
   }
 
   .hero__title {
+    font-family: 'Mosk', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -113,7 +114,7 @@
 
     // "TENJO" en rojo bold (texto)
     .hero__title--red {
-      font-family: "Mosk", sans-serif;
+      font-family: "Jost", sans-serif;
       color: #f70017;
       font-size: 100px;
       font-weight: 900;
@@ -201,6 +202,7 @@
   padding: 4rem 2rem;
 
   &__title {
+    font-family: 'Mosk', sans-serif;
     font-size: 3rem;
     font-weight: 900;
     margin-bottom: 3rem;
@@ -437,6 +439,7 @@
     text-transform: uppercase;
     margin: 0;
     letter-spacing: 2px;
+    font-family: 'Mosk', sans-serif;
 
     @media (max-width: 768px) {
       font-size: 24px;

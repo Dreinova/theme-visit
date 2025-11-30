@@ -9,6 +9,7 @@
   }
 
   .hero__title {
+    font-family: 'Mosk', sans-serif;
     &--white {
       font-size: 62px;
       display: block;
@@ -20,6 +21,7 @@
     min-height: 40vh;
 
     .hero__title {
+      font-family: 'Mosk', sans-serif;
       &--white {
         font-size: 50px;
       }
@@ -28,6 +30,7 @@
 
   @media (max-width: 480px) {
     .hero__title {
+      font-family: 'Mosk', sans-serif;
       &--white {
         font-size: 35px;
       }

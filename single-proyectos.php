@@ -1,26 +1,23 @@
-<?php 
-get_header(); 
-$imagen_fondo      = get_field('imagen_banner');
-$titulo             = get_the_title(); // Texto completo
-$palabra_resaltada  = get_field('palabra_resaltada');
+<?php
+get_header();
+$imagen_fondo = get_field('imagen_banner');
+$titulo = get_the_title(); // Texto completo
+$palabra_resaltada = get_field('palabra_resaltada');
 
 // Quitar la palabra resaltada del título
 $titulo_sin_resaltar = str_replace($palabra_resaltada, '', $titulo);
 $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
 ?>
 <!-- Hero con imagen de fondo -->
-<section
-  class="hero hero--parque-tenjo"
-  style="
-    background-image: url('<?=$imagen_fondo?>');
-  "
->
+<section class="hero hero--parque-tenjo" style="
+    background-image: url('<?= $imagen_fondo ?>');
+  ">
   <div class="hero__overlay"></div>
-  <div class="hero__content">
+  <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
       <h1 class="hero__title">
-        <span class="hero__title--red"><?=$palabra_resaltada?></span>
-        <span class="hero__title--white"><?=$titulo_sin_resaltar?></span>
+        <span class="hero__title--red"><?= $palabra_resaltada ?></span>
+        <span class="hero__title--white"><?= $titulo_sin_resaltar ?></span>
       </h1>
     </div>
   </div>
@@ -29,45 +26,37 @@ $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
 $imagenes = [];
 
 for ($i = 1; $i <= 10; $i++) {
-    $img = get_field("imagen_$i");
-    if ($img) {
-        $imagenes[] = $img;
-    }
+  $img = get_field("imagen_$i");
+  if ($img) {
+    $imagenes[] = $img;
+  }
 }
 ?>
 
 <!-- Sección de galería con imagen principal y thumbnails -->
-<section class="parque-galeria">
+<section class="parque-galeria" data-aos="fade-down">
   <div class="parque-galeria__container">
 
     <!-- Imagen principal -->
     <div class="parque-galeria__main">
-      <img
-        src="<?= esc_url($imagenes[0]['url']) ?>"
-        alt="<?= esc_attr($imagenes[0]['alt']) ?>"
-        class="parque-galeria__main-image"
-        id="mainImage"
-      />
-      <div class="parque-galeria__description">
-        <?= get_the_content() ?>
-      </div>
+      <img src="<?= esc_url($imagenes[0]['url']) ?>" alt="<?= esc_attr($imagenes[0]['alt']) ?>"
+        class="parque-galeria__main-image" id="mainImage" />
+
     </div>
 
     <!-- Thumbnails -->
     <div class="parque-galeria__thumbnails">
       <?php foreach ($imagenes as $img): ?>
-        <button
-          class="parque-galeria__thumbnail"
-          onclick="changeImage('<?= esc_url($img['url']) ?>')"
-        >
-          <img
-            src="<?= esc_url($img['sizes']['thumbnail']) ?>"
-            alt="<?= esc_attr($img['alt']) ?>"
-          />
+        <button class="parque-galeria__thumbnail" onclick="changeImage('<?= esc_url($img['url']) ?>')">
+          <img src="<?= esc_url($img['sizes']['thumbnail']) ?>" alt="<?= esc_attr($img['alt']) ?>" />
         </button>
       <?php endforeach; ?>
     </div>
 
+
+  </div>
+  <div class="parque-galeria__description" data-aos="zoom-in">
+    <?= get_the_content() ?>
   </div>
 </section>
 
@@ -76,96 +65,76 @@ for ($i = 1; $i <= 10; $i++) {
 <section class="parque-ubicacion">
   <div class="parque-ubicacion__container">
     <!-- Mapa -->
-    <div class="parque-ubicacion__mapa">
+    <div class="parque-ubicacion__mapa" data-aos="fade-right">
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.8!2d-74.145!3d4.867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwNTInMDEuMiJOIDc0wrAwOCc0Mi4wIlc!5e0!3m2!1ses!2sco!4v1234567890"
-        width="100%"
-        height="100%"
-        style="border: 0"
-        allowfullscreen=""
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
+        width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
 
     <!-- Información de contacto -->
-    <div class="parque-ubicacion__info">
+    <div class="parque-ubicacion__info" data-aos="fade-left">
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
-          <img
-            src="/wp-content/uploads/2025/11/reloj.png"
-            alt="icono de horario"
-          />
+          <img src="/wp-content/uploads/2025/11/reloj.png" alt="icono de horario" />
         </div>
         <div class="parque-ubicacion__details">
           <h4>Horario</h4>
-          <?=get_field("horario")?>
+          <?= get_field("horario") ?>
         </div>
       </div>
 
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
-          <img
-            src="/wp-content/uploads/2025/11/email.png"
-            alt="icono de correo"
-          />
+          <img src="/wp-content/uploads/2025/11/email.png" alt="icono de correo" />
         </div>
         <div class="parque-ubicacion__details">
           <h4>Correo</h4>
-          <p><a href="mailto:<?=get_field("correo")?>"><?=get_field("correo")?></a></p>
+          <p><a href="mailto:<?= get_field("correo") ?>"><?= get_field("correo") ?></a></p>
         </div>
       </div>
 
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
-          <img
-            src="/wp-content/uploads/2025/11/telefono.png"
-            alt="icono de teléfono"
-          />
+          <img src="/wp-content/uploads/2025/11/telefono.png" alt="icono de teléfono" />
         </div>
         <div class="parque-ubicacion__details">
           <h4>Teléfono</h4>
-          <p><a href="tel:<?=get_field("telefono")?>"><?=get_field("telefono")?></a></p>
+          <p><a href="tel:<?= get_field("telefono") ?>"><?= get_field("telefono") ?></a></p>
         </div>
       </div>
 
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
-          <img
-            src="/wp-content/uploads/2025/11/whatsapp.png"
-            alt="icono de whatsapp"
-          />
+          <img src="/wp-content/uploads/2025/11/whatsapp.png" alt="icono de whatsapp" />
         </div>
         <div class="parque-ubicacion__details">
           <h4>WhatsApp</h4>
-          <p><?=get_field("whatsapp")?></p>
+          <p><?= get_field("whatsapp") ?></p>
         </div>
       </div>
 
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
-          <img
-            src="/wp-content/uploads/2025/11/ubicacion.png"
-            alt="icono de ubicación"
-          />
+          <img src="/wp-content/uploads/2025/11/ubicacion.png" alt="icono de ubicación" />
         </div>
         <div class="parque-ubicacion__details">
           <h4>Dirección</h4>
-          <p><?=get_field("direccion")?></p>
+          <p><?= get_field("direccion") ?></p>
         </div>
       </div>
     </div>
   </div>
 </section>
- <script>
-      // Función para cambiar la imagen principal
-      function changeImage(newSrc) {
-        const mainImage = document.getElementById("mainImage");
-        mainImage.style.opacity = "0";
-        setTimeout(() => {
-          mainImage.src = newSrc;
-          mainImage.style.opacity = "1";
-        }, 200);
-      }
-    </script>
+<script>
+  // Función para cambiar la imagen principal
+  function changeImage(newSrc) {
+    const mainImage = document.getElementById("mainImage");
+    mainImage.style.opacity = "0";
+    setTimeout(() => {
+      mainImage.src = newSrc;
+      mainImage.style.opacity = "1";
+    }, 200);
+  }
+</script>
 <?php get_footer(); ?>

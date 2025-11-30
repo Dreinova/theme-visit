@@ -16,7 +16,7 @@ $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
       style="background-image: url(<?=$imagen_fondo?>)"
     >
       <div class="hero__overlay"></div>
-      <div class="hero__content">
+      <div class="hero__content" data-aos="fade-right">
         <div class="hero__left">
           <h1 class="hero__title">
     <span class="hero__title--red">Turismo</span>

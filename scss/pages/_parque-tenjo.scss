@@ -10,6 +10,7 @@
   }
 
   .hero__title {
+    font-family: "Mosk", sans-serif;
     &--red {
       font-size: 68px;
     }
@@ -71,10 +72,12 @@
     object-fit: cover;
     display: block;
     transition: opacity 0.3s ease;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   }
 
   &__description {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 1.8;
     color: #333;
     text-align: justify;
@@ -110,6 +113,7 @@
     &:focus {
       outline: 2px solid $color-primary;
       outline-offset: 2px;
+      border-radius: 6px;
     }
 
     img {
@@ -117,6 +121,8 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      border-radius: 6px;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     }
   }
 
@@ -208,7 +214,9 @@
 
 /* Sección de ubicación y contacto */
 .parque-ubicacion {
+  max-width: 1200px;
   padding: 60px 0px 80px;
+  margin: 0 auto;
 
   &__container {
     max-width: 1400px;
@@ -282,6 +290,11 @@
 
       strong {
         font-weight: 600;
+        color: #f70017;
+      }
+
+      a {
+        text-decoration: none;
         color: #f70017;
       }
     }

@@ -327,6 +327,30 @@ function add_menu_link_classes($atts, $item, $args) {
 }
 add_filter('nav_menu_link_attributes', 'add_menu_link_classes', 10, 3);
 
+function aos_library() {
+  wp_enqueue_style(
+    'aos-css',
+    'https://unpkg.com/aos@2.3.1/dist/aos.css'
+  );
+
+  wp_enqueue_script(
+    'aos-js',
+    'https://unpkg.com/aos@2.3.1/dist/aos.js',
+    array(),
+    null,
+    true
+  );
+
+  wp_enqueue_script(
+    'aos-init',
+    get_stylesheet_directory_uri() . '/js/aos-init.js',
+    array('aos-js'),
+    null,
+    true
+  );
+}
+add_action('wp_enqueue_scripts', 'aos_library');
+
 register_post_type('proyectos', array(
     'label' => 'Proyectos',
     'public' => true,
