@@ -84,7 +84,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
               <li class="splide__slide hero__imperdibles-item">
                 <a href="<?php echo esc_url($link); ?>" class="hero__imperdibles-link" style="height: -webkit-fill-available;">
                   <img src="<?php echo esc_url($imagen); ?>" alt="Mesa de Flores" class="hero__imperdibles-image" /></a>
-                <div class="que-hacer__overlay" style="height: auto;">
+                <div class="que-hacer__overlay">
                   <span class="que-hacer__card-line"></span>
                   <h3 class="que-hacer__card-title">
                     <?php echo esc_html($titulo_inferior); ?>
