@@ -50,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // SPLIDE SLIDER (solo para index.html)
   // ============================================
   const splideElement = document.querySelector(".hero__imperdibles-slider");
-  console.log(splideElement);
 
   if (splideElement) {
     const splideImperdibles = new Splide(".hero__imperdibles-slider", {
@@ -61,10 +60,16 @@ document.addEventListener("DOMContentLoaded", function () {
       padding: "2rem",
       arrows: false,
       pagination: false,
-      autoplay: true,
+
+      autoplay: true, // Auto reproducción
+      autoScroll: { speed: 1 },
       interval: 3000,
       pauseOnHover: true,
       pauseOnFocus: true,
+
+      drag: true, // Permite moverlo manteniendo click
+      direction: "rtl", // Mover de derecha a izquierda
+
       breakpoints: {
         480: {
           perPage: 1,
@@ -83,22 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     });
 
-    splideImperdibles.mount();
-  }
-
-  // ============================================
-  // SPLIDE SLIDER PARA OTRAS SECCIONES (si existen)
-  // ============================================
-  const splideGeneral = document.querySelector(".splide");
-
-  if (splideGeneral && !splideElement) {
-    // Solo montar si no es el slider de imperdibles
-    const splide = new Splide(".splide");
-
-    splide.on("autoplay:playing", function (rate) {
-      console.log(rate); // 0-1
-    });
-
-    splide.mount();
+    // Para que funcione el botón Play/Pause
+    splideImperdibles.mount({ Autoplay });
   }
 });
