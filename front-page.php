@@ -263,7 +263,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
           </a>
         </li>
         <li class="banco-imagenes__item" data-aos="fade-down">
-          <a href="/banco-de-imagenes/" class="banco-imagenes__link">
+          <a href="https://situr.visitatenjo.com/" class="banco-imagenes__link">
             <img src="/wp-content/uploads/2025/11/grafico.png" alt="" class="banco-imagenes__link-icon" />
             SITUR
           </a>
