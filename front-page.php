@@ -82,8 +82,14 @@ $queryImperdibles = new WP_Query($argsImperdibles);
               $link = get_permalink();
               ?>
               <li class="splide__slide hero__imperdibles-item">
-                <a href="<?php echo esc_url($link); ?>" class="hero__imperdibles-link">
+                <a href="<?php echo esc_url($link); ?>" class="hero__imperdibles-link" style="height: -webkit-fill-available;">
                   <img src="<?php echo esc_url($imagen); ?>" alt="Mesa de Flores" class="hero__imperdibles-image" /></a>
+                <div class="que-hacer__overlay" style="height: auto;">
+                  <span class="que-hacer__card-line"></span>
+                  <h3 class="que-hacer__card-title">
+                    <?php echo esc_html($titulo_inferior); ?>
+                  </h3>
+                </div>
               </li>
             <?php endwhile; ?>
             <?php wp_reset_postdata(); ?>
@@ -152,7 +158,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
       <div class="services__image-wrapper">
         <img src="/wp-content/uploads/2025/11/donde_comer.png" alt="¿Dónde Comer en Tenjo?" class="services__image" />
         <div class="services__icon-badge">
-          <svg fill="#ffffff" width="auto" height="40px" viewBox="0 -2.89 122.88 122.88" version="1.1">
+          <svg fill="#ffffff" height="40px" viewBox="0 -2.89 122.88 122.88" version="1.1">
             <g>
               <path class="st0"
                 d="M36.82,107.86L35.65,78.4l13.25-0.53c5.66,0.78,11.39,3.61,17.15,6.92l10.29-0.41c4.67,0.1,7.3,4.72,2.89,8 c-3.5,2.79-8.27,2.83-13.17,2.58c-3.37-0.03-3.34,4.5,0.17,4.37c1.22,0.05,2.54-0.29,3.69-0.34c6.09-0.25,11.06-1.61,13.94-6.55 l1.4-3.66l15.01-8.2c7.56-2.83,12.65,4.3,7.23,10.1c-10.77,8.51-21.2,16.27-32.62,22.09c-8.24,5.47-16.7,5.64-25.34,1.01 L36.82,107.86L36.82,107.86z M29.74,62.97h91.9c0.68,0,1.24,0.57,1.24,1.24v5.41c0,0.67-0.56,1.24-1.24,1.24h-91.9 c-0.68,0-1.24-0.56-1.24-1.24v-5.41C28.5,63.53,29.06,62.97,29.74,62.97L29.74,62.97z M79.26,11.23 c25.16,2.01,46.35,23.16,43.22,48.06l-93.57,0C25.82,34.23,47.09,13.05,72.43,11.2V7.14l-4,0c-0.7,0-1.28-0.58-1.28-1.28V1.28 c0-0.7,0.57-1.28,1.28-1.28h14.72c0.7,0,1.28,0.58,1.28,1.28v4.58c0,0.7-0.58,1.28-1.28,1.28h-3.89L79.26,11.23L79.26,11.23 L79.26,11.23z M0,77.39l31.55-1.66l1.4,35.25L1.4,112.63L0,77.39L0,77.39z" />
@@ -173,7 +179,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
       <div class="services__image-wrapper">
         <img src="/wp-content/uploads/2025/11/habitacion.png" alt="¿Dónde Dormir en Tenjo?" class="services__image" />
         <div class="services__icon-badge">
-          <svg height="40px" width="auto" version="1.1" viewBox="0 0 512 512" fill="white">
+          <svg height="40px" version="1.1" viewBox="0 0 512 512" fill="white">
             <g>
               <path class="st0"
                 d="M119.729,129.325v-31.38c0-13.496,10.946-24.45,24.449-24.45h78.233c13.504,0,24.45,10.954,24.45,24.45v31.38
@@ -203,7 +209,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
         <img src="/wp-content/uploads/2025/11/juegos_artificiales.png" alt="Agenda de Eventos en Tenjo"
           class="services__image" />
         <div class="services__icon-badge">
-          <svg fill="white" width="auto" height="40px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
+          <svg fill="white" height="40px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M1411.824 0c31.171 0 56.47 25.299 56.47 56.471v56.47h169.412c93.404 0 169.412 76.01 169.412 169.412V1920H113V282.353c0-93.402 76.009-169.412 169.412-169.412h169.411v-56.47c0-31.172 25.3-56.471 56.471-56.471 31.172 0 56.471 25.299 56.471 56.471v56.47h790.589v-56.47c0-31.172 25.299-56.471 56.47-56.471Zm169.413 1242.354h-338.823v338.823h338.823v-338.823Zm-451.766 0H790.647v338.823h338.824v-338.823Zm-451.765 0H338.882v338.823h338.824v-338.823Zm903.531-451.766h-338.823v338.824h338.823V790.588Zm-451.766 0H790.647v338.824h338.824V790.588Zm-451.765 0H338.882v338.824h338.824V790.588ZM451.823 225.882H282.412c-31.059 0-56.47 25.299-56.47 56.471v169.412h1468.234V282.353c0-31.172-25.411-56.471-56.47-56.471h-169.412v56.471c0 31.172-25.299 56.471-56.47 56.471s-56.47-25.299-56.47-56.471v-56.471H564.765v56.471c0 31.172-25.299 56.471-56.471 56.471-31.171 0-56.471-25.299-56.471-56.471v-56.471Z"
               fill-rule="evenodd" />
