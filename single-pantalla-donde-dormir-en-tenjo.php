@@ -2,14 +2,14 @@
 <!-- Hero con imagen de fondo -->
 <section
   class="hero hero--turismo-gastronomico"
-  style="background-image: url('/wp-content/uploads/2025/11/turismo_gastronomico_bg.png')"
+  style="background-image: url('/wp-content/uploads/2025/11/recorridos_bg.png')"
 >
   <div class="hero__overlay"></div>
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
       <h1 class="hero__title">
-        <span class="hero__title--red">TURISMO</span>
-        <span class="hero__title--white">GASTRONÓMICO</span>
+        <span class="hero__title--red">DÓNDE</span>
+        <span class="hero__title--white">DORMIR</span>
       </h1>
     </div>
   </div>
@@ -63,7 +63,7 @@ if (!is_wp_error($response)) {
 
             // Nombre a mostrar en el overlay
             $nombre = strtoupper($datos["subcategoria_rnt"] ?? "SIN NOMBRE");
-            if($datos["categoria_rnt"] == "restaurantes"){
+            if($datos["categoria_rnt"] == "alojamiento"){
               echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
               if ($img_url) {
                   echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
