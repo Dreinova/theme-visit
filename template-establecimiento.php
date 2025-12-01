@@ -35,34 +35,25 @@ if (!$api_body["success"]) {
 $datos = json_decode($api_body["data"]["datos"], true);
 
 // ─────────────────────────────────────────────
-// 2. CONSULTAR IMÁGENES DEL ESTABLECIMIENTO
+// 2. USAR FOTOS DEL CAMPO "fotos"
 // ─────────────────────────────────────────────
 $imagenes = [];
-$img_res = wp_remote_get("https://apisitur.visitatenjo.com/imagenes/por-est/".$est_id, [
-    "headers" => [
-        "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
-    ]
-]);
-
-if (!is_wp_error($img_res)) {
-    $img_data = json_decode(wp_remote_retrieve_body($img_res), true);
-
-    if ($img_data["success"] && !empty($img_data["data"])) {
-        foreach ($img_data["data"] as $img) {
-            $url = preg_replace('#^/api-situr#', '', $img["url_imagen"]);
+if (!empty($datos["fotos"])) {
+    foreach ($datos["fotos"] as $foto) {
+        if ($foto) { // ignorar null
             $imagenes[] = [
-                "full" => "https://apisitur.visitatenjo.com".$url,
-                "thumb" => "https://apisitur.visitatenjo.com".$url
+                "full" => $foto,
+                "thumb" => $foto
             ];
         }
     }
 }
-
 // Imagen fallback si no hay imágenes
 $hero_img = $imagenes[0]["full"] ?? "https://placehold.co/1600x900";
 
+
 // Título dinámico
-$titulo = strtoupper($datos["subcategoria_rnt"] ?? $datos["categoria_rnt"] ?? "ESTABLECIMIENTO");
+$titulo = strtoupper($datos["nombre"]);
 
 // Palabra resaltada (puede ser configurable)
 $palabra_resaltada = $datos["categoria_rnt"] ?? "";
@@ -122,39 +113,48 @@ $titulo_sin_resaltar = trim(str_replace($palabra_resaltada, "", $titulo));
 
     <div class="parque-ubicacion__info" data-aos="fade-left">
 
-      <div class="parque-ubicacion__item">
+    <?php if(!empty($datos["horario"])): ?>
+    <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/reloj.png"></div>
         <div class="parque-ubicacion__details">
-          <h4>Horario</h4>
-          <?= $datos["horario"] ?? "No disponible" ?>
+            <h4>Horario</h4>
+            <?= $datos["horario"] ?>
         </div>
-      </div>
+    </div>
+    <?php endif; ?>
 
-      <div class="parque-ubicacion__item">
+    <?php if(!empty($datos["correo"])): ?>
+    <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/email.png"></div>
         <div class="parque-ubicacion__details">
-          <h4>Correo</h4>
-          <p><a href="mailto:<?= $datos['correo'] ?? '' ?>"><?= $datos['correo'] ?? "No disponible" ?></a></p>
+            <h4>Correo</h4>
+            <p><a href="mailto:<?= $datos['correo'] ?>"><?= $datos['correo'] ?></a></p>
         </div>
-      </div>
+    </div>
+    <?php endif; ?>
 
-      <div class="parque-ubicacion__item">
+    <?php if(!empty($datos["telefono"])): ?>
+    <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/telefono.png"></div>
         <div class="parque-ubicacion__details">
-          <h4>Teléfono</h4>
-          <p><a href="tel:<?= $datos['telefono'] ?? '' ?>"><?= $datos['telefono'] ?? "No disponible" ?></a></p>
+            <h4>Teléfono</h4>
+            <p><a href="tel:<?= $datos['telefono'] ?>"><?= $datos['telefono'] ?></a></p>
         </div>
-      </div>
+    </div>
+    <?php endif; ?>
 
-      <div class="parque-ubicacion__item">
+    <?php if(!empty($datos["direccion_establecimiento"])): ?>
+    <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/ubicacion.png"></div>
         <div class="parque-ubicacion__details">
-          <h4>Dirección</h4>
-          <p><?= $datos['direccion_establecimiento'] ?? "No disponible" ?></p>
+            <h4>Dirección</h4>
+            <p><?= $datos['direccion_establecimiento'] ?></p>
         </div>
-      </div>
-
     </div>
+    <?php endif; ?>
+
+</div>
+
   </div>
 </section>
 
