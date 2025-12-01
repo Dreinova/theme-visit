@@ -70,7 +70,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     <!-- Splide Slider -->
     <section class="splide hero__imperdibles-slider" aria-label="Los 10 Imperdibles de Tenjo">
       <div class="splide__track">
-        <ul class="splide__list" style="transform: translateX(-2100px) !important;">
+        <ul class="splide__list">
           <?php if ($queryImperdibles->have_posts()): ?>
             <?php while ($queryImperdibles->have_posts()):
               $queryImperdibles->the_post(); ?>

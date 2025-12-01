@@ -89,6 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Para que funcione el botón Play/Pause
-    splideImperdibles.mount({ Autoplay });
+    splideImperdibles.mount();
   }
 });
