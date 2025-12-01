@@ -39,6 +39,18 @@ include get_template_directory() . '/includes/cleanup.php';
 include get_template_directory() . '/includes/enqueue.php';
 include get_template_directory() . '/includes/custom-posts.php';
 
+add_action('init', function () {
+    add_rewrite_rule(
+        '^establecimiento/([^/]+)/?$',
+        'index.php?pagename=establecimiento&est_id=$matches[1]',
+        'top'
+    );
+});
+
+add_filter('query_vars', function ($vars) {
+    $vars[] = 'est_id';
+    return $vars;
+});
 
 
 function acfFilt($type)
