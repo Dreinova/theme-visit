@@ -257,7 +257,7 @@
     max-width: 1120px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 
     @media (max-width: 768px) {
@@ -294,7 +294,7 @@
 
   &__image-wrapper {
     position: relative;
-    width: 260px;
+    width: auto;
     height: 250px;
     overflow: hidden;
 

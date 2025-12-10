@@ -41,7 +41,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
       <?= $description ?>
     </div>
 
-    <div class="hero__right">
+    <!-- <div class="hero__right">
       <div class="hero__tags">
         <?php if ($query->have_posts()): ?>
           <?php
@@ -56,7 +56,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
           <?php wp_reset_postdata(); ?>
         <?php endif; ?>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!-- Los 10 Imperdibles Slider dentro del Hero -->
@@ -237,6 +237,40 @@ $queryImperdibles = new WP_Query($argsImperdibles);
         <h3 class="services__title">
           <span class="services__title--orange">RECORRIDOS Y</span>
           <span class="services__title--gray">ACTIVIDADES PREDISEÑADAS</span>
+        </h3>
+      </div>
+    </a>
+
+    <!-- Card 5: Agencias de viajes y operadoras de turismo -->
+    <a href="/recorridos-y-actividades-predisenadas/" class="services__card" data-aos="fade-down">
+      <div class="services__image-wrapper">
+        <img src="/wp-content/uploads/2025/11/recorridos.png" alt="Agencias de viajes y operadoras de turismo"
+          class="services__image" />
+        <div class="services__icon-badge">
+          <img src="/wp-content/uploads/2025/11/recorrido.png" alt="Icono Mapa" class="services__icon" />
+        </div>
+      </div>
+      <div class="services__content">
+        <h3 class="services__title">
+          <span class="services__title--orange">AGENCIA DE VIAJES Y</span>
+          <span class="services__title--gray">OPERADORAS DE TURISMO</span>
+        </h3>
+      </div>
+    </a>
+
+    <!-- Card 6: Guías turísticos -->
+    <a href="/recorridos-y-actividades-predisenadas/" class="services__card" data-aos="fade-down">
+      <div class="services__image-wrapper">
+        <img src="/wp-content/uploads/2025/11/recorridos.png" alt="Guías turísticos"
+          class="services__image" />
+        <div class="services__icon-badge">
+          <img src="/wp-content/uploads/2025/11/recorrido.png" alt="Icono Mapa" class="services__icon" />
+        </div>
+      </div>
+      <div class="services__content">
+        <h3 class="services__title">
+          <span class="services__title--orange">GUÍAS</span>
+          <span class="services__title--gray">TURÍSTICOS</span>
         </h3>
       </div>
     </a>
