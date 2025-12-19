@@ -10,7 +10,7 @@
   }
 
   .hero__title {
-    font-family: 'Mosk', sans-serif;
+    font-family: "Mosk", sans-serif;
     &--red {
       font-size: 57px;
     }
@@ -68,7 +68,7 @@
 
   &__main-image {
     width: 100%;
-    height: auto;
+    height:100%;
     max-height: 600px;
     object-fit: cover;
     display: block;
@@ -91,19 +91,30 @@
   }
 
   &__thumbnails {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    gap: 5px;
+    padding-right: 6px;
+
+    &::before {
+      content: "";
+      flex-grow: 1;
+    }
   }
 
   &__thumbnail {
-    width: 140px;
-    height: 120px;
     padding: 0;
     border: 2px solid transparent;
     background: none;
     cursor: pointer;
     overflow: hidden;
     transition: all 0.3s ease;
+    height: 115px;
+  flex-shrink: 0;
+  width: 100%;
 
     &:hover {
       transform: scale(1.05);
