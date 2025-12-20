@@ -68,26 +68,26 @@ for ($i = 1; $i <= 10; $i++) {
   <div class="parque-ubicacion__container">
     <!-- Mapa -->
     <div class="parque-ubicacion__mapa" data-aos="fade-right">
-      <?php 
-        $direccion = get_field("direccion");
-        $titulo = $titulo_sin_resaltar; // o get_field("titulo") según tu caso
-        
-        // Combinar título y dirección para búsqueda más específica
+      <?php
+      $direccion = get_field("direccion");
+      $titulo = $titulo_sin_resaltar;
+
+      // Verificar si existe la dirección
+      if (!empty($direccion) && trim($direccion) != '') {
+        // Si existe dirección, combinar con el título
         $busqueda_completa = $titulo . ", " . $direccion;
-        
-        // Codificar la búsqueda completa para URL
-        $busqueda_encoded = urlencode($busqueda_completa);
-        
-        // Crear URL de Google Maps embed
-        $map_url = "https://www.google.com/maps?q=" . $busqueda_encoded . "&output=embed";
+      } else {
+        // Si no existe dirección, usar ubicación genérica
+        $busqueda_completa = $titulo . ", Tenjo, Cundinamarca";
+      }
+
+      // Codificar la búsqueda completa para URL
+      $busqueda_encoded = urlencode($busqueda_completa);
+
+      // Crear URL de Google Maps embed
+      $map_url = "https://www.google.com/maps?q=" . $busqueda_encoded . "&output=embed";
       ?>
-      <iframe
-        src="<?= $map_url ?>"
-        width="100%" 
-        height="100%" 
-        style="border: 0" 
-        allowfullscreen="" 
-        loading="lazy"
+      <iframe src="<?= $map_url ?>" width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"
         referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
@@ -135,7 +135,7 @@ for ($i = 1; $i <= 10; $i++) {
         </div>
         <div class="parque-ubicacion__details">
           <h4>Dirección</h4>
-          <p><?= get_field("direccion") ?></p>
+          <p><?= !empty($direccion) ? $direccion : 'Tenjo, Cundinamarca' ?></p>
         </div>
       </div>
     </div>
