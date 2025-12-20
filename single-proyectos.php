@@ -66,12 +66,23 @@ for ($i = 1; $i <= 10; $i++) {
   <div class="parque-ubicacion__container">
     <!-- Mapa -->
     <div class="parque-ubicacion__mapa" data-aos="fade-right">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3975.8!2d-74.145!3d4.867!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNMKwNTInMDEuMiJOIDc0wrAwOCc0Mi4wIlc!5e0!3m2!1ses!2sco!4v1234567890"
-        width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
+      <?php
+      $direccion = get_field("direccion");
+      $titulo = $titulo_sin_resaltar; // o get_field("titulo") según tu caso
+      
+      // Combinar título y dirección para búsqueda más específica
+      $busqueda_completa = $titulo . ", " . $direccion;
 
+      // Codificar la búsqueda completa para URL
+      $busqueda_encoded = urlencode($busqueda_completa);
+
+      // Crear URL de Google Maps embed
+      $map_url = "https://www.google.com/maps?q=" . $busqueda_encoded . "&output=embed";
+      ?>
+      <iframe src="<?= $map_url ?>" width="100%" height="100%" style="border: 0" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
     <!-- Información de contacto -->
     <div class="parque-ubicacion__info" data-aos="fade-left">
       <div class="parque-ubicacion__item">
@@ -83,7 +94,6 @@ for ($i = 1; $i <= 10; $i++) {
           <?= get_field("horario") ?>
         </div>
       </div>
-
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
           <img src="/wp-content/uploads/2025/11/email.png" alt="icono de correo" />
@@ -93,7 +103,6 @@ for ($i = 1; $i <= 10; $i++) {
           <p><a href="mailto:<?= get_field("correo") ?>"><?= get_field("correo") ?></a></p>
         </div>
       </div>
-
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
           <img src="/wp-content/uploads/2025/11/telefono.png" alt="icono de teléfono" />
@@ -103,7 +112,6 @@ for ($i = 1; $i <= 10; $i++) {
           <p><a href="tel:<?= get_field("telefono") ?>"><?= get_field("telefono") ?></a></p>
         </div>
       </div>
-
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
           <img src="/wp-content/uploads/2025/11/whatsapp.png" alt="icono de whatsapp" />
@@ -113,7 +121,6 @@ for ($i = 1; $i <= 10; $i++) {
           <p><?= get_field("whatsapp") ?></p>
         </div>
       </div>
-
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
           <img src="/wp-content/uploads/2025/11/ubicacion.png" alt="icono de ubicación" />
