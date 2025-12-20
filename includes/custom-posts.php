@@ -5,23 +5,19 @@ function myPostTypes()
 
     // 1. Banners principales 
     create_post_types('Banners Principales', 'Banner', 'dashicons-slides', 'banners-visit');
-
     // 2. Nuevo único post type para SITUR
     create_post_types('Lugares', 'Lugar', 'dashicons-location-alt', 'lugares-visit');
     create_post_types('Tipo de turismo', 'tipos', 'dashicons-location-alt', 'tipo-turismo',true,false);
     create_post_types('Pantallas', 'Pantalla', 'dashicons-location-alt', 'pantalla',true,false);
-
     // 3. Agenda 
     create_post_types('Agenda', 'Evento', 'dashicons-calendar-alt', 'eventos-visit');
-
     // 4. Recorridos
     create_post_types('Recorridos', 'Recorrido', 'dashicons-groups', 'recorridos-visit');
-
     //5.Paquetes
     create_post_types('Paquetes', 'Pauqete', 'dashicons-tickets', 'paquetes-visit');
-
     //6. Preguntas Frecuentes
     create_post_types('Preguntas Frecuentes', 'Pregunta Frecuente', 'dashicons-editor-help', 'preguntas-visit');
+    create_post_types('Banco de imagenes', 'Imagenes', 'dashicons-format-image', 'imagenes-visit');
 }
 
 // Agregar los submenús debajo de los CPTs principales

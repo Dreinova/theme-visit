@@ -41,29 +41,30 @@ if (!is_wp_error($response)) {
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
             $datos = json_decode($item["datos"], true);
-
-            // --- Traer imágenes desde $datos['fotos'] ---
-            $img_url = 'https://placehold.co/1080x1920'; // fallback
-            if (!empty($datos["fotos"])) {
-                foreach ($datos["fotos"] as $foto) {
-                    if ($foto) {
-                        $img_url = $foto; // tomar la primera imagen no nula
-                        break;
-                    }
-                }
+           if (isset($datos['data']['field_1766013834262']) || $datos['categoria_rnt'] == 'restaurantes' || $datos["categoria_rnt"] == "bares") {
+            if($datos['data']['field_1766013834262'][0] == 'turismo_gastronómico'){
+              // --- Traer imágenes desde $datos['fotos'] ---
+              $img_url = 'https://placehold.co/1080x1920'; // fallback
+              if (!empty($datos["fotos"])) {
+                  foreach ($datos["fotos"] as $foto) {
+                      if ($foto) {
+                          $img_url = $foto; // tomar la primera imagen no nula
+                          break;
+                      }
+                  }
+              }
+    
+              // Nombre a mostrar en el overlay
+              $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
+                  echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
+                  echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
+                  echo '<div class="restaurante-card__overlay">';
+                  echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
+                  echo '</div>';
+                  echo '</a>';
             }
+          }
 
-            // Nombre a mostrar en el overlay
-            $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
-
-            if ($datos["categoria_rnt"] == "restaurantes" || $datos["categoria_rnt"] == "bares") {
-                echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
-                echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
-                echo '<div class="restaurante-card__overlay">';
-                echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
-                echo '</div>';
-                echo '</a>';
-            }
         }
     } else {
         echo "No hay establecimientos disponibles.";
@@ -71,8 +72,6 @@ if (!is_wp_error($response)) {
 } else {
     echo "Error en la API: " . $response->get_error_message();
 }
-?>
-
 ?>
 
   </div>
