@@ -480,3 +480,18 @@ add_filter('login_redirect', function($redirect, $req, $user) {
 
 }, 10, 3);
 
+add_action('admin_bar_menu', 'custom_admin_bar_link', 999);
+
+function custom_admin_bar_link($wp_admin_bar) {
+    $args = array(
+        'id'    => 'custom-situr-link',
+        'title' => 'Ir a SITUR',
+        'href'  => 'https://situr.visitatenjo.com/',
+        'meta'  => array(
+            'target' => '_blank',
+            'class'  => 'custom-situr-link-class'
+        )
+    );
+
+    $wp_admin_bar->add_node($args);
+}
