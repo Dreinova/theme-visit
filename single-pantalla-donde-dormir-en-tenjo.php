@@ -40,30 +40,56 @@ if (!is_wp_error($response)) {
 
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
-            $datos = json_decode($item["datos"], true);
+          $datos = json_decode($item["datos"], true);
+         // --- VALIDACIÓN CAMPO DINÁMICO ---
+$campo = $datos['data']['field_1766013834262'] ?? [];
+if (!is_array($campo)) {
+    $campo = [];
+}
 
-            // --- Traer imágenes desde $datos['fotos'] ---
-            $img_url = 'https://placehold.co/1080x1920'; // fallback
-            if (!empty($datos["fotos"])) {
-                foreach ($datos["fotos"] as $foto) {
-                    if ($foto) {
-                        $img_url = $foto; // tomar la primera imagen no nula
-                        break;
-                    }
-                }
-            }
+$buscarCampo = ['alojamiento', 'hoteles'];
+$matchCampo = false;
 
-            // Nombre a mostrar en el overlay
-            $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
+foreach ($campo as $valorCampo) {
+    foreach ($buscarCampo as $valorBuscar) {
+        if (stripos($valorCampo, $valorBuscar) !== false) {
+            $matchCampo = true;
+            break 2;
+        }
+    }
+}
 
-            if ($datos["categoria_rnt"] == "alojamiento" || $datos["categoria_rnt"] == "viviendas") {
-                echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
-                echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
-                echo '<div class="restaurante-card__overlay">';
-                echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
-                echo '</div>';
-                echo '</a>';
-            }
+// --- VALIDACIÓN CATEGORÍA RNT ---
+$categoria = strtolower($datos['categoria_rnt'] ?? '');
+$categoriasPermitidas = ['alojamiento', 'viviendas'];
+$matchCategoria = in_array($categoria, $categoriasPermitidas, true);
+
+        // --- Traer imágenes desde $datos['fotos'] ---
+          $img_url = 'https://placehold.co/1080x1920'; // fallback
+          if (!empty($datos["fotos"])) {
+              foreach ($datos["fotos"] as $foto) {
+                  if ($foto) {
+                      $img_url = $foto; // tomar la primera imagen no nula
+                      break;
+                  }
+              }
+          }
+
+          // Nombre a mostrar en el overlay
+          $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
+
+
+// --- CONDICIÓN FINAL ---
+if ($matchCampo || $matchCategoria) {
+    echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
+    echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
+    echo '<div class="restaurante-card__overlay">';
+    echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
+    echo '</div>';
+    echo '</a>';
+}
+
+
         }
     } else {
         echo "No hay establecimientos disponibles.";

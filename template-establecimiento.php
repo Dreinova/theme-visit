@@ -31,8 +31,8 @@ if (!$api_body["success"]) {
     get_footer();
     exit;
 }
-
 $datos = json_decode($api_body["data"]["datos"], true);
+
 
 // ─────────────────────────────────────────────
 // 2. USAR FOTOS DEL CAMPO "fotos"
@@ -59,6 +59,13 @@ $titulo = strtoupper($datos["nombre"]);
 $palabra_resaltada = $datos["categoria_rnt"] ?? "";
 $titulo_sin_resaltar = trim(str_replace($palabra_resaltada, "", $titulo));
 ?>
+<?php
+$iconos = [
+    'instagram' => 'fab fa-instagram',
+    'tiktok'    => 'fab fa-tiktok',
+    'facebook'  => 'fab fa-facebook-f',
+];
+?>
 
 <!-- HERO -->
 <section class="hero hero--parque-tenjo" style="background-image:url('<?= $hero_img ?>');">
@@ -66,7 +73,6 @@ $titulo_sin_resaltar = trim(str_replace($palabra_resaltada, "", $titulo));
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
       <h1 class="hero__title">
-        <span class="hero__title--red"><?= esc_html($palabra_resaltada) ?></span>
         <span class="hero__title--white"><?= esc_html($titulo_sin_resaltar) ?></span>
       </h1>
     </div>
@@ -112,13 +118,15 @@ $titulo_sin_resaltar = trim(str_replace($palabra_resaltada, "", $titulo));
     </div>
 
     <div class="parque-ubicacion__info" data-aos="fade-left">
+   
 
-    <?php if(!empty($datos["horario"])): ?>
+    <?php 
+    if(!empty($datos["data"]['field_1766259143120'])): ?>
     <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/reloj.png"></div>
         <div class="parque-ubicacion__details">
             <h4>Horario</h4>
-            <?= $datos["horario"] ?>
+            <?= $datos["data"]['field_1766259143120'] ?>
         </div>
     </div>
     <?php endif; ?>
@@ -132,13 +140,50 @@ $titulo_sin_resaltar = trim(str_replace($palabra_resaltada, "", $titulo));
         </div>
     </div>
     <?php endif; ?>
+    <?php if (!empty($datos['redes_sociales'])): ?>
+       <div class="parque-ubicacion__item">
+        <div class="parque-ubicacion__icon"></div>
+        <div class="parque-ubicacion__details">
+            <h4>Redes sociales</h4>
+             <?php foreach ($datos['redes_sociales'] as $red): ?>
+            <?php
+            $nombre = $red['red'] ?? '';
+            $url    = $red['url'] ?? '';
+            $icono  = $iconos[$nombre] ?? 'fas fa-share-alt'; // icono por defecto
+            ?>
 
-    <?php if(!empty($datos["telefono"])): ?>
+            <?php if ($url): ?>
+                <a href="<?php echo esc_url($url); ?>"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="red-social red-<?php echo esc_attr($nombre); ?>" style="
+    font-size: 26px;
+    font-weight: 700;
+    color: #222;
+    text-decoration:none;
+">
+                    <i class="<?php echo esc_attr($icono); ?>"></i>
+                </a>
+            <?php endif; ?>
+        <?php endforeach; ?>
+ </div>
+ </div>
+<?php endif; ?>
+    <?php if(!empty( $datos["pagina_web"])): ?>
+    <div class="parque-ubicacion__item">
+        <div class="parque-ubicacion__icon"></div>
+        <div class="parque-ubicacion__details">
+            <h4>Página web</h4>
+            <p><a href="<?=  $datos["pagina_web"] ?>" target="_blank" aria-label="Sitio web <?=$titulo?>"><?=  $datos["pagina_web"] ?></a></p>
+        </div>
+    </div>
+    <?php endif; ?>
+    <?php if(!empty($datos["data"]['field_1766259212093'])): ?>
     <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/telefono.png"></div>
         <div class="parque-ubicacion__details">
             <h4>Teléfono</h4>
-            <p><a href="tel:<?= $datos['telefono'] ?>"><?= $datos['telefono'] ?></a></p>
+            <p><a href="tel:<?= $datos["data"]['field_1766259212093'] ?>"><?= $datos["data"]['field_1766259212093'] ?></a></p>
         </div>
     </div>
     <?php endif; ?>

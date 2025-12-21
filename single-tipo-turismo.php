@@ -3,6 +3,7 @@ get_header();
 $imagen_fondo      = get_field('imagen_banner');
 $titulo             = get_the_title(); // Texto completo
 $palabra_resaltada  = get_field('palabra_resaltada');
+$id_relacion  = get_field('id_relacion');
 
 // Quitar la palabra resaltada del título
 $titulo_sin_resaltar = str_replace($palabra_resaltada, '', $titulo);
@@ -33,24 +34,7 @@ $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
         <?=get_the_content()?>
       </div>
     </section>
-<?php 
-$mapa_turismo = [
-  "Empresarial" => "turismo_empresarial",
-  "Romance" => "turismo_romance",
-  "Cultural y artístico" => "turismo_cultural_y_artístico",
-  "Terapias alternativas" => "turismo_terapias_alternativas",
-  "Biciturismo" => "turismo_biciturismo",
-  "Parques temáticos" => "turismo_parques_temáticos",
-  "Senderismo" => "turismo_senderismo",
-  "Histórico y Patrimonial" => "turismo_histórico_y_patrimonial",
-  "Arqueológico" => "turismo_arqueológico",
-  "Ovnilogía" => "turismo_ovnilogía",
-  "Rural y agroturismo" => "turismo_rural_y_agroturismo"
-];
-$valor_turismo = $mapa_turismo[$titulo_sin_resaltar] ?? null;
-
-
-?>
+<?php $valor_turismo = $id_relacion ?? null; ?>
     
 <!-- Grid de restaurantes gastronómicos -->
 <section class="gastronomia-grid">
@@ -70,11 +54,13 @@ if (!is_wp_error($response)) {
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
             $datos = json_decode($item["datos"], true);
-            var_dump($datos);
            if (isset($datos['data']['field_1766013834262'])) {
-            if(   $valor_turismo &&
-    isset($datos['data']['field_1766013834262'][0]) &&
-    $datos['data']['field_1766013834262'][0] === $valor_turismo){
+           
+            
+            if( $valor_turismo &&
+    isset($datos['data']['field_1766013834262']) &&
+    is_array($datos['data']['field_1766013834262']) &&
+    in_array($valor_turismo, $datos['data']['field_1766013834262'], true)){
               // --- Traer imágenes desde $datos['fotos'] ---
               $img_url = 'https://placehold.co/1080x1920'; // fallback
               if (!empty($datos["fotos"])) {

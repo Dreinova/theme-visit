@@ -44,11 +44,10 @@ $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
 
         ?>
         <a href="<?= $url ?>" class="que-hacer__card">
-          <img src="<?= $campos['imagen_listado'] ?>" alt="Turismo <?= $post->post_title ?>" class="que-hacer__image" />
+          <img src="<?= $campos['imagen_listado'] ?>" alt=" <?= $post->post_title ?>" class="que-hacer__image" />
           <div class="que-hacer__overlay">
             <span class="que-hacer__card-line"></span>
             <h3 class="que-hacer__card-title">
-              TURISMO
               <?= $post->post_title ?>
             </h3>
           </div>

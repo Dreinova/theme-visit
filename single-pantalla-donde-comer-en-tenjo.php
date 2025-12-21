@@ -40,10 +40,40 @@ if (!is_wp_error($response)) {
 
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
-            $datos = json_decode($item["datos"], true);
-           if (isset($datos['data']['field_1766013834262']) || $datos['categoria_rnt'] == 'restaurantes' || $datos["categoria_rnt"] == "bares") {
-            if($datos['data']['field_1766013834262'][0] == 'turismo_gastronómico'){
-              // --- Traer imágenes desde $datos['fotos'] ---
+          $datos = json_decode($item["datos"], true);
+          $campo = $datos['data']['field_1766013834262'] ?? [];
+if (!is_array($campo)) {
+    $campo = [];
+}
+
+// --- CAMPO DINÁMICO ---
+$buscarCampo = [
+    'gastronomico',
+    'gastronómico',
+    'turismo_gastronomico',
+    'turismo_gastronómico'
+];
+
+$matchCampo = false;
+
+foreach ($campo as $valorCampo) {
+    foreach ($buscarCampo as $valorBuscar) {
+        if (stripos($valorCampo, $valorBuscar) !== false) {
+            $matchCampo = true;
+            break 2;
+        }
+    }
+}
+
+// --- CATEGORÍA RNT ---
+$categoria = strtolower($datos['categoria_rnt'] ?? '');
+$categoriasPermitidas = ['restaurantes', 'bares'];
+$matchCategoria = in_array($categoria, $categoriasPermitidas, true);
+
+// --- IF FINAL ---
+if ($matchCampo || $matchCategoria) {
+    // render HTML
+    // --- Traer imágenes desde $datos['fotos'] ---
               $img_url = 'https://placehold.co/1080x1920'; // fallback
               if (!empty($datos["fotos"])) {
                   foreach ($datos["fotos"] as $foto) {
@@ -62,8 +92,7 @@ if (!is_wp_error($response)) {
                   echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
                   echo '</div>';
                   echo '</a>';
-            }
-          }
+}
 
         }
     } else {

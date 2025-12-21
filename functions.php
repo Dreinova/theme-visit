@@ -495,3 +495,13 @@ function custom_admin_bar_link($wp_admin_bar) {
 
     $wp_admin_bar->add_node($args);
 }
+
+function cargar_fontawesome() {
+    wp_enqueue_style(
+        'fontawesome',
+        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+        [],
+        '6.5.1'
+    );
+}
+add_action('wp_enqueue_scripts', 'cargar_fontawesome');

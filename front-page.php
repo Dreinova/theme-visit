@@ -2,6 +2,8 @@
 $args = array(
   'post_type' => 'pantalla',
   'posts_per_page' => -1,
+    'orderby'        => 'date', // o 'menu_order', 'title', etc.
+  'order'          => 'ASC',  // 👈 ASC o DESC
   'meta_query' => array(
     array(
       'key' => 'aparece_en_el_home',
