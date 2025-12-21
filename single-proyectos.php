@@ -68,10 +68,16 @@ for ($i = 1; $i <= 10; $i++) {
     <div class="parque-ubicacion__mapa" data-aos="fade-right">
       <?php
       $direccion = get_field("direccion");
-      $titulo = $titulo_sin_resaltar; // o get_field("titulo") según tu caso
-      
-      // Combinar título y dirección para búsqueda más específica
-      $busqueda_completa = $titulo . ", " . $direccion;
+      $titulo = $titulo_sin_resaltar;
+
+      // Verificar si existe la dirección
+      if (!empty($direccion) && trim($direccion) != '') {
+        // Si existe dirección, combinar con el título
+        $busqueda_completa = $titulo . ", " . $direccion;
+      } else {
+        // Si no existe dirección, usar ubicación genérica
+        $busqueda_completa = $titulo . ", Tenjo, Cundinamarca";
+      }
 
       // Codificar la búsqueda completa para URL
       $busqueda_encoded = urlencode($busqueda_completa);
@@ -127,7 +133,7 @@ for ($i = 1; $i <= 10; $i++) {
         </div>
         <div class="parque-ubicacion__details">
           <h4>Dirección</h4>
-          <p><?= get_field("direccion") ?></p>
+          <p><?= !empty($direccion) ? $direccion : 'Tenjo, Cundinamarca' ?></p>
         </div>
       </div>
     </div>
