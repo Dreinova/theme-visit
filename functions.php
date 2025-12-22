@@ -28,8 +28,6 @@ function gymsonline_theme_support()
 {
     // Add dynamic title tag support
     add_theme_support('title-tag');
-    // Add thumbnails support
-    add_theme_support('post-thumbnails');
     // Add custom Logo support
     add_theme_support('custom-logo');
 }
@@ -505,3 +503,6 @@ function cargar_fontawesome() {
     );
 }
 add_action('wp_enqueue_scripts', 'cargar_fontawesome');
+
+add_theme_support('post-thumbnails');
+add_image_size('galeria_thumb', 400, 300, true);

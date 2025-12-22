@@ -14,7 +14,7 @@ if ($events_query->have_posts()):
   ?>
   <?php get_header(); ?>
   <!-- Hero con imagen de fondo -->
-  <section class="hero hero--agenda" style="background-image: url('/wp-content/uploads/2025/11/juegos-bg.png')">
+  <section class="hero hero--agenda" style="background-image: url('/wp-content/uploads/2025/11/8-AGENDA-DE-EVENTOS.png')">
     <div class="hero__overlay"></div>
     <div class="hero__content" data-aos="fade-right">
       <div class="hero__left">

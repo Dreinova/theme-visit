@@ -36,8 +36,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
       <h1 class="hero__title">
-        <img src="/wp-content/uploads/2025/11/visita-logo.png" alt="Visita Logo" class="hero__title-image" />
-        <span class="hero__title--red">TENJO</span>
+        <img src="/wp-content/uploads/2025/12/logoBanner.png" alt="Visita Logo" class="hero__title-image" />
       </h1>
       <?php $description = get_the_content($post->ID); ?>
       <?= $description ?>
@@ -153,12 +152,12 @@ $queryImperdibles = new WP_Query($argsImperdibles);
 </section>
 
 <!-- Services Section -->
-<section class="services">
+<section class="services" style="background:url(/wp-content/uploads/2025/11/12-FINAL.jpg) center center/cover no-repeat;">
   <div class="services__container">
     <!-- Card 1: Dónde Comer -->
     <a href="/pantalla/donde-comer-en-tenjo/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
-        <img src="/wp-content/uploads/2025/11/donde_comer.png" alt="¿Dónde Comer en Tenjo?" class="services__image" />
+        <img src="/wp-content/uploads/2025/11/6-DONDE-COMER-scaled.jpg" alt="¿Dónde Comer en Tenjo?" class="services__image" />
         <div class="services__icon-badge">
           <svg fill="#ffffff" height="40px" viewBox="0 -2.89 122.88 122.88" version="1.1">
             <g>
@@ -179,7 +178,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     <!-- Card 2: Dónde Dormir -->
     <a href="/pantalla/donde-dormir-en-tenjo/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
-        <img src="/wp-content/uploads/2025/11/habitacion.png" alt="¿Dónde Dormir en Tenjo?" class="services__image" />
+        <img src="/wp-content/uploads/2025/11/7-DONDE-DORMIR.jpeg" alt="¿Dónde Dormir en Tenjo?" class="services__image" />
         <div class="services__icon-badge">
           <svg height="40px" version="1.1" viewBox="0 0 512 512" fill="white">
             <g>
@@ -208,7 +207,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     <!-- Card 3: Agenda de Eventos -->
     <a href="/agenda-de-eventos/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
-        <img src="/wp-content/uploads/2025/11/juegos_artificiales.png" alt="Agenda de Eventos en Tenjo"
+        <img src="/wp-content/uploads/2025/11/8-AGENDA-DE-EVENTOS.png" alt="Agenda de Eventos en Tenjo"
           class="services__image" />
         <div class="services__icon-badge">
           <svg fill="white" height="40px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
@@ -229,7 +228,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     <!-- Card 4: Recorridos y Actividades -->
     <a href="/recorridos-y-actividades-predisenadas/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
-        <img src="/wp-content/uploads/2025/11/recorridos.png" alt="Recorridos y Actividades Prediseñadas"
+        <img src="/wp-content/uploads/2025/11/10-RECORRIDOS.jpg" alt="Recorridos y Actividades Prediseñadas"
           class="services__image" />
         <div class="services__icon-badge">
           <img src="/wp-content/uploads/2025/11/recorrido.png" alt="Icono Mapa" class="services__icon" />
@@ -263,7 +262,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     <!-- Card 6: Guías turísticos -->
     <a href="/recorridos-y-actividades-predisenadas/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
-        <img src="/wp-content/uploads/2025/11/recorridos.png" alt="Guías turísticos"
+        <img src="/wp-content/uploads/2025/11/11-GUIA-DE-TURISMO.png" alt="Guías turísticos"
           class="services__image" />
         <div class="services__icon-badge">
           <img src="/wp-content/uploads/2025/11/recorrido.png" alt="Icono Mapa" class="services__icon" />

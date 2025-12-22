@@ -29,43 +29,46 @@ if ($faq_query->have_posts()) :
         </div>
       </div>
     </section>
-
-    <!-- Sección Preguntas frecuentes -->
     <section class="faq">
-      <div class="faq__container">
-        <div class="faq__column">
-            <?php $i = 0; // contador ?>
+        <div class="faq__container">
+
+          <div class="faq__column">
+            <?php $i = 0; ?>
             <?php while ($faq_query->have_posts()) : $faq_query->the_post(); ?>
-            <div class="faq__item">
-              <input type="checkbox" id="faq-<?= $i; ?>" class="faq__checkbox" />
-              <label for="faq-<?= $i; ?>" class="faq__question">
-                <svg
-                  class="faq__icon"
-                  width="14"
-                  height="8"
-                  viewBox="0 0 14 8"
-                  fill="none"
-                >
-                  <path
-                    d="M1 1L7 7L13 1"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                  />
-                </svg>
-                <span><?php the_title(); ?></span>
-              </label>
-              <div class="faq__answer">
-                <div class="faq__answer-content">
-                  <?php the_content(); ?>
+              <?php if ($i == ceil($faq_query->post_count / 2)) : ?>
+                </div><div class="faq__column">
+              <?php endif; ?>
+                <div class="faq__item">
+                  <input type="checkbox" id="faq-<?= $i; ?>" class="faq__checkbox" />
+                  <label for="faq-<?= $i; ?>" class="faq__question">
+                    <svg
+                      class="faq__icon"
+                      width="14"
+                      height="8"
+                      viewBox="0 0 14 8"
+                      fill="none"
+                    >
+                      <path
+                        d="M1 1L7 7L13 1"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <span><?php the_title(); ?></span>
+                  </label>
+                  <div class="faq__answer">
+                    <div class="faq__answer-content">
+                      <?php the_content(); ?>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-               <?php $i++; // aumenta el contador ?>
+              <?php $i++; ?>
             <?php endwhile; ?>
+          </div>
+
         </div>
-      </div>
-    </section>
+      </section>
   
   </div>
 </section>

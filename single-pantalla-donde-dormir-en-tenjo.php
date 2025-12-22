@@ -2,7 +2,7 @@
 <!-- Hero con imagen de fondo -->
 <section
   class="hero hero--turismo-gastronomico"
-  style="background-image: url('/wp-content/uploads/2025/11/recorridos_bg.png')"
+  style="background-image: url('/wp-content/uploads/2025/11/7-DONDE-DORMIR.jpeg')"
 >
   <div class="hero__overlay"></div>
   <div class="hero__content" data-aos="fade-right">

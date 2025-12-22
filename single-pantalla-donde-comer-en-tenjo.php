@@ -41,6 +41,7 @@ if (!is_wp_error($response)) {
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
           $datos = json_decode($item["datos"], true);
+
           $campo = $datos['data']['field_1766013834262'] ?? [];
 if (!is_array($campo)) {
     $campo = [];

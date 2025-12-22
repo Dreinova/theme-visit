@@ -49,7 +49,9 @@ if (!empty($datos["fotos"])) {
     }
 }
 // Imagen fallback si no hay imágenes
-$hero_img = $imagenes[0]["full"] ?? "https://placehold.co/1600x900";
+$hero_img = !empty($imagenes)
+    ? ($imagenes[array_rand($imagenes)]['full'] ?? "https://placehold.co/1600x900")
+    : "https://placehold.co/1600x900";
 
 
 // Título dinámico
