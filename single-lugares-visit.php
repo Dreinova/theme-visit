@@ -32,35 +32,48 @@ for ($i = 1; $i <= 10; $i++) {
   }
 }
 ?>
-
-<!-- Sección de galería con imagen principal y thumbnails -->
-<section class="parque-galeria" data-aos="fade-down">
-  <div class="parque-galeria__container">
-
-    <!-- Imagen principal -->
-    <div class="parque-galeria__main">
-      <img src="<?= esc_url($imagenes[0]['url']) ?>" alt="<?= esc_attr($imagenes[0]['alt']) ?>"
-        class="parque-galeria__main-image" id="mainImage" />
-
+<?php if(count($imagenes) > 1){ ?>
+  <!-- Sección de galería con imagen principal y thumbnails -->
+  <section class="parque-galeria" data-aos="fade-down" >
+  
+    <div class="parque-galeria__container">
+  
+      <!-- Imagen principal -->
+      <div class="parque-galeria__main">
+        <img src="<?= esc_url($imagenes[0]['url']) ?>" alt="<?= esc_attr($imagenes[0]['alt']) ?>"
+          class="parque-galeria__main-image" id="mainImage" />
+  
+      </div>
+  
+      <!-- Thumbnails -->
+      <div class="parque-galeria__thumbnails">
+        <?php foreach ($imagenes as $img): ?>
+          <button class="parque-galeria__thumbnail" onclick="changeImage('<?= esc_url($img['url']) ?>')">
+            <img src="<?= esc_url($img['sizes']['thumbnail']) ?>" alt="<?= esc_attr($img['alt']) ?>" />
+          </button>
+        <?php endforeach; ?>
+      </div>
+  
     </div>
-
-    <!-- Thumbnails -->
-    <div class="parque-galeria__thumbnails">
-      <?php foreach ($imagenes as $img): ?>
-        <button class="parque-galeria__thumbnail" onclick="changeImage('<?= esc_url($img['url']) ?>')">
-          <img src="<?= esc_url($img['sizes']['thumbnail']) ?>" alt="<?= esc_attr($img['alt']) ?>" />
-        </button>
-      <?php endforeach; ?>
+    <div class="parque-galeria__description" data-aos="zoom-in" style="
+      max-width: 768px;
+      margin: 50px auto 0 auto;
+  ">
+      <?= get_the_content() ?>
     </div>
+  </section>
+<?php }else{ ?>
+   <!-- Sección de galería con imagen principal y thumbnails -->
+  <section class="parque-galeria" data-aos="fade-down" >
 
-  </div>
-  <div class="parque-galeria__description" data-aos="zoom-in" style="
-    max-width: 768px;
-    margin: 50px auto 0 auto;
-">
-    <?= get_the_content() ?>
-  </div>
-</section>
+    <div class="parque-galeria__description" data-aos="zoom-in" style="
+      max-width: 768px;
+      margin: 50px auto 0 auto;
+  ">
+      <?= get_the_content() ?>
+    </div>
+  </section>
+<?php } ?>
 
 
 <!-- Sección de mapa y contacto -->

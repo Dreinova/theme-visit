@@ -27,6 +27,18 @@
 <section class="gastronomia-grid">
   <div class="gastronomia-grid__container">
    <?php
+   function normalize_json($value) {
+    if (is_string($value)) {
+        $decoded = json_decode($value, true);
+        return json_last_error() === JSON_ERROR_NONE ? $decoded : [];
+    }
+
+    if (is_array($value)) {
+        return $value;
+    }
+
+    return [];
+}
 $response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico", [
     "headers" => [
         "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
@@ -40,9 +52,10 @@ if (!is_wp_error($response)) {
 
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
-          $datos = json_decode($item["datos"], true);
-         // --- VALIDACIÓN CAMPO DINÁMICO ---
-$campo = $datos['data']['field_1766013834262'] ?? [];
+          $datos = normalize_json($item["datos"]);
+            $dataNormalizada = normalize_json($datos['data'] ?? []);
+        // --- VALIDACIÓN CAMPO DINÁMICO ---
+        $campo = $dataNormalizada['field_1766013834262'] ?? [];
 if (!is_array($campo)) {
     $campo = [];
 }
@@ -66,8 +79,9 @@ $matchCategoria = in_array($categoria, $categoriasPermitidas, true);
 
         // --- Traer imágenes desde $datos['fotos'] ---
           $img_url = 'https://placehold.co/1080x1920'; // fallback
-          if (!empty($datos["fotos"])) {
-              foreach ($datos["fotos"] as $foto) {
+          $fotos = normalize_json($datos["fotos"]);
+          if (!empty($fotos)) {
+              foreach ($fotos as $foto) {
                   if ($foto) {
                       $img_url = $foto; // tomar la primera imagen no nula
                       break;

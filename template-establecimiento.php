@@ -2,6 +2,20 @@
 /* Template Name: Establecimiento Interno */
 get_header();
 
+
+   function normalize_json($value) {
+    if (is_string($value)) {
+        $decoded = json_decode($value, true);
+        return json_last_error() === JSON_ERROR_NONE ? $decoded : [];
+    }
+
+    if (is_array($value)) {
+        return $value;
+    }
+
+    return [];
+}
+
 // OBTENER ID desde URL /establecimiento/{id}
 $est_id = get_query_var('est_id');
 if (!$est_id) {
@@ -31,15 +45,18 @@ if (!$api_body["success"]) {
     get_footer();
     exit;
 }
-$datos = json_decode($api_body["data"]["datos"], true);
+$datos = normalize_json($api_body["data"]["datos"]);
+
+$dataNormalizada = normalize_json($datos['data'] ?? []);
 
 
 // ─────────────────────────────────────────────
 // 2. USAR FOTOS DEL CAMPO "fotos"
 // ─────────────────────────────────────────────
 $imagenes = [];
-if (!empty($datos["fotos"])) {
-    foreach ($datos["fotos"] as $foto) {
+$fotos = normalize_json($datos["fotos"]);
+if (!empty($fotos)) {
+    foreach ($fotos as $foto) {
         if ($foto) { // ignorar null
             $imagenes[] = [
                 "full" => $foto,
@@ -87,7 +104,7 @@ $iconos = [
 
     <!-- Imagen principal -->
     <div class="parque-galeria__main">
-      <img src="<?= esc_url($hero_img) ?>" id="mainImage" class="parque-galeria__main-image" />
+      <img src="<?= esc_url($imagenes[0]['full']) ?>" id="mainImage" class="parque-galeria__main-image" />
     </div>
 
     <!-- Thumbnails -->
@@ -123,12 +140,12 @@ $iconos = [
    
 
     <?php 
-    if(!empty($datos["data"]['field_1766259143120'])): ?>
+    if(!empty($dataNormalizada['field_1766259143120'])): ?>
     <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/reloj.png"></div>
         <div class="parque-ubicacion__details">
             <h4>Horario</h4>
-            <?= $datos["data"]['field_1766259143120'] ?>
+            <?= $dataNormalizada['field_1766259143120'] ?>
         </div>
     </div>
     <?php endif; ?>
@@ -180,12 +197,12 @@ $iconos = [
         </div>
     </div>
     <?php endif; ?>
-    <?php if(!empty($datos["data"]['field_1766259212093'])): ?>
+    <?php if(!empty($dataNormalizada['field_1766259212093'])): ?>
     <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"><img src="/wp-content/uploads/2025/11/telefono.png"></div>
         <div class="parque-ubicacion__details">
             <h4>Teléfono</h4>
-            <p><a href="tel:<?= $datos["data"]['field_1766259212093'] ?>"><?= $datos["data"]['field_1766259212093'] ?></a></p>
+            <p><a href="tel:<?= $dataNormalizada['field_1766259212093'] ?>"><?= $dataNormalizada['field_1766259212093'] ?></a></p>
         </div>
     </div>
     <?php endif; ?>
