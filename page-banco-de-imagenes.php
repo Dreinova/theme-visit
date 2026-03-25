@@ -72,8 +72,8 @@ if ($images_query->have_posts()):
       $title = get_the_title();
       $content = get_the_content();
       $post_id = get_the_ID();
-$image_thumb = get_the_post_thumbnail_url($post_id, 'thumbnail');
-        $link = get_permalink();
+      $image_thumb = get_the_post_thumbnail_url($post_id, 'thumbnail');
+      $link = get_permalink();
 
     ?>
     <!-- Imagen 1 -->

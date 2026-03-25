@@ -160,7 +160,7 @@ for ($i = 1; $i <= 10; $i++) {
     </div>
     <div class="parque-ubicacion__details">
       <h4>WhatsApp</h4>
-      <p><?= esc_html($whatsapp); ?></p>
+      <p><a href="https://api.whatsapp.com/send?phone=<?= esc_html($whatsapp); ?>"><?= esc_html($whatsapp); ?></a></p>
     </div>
   </div>
   <?php endif; ?>

@@ -1,8 +1,5 @@
 <?php
 /* Template Name: Establecimiento Interno */
-get_header();
-
-
    function normalize_json($value) {
     if (is_string($value)) {
         $decoded = json_decode($value, true);
@@ -83,7 +80,23 @@ $iconos = [
     'instagram' => 'fab fa-instagram',
     'tiktok'    => 'fab fa-tiktok',
     'facebook'  => 'fab fa-facebook-f',
+    'whatsapp'  => "fa-brands fa-whatsapp",
+    'youtube'  => "fa-brands fa-youtube"
+    
 ];
+global $establecimiento_meta;
+
+
+$establecimiento_meta = [
+ 'titulo'       => $titulo ?? '',
+  'descripcion'  => wp_strip_all_tags($datos['descripcion'] ?? ''),
+  'imagen'       => $hero_img ?? '',
+  'keywords'     => $datos['categoria_rnt'] ?? '',
+];
+get_header();
+
+
+
 ?>
 
 <!-- HERO -->
@@ -97,17 +110,85 @@ $iconos = [
     </div>
   </div>
 </section>
+<?php
 
+$imagenes = [];
+
+$imagenesRaw = $item["imagenes"] ?? [];
+
+// Si viene como string JSON
+if (is_string($imagenesRaw)) {
+    $decoded = json_decode($imagenesRaw, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        $imagenesRaw = $decoded;
+    }
+}
+
+if (is_array($imagenesRaw)) {
+    foreach ($imagenesRaw as $img) {
+
+        if (!empty($img["url_imagen"])) {
+
+            $fullUrl = "https://apisitur.visitatenjo.com" . $img["url_imagen"];
+
+            $imagenes[] = [
+                "full" => $fullUrl,
+                "thumb" => $fullUrl // si no tienes miniaturas, usamos la misma
+            ];
+        }
+    }
+}
+
+// 🔁 Fallback viejo si no hay imágenes nuevas
+if (empty($imagenes)) {
+
+    $fotos = $datos["fotos"] ?? [];
+
+    if (is_string($fotos)) {
+        $decoded = json_decode($fotos, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            $fotos = $decoded;
+        }
+    }
+
+    if (is_array($fotos)) {
+        foreach ($fotos as $foto) {
+
+            if (is_array($foto) && !empty($foto["url"])) {
+                $imagenes[] = [
+                    "full" => $foto["url"],
+                    "thumb" => $foto["url"]
+                ];
+            }
+
+            if (is_string($foto)) {
+                $imagenes[] = [
+                    "full" => $foto,
+                    "thumb" => $foto
+                ];
+            }
+        }
+    }
+}
+
+// Si aún está vacío → placeholder
+if (empty($imagenes)) {
+    $imagenes[] = [
+        "full" => "https://placehold.co/1080x1920",
+        "thumb" => "https://placehold.co/300x300"
+    ];
+}
+?>
 <!-- GALERÍA -->
 <section class="parque-galeria" data-aos="fade-down">
   <div class="parque-galeria__container">
 
-    <!-- Imagen principal -->
     <div class="parque-galeria__main">
-      <img src="<?= esc_url($imagenes[0]['full']) ?>" id="mainImage" class="parque-galeria__main-image" />
+      <img src="<?= esc_url($imagenes[0]['full']) ?>" 
+           id="mainImage" 
+           class="parque-galeria__main-image" />
     </div>
 
-    <!-- Thumbnails -->
     <div class="parque-galeria__thumbnails">
       <?php foreach ($imagenes as $img): ?>
         <button class="parque-galeria__thumbnail"
@@ -119,8 +200,9 @@ $iconos = [
 
   </div>
 
-  <!-- Descripción -->
-  <div class="parque-galeria__description" data-aos="zoom-in" style="max-width:768px;margin:50px auto 0">
+  <div class="parque-galeria__description"
+       data-aos="zoom-in"
+       style="max-width:768px;margin:50px auto 0">
     <?= wpautop($datos["descripcion"] ?? "Sin descripción disponible.") ?>
   </div>
 </section>
@@ -131,9 +213,20 @@ $iconos = [
 
     <!-- MAPA -->
     <div class="parque-ubicacion__mapa" data-aos="fade-right">
-      <iframe
-        src="https://www.google.com/maps?q=<?= $datos['coordenadas_y'] ?? 0 ?>,<?= $datos['coordenadas_x'] ?? 0 ?>&z=15&output=embed"
-        width="100%" height="100%" style="border:0" loading="lazy"></iframe>
+   <?php
+if (!empty($datos['coordenadas_x']) && !empty($datos['coordenadas_y'])) {
+    $ubicacion = $datos['coordenadas_x'] . "," . $datos['coordenadas_y'];
+} else {
+    $ubicacion = urlencode($datos['direccion_establecimiento']);
+}
+?>
+<iframe
+    src="https://www.google.com/maps?q=<?= $ubicacion ?>&z=15&output=embed"
+    width="100%"
+    height="100%"
+    style="border:0"
+    loading="lazy">
+</iframe>
     </div>
 
     <div class="parque-ubicacion__info" data-aos="fade-left">
@@ -190,7 +283,7 @@ $iconos = [
 <?php endif; ?>
     <?php if(!empty( $datos["pagina_web"])): ?>
     <div class="parque-ubicacion__item">
-        <div class="parque-ubicacion__icon"></div>
+        <div class="parque-ubicacion__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><!--!Font Awesome Free v7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2026 Fonticons, Inc.--><path d="M415.9 344L225 344C227.9 408.5 242.2 467.9 262.5 511.4C273.9 535.9 286.2 553.2 297.6 563.8C308.8 574.3 316.5 576 320.5 576C324.5 576 332.2 574.3 343.4 563.8C354.8 553.2 367.1 535.8 378.5 511.4C398.8 467.9 413.1 408.5 416 344zM224.9 296L415.8 296C413 231.5 398.7 172.1 378.4 128.6C367 104.2 354.7 86.8 343.3 76.2C332.1 65.7 324.4 64 320.4 64C316.4 64 308.7 65.7 297.5 76.2C286.1 86.8 273.8 104.2 262.4 128.6C242.1 172.1 227.8 231.5 224.9 296zM176.9 296C180.4 210.4 202.5 130.9 234.8 78.7C142.7 111.3 74.9 195.2 65.5 296L176.9 296zM65.5 344C74.9 444.8 142.7 528.7 234.8 561.3C202.5 509.1 180.4 429.6 176.9 344L65.5 344zM463.9 344C460.4 429.6 438.3 509.1 406 561.3C498.1 528.6 565.9 444.8 575.3 344L463.9 344zM575.3 296C565.9 195.2 498.1 111.3 406 78.7C438.3 130.9 460.4 210.4 463.9 296L575.3 296z" fill="#3c3b3b"/></svg></div>
         <div class="parque-ubicacion__details">
             <h4>Página web</h4>
             <p><a href="<?=  $datos["pagina_web"] ?>" target="_blank" aria-label="Sitio web <?=$titulo?>"><?=  $datos["pagina_web"] ?></a></p>

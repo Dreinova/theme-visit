@@ -19,3 +19,71 @@ button,
 a {
   font-family: inherit;
 }
+
+
+.situr-banner { background: linear-gradient(
+    135deg,
+    #f70017,
+    #f9a825
+  );
+  padding: 3rem 1.5rem;
+  border-radius: 1.5rem;
+  margin: 3rem auto;
+  max-width: 1200px;
+  color: #ffffff;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+
+  &__content {
+    max-width: 800px;
+  }
+
+  &__title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  &__text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+    opacity: 0.95;
+  }
+
+  &__cta-text {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+  }
+
+  &__button {
+    display: inline-block;
+    background-color: #ffffff;
+    color: #065f46;
+    padding: 0.9rem 1.8rem;
+    border-radius: 999px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #ecfdf5;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 2.2rem 1.2rem;
+
+    &__title {
+      font-size: 1.6rem;
+    }
+
+    &__text,
+    &__cta-text {
+      font-size: 1rem;
+    }
+  }
+}

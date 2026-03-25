@@ -2,12 +2,14 @@
 .hero {
   position: relative;
   min-height: 85vh;
-  background: url("/wp-content/uploads/2025/11/hero bg.png") top center/cover
-    no-repeat;
+background-size: cover;
+background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
   padding: 60px 0;
   overflow: hidden;
+  background-attachment: fixed;
+  background-position: bottom ;
   // padding-top: 120px;
 
   @media (max-width: 768px) {

@@ -82,7 +82,11 @@ if ($events_query->have_posts()):
           // Campos principales
           $title = get_the_title();
           $content = get_the_content();
-          $image = get_the_post_thumbnail_url();
+          $image = get_the_post_thumbnail_url(get_the_ID(), 'full');
+          if (!$image) {
+              $imagen_listado = get_field('imagen_listado');
+              $image = is_array($imagen_listado) ? $imagen_listado['url'] : $imagen_listado;
+          }
           $tipo_values = get_field('tipo_de_evento');
 
           $tipo = "";
@@ -96,6 +100,7 @@ if ($events_query->have_posts()):
           $hora = get_field('hora');         // Ej: 8:00 p.m. a 5:00 a.m.
           $direccion = get_field('direccion');
           $link = get_permalink();
+
 
           // Formatos de fecha
           $timestamp = strtotime($fecha);

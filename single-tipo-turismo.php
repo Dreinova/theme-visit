@@ -74,7 +74,8 @@ if (!is_wp_error($response)) {
     
               // Nombre a mostrar en el overlay
               $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
-                  echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
+                                    $alias = sanitize_title($nombre);
+                  echo '<a href="/establecimiento/' . $alias  .'/' . $item["id"] . '" class="restaurante-card">';
                   echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
                   echo '<div class="restaurante-card__overlay">';
                   echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
@@ -84,7 +85,10 @@ if (!is_wp_error($response)) {
           }
 
         }
-    } else {
+    } else {?>
+  
+
+    <?php
         echo "No hay establecimientos disponibles.";
     }
 } else {
@@ -92,6 +96,19 @@ if (!is_wp_error($response)) {
 }
 ?>
 
+  </div>
+</section>
+   <section class="situr-banner">
+  <div class="situr-banner__content">
+    <h2 class="situr-banner__title">
+      ¿Quieres ver aquí tu establecimiento?
+    </h2>
+    <p class="situr-banner__text">
+       <strong>Visitatenjo.com</strong> muestra los establecimientos turísticos de Tenjo pertenecientes al Sistema de Información Turística SITUR del municpio."  ¿Quieres ver aquí tu establecimiento? Registralo en minutos a través de
+    </p>
+    <a href="https://situr.visitatenjo.com" target="_blank" class="situr-banner__button">
+      Regístralo en minutos
+    </a>
   </div>
 </section>
 

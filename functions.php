@@ -39,8 +39,8 @@ include get_template_directory() . '/includes/custom-posts.php';
 
 add_action('init', function () {
     add_rewrite_rule(
-        '^establecimiento/([^/]+)/?$',
-        'index.php?pagename=establecimiento&est_id=$matches[1]',
+        '^establecimiento/([^/]+)/([^/]+)/?$',
+        'index.php?pagename=establecimiento&est_id=$matches[2]',
         'top'
     );
 });
@@ -171,29 +171,57 @@ function visit_register_menus() {
 }
 add_action('after_setup_theme', 'visit_register_menus');
 
-function custom_seo_meta_tags() {
-    if (is_singular()) {
-        global $post;
-        $title = get_the_title($post->ID);
-        $description = get_the_excerpt($post->ID);
-        $url = get_permalink($post->ID);
-        $image = get_the_post_thumbnail_url($post->ID, 'full') ?: get_site_icon_url();
+add_action('wp_head', function () {
 
-        echo "<title>$title | " . get_bloginfo('name') . "</title>\n";
-        echo '<meta name="description" content="' . esc_attr(wp_strip_all_tags($description)) . '">' . "\n";
-        echo '<meta property="og:title" content="' . esc_attr($title) . '">' . "\n";
-        echo '<meta property="og:description" content="' . esc_attr($description) . '">' . "\n";
-        echo '<meta property="og:url" content="' . esc_url($url) . '">' . "\n";
-        echo '<meta property="og:image" content="' . esc_url($image) . '">' . "\n";
-        echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
-    } else {
-        // Meta genérica para homepage o archivos
-        echo "<title>" . get_bloginfo('name') . " | " . get_bloginfo('description') . "</title>\n";
-        echo '<meta name="description" content="' . esc_attr(get_bloginfo('description')) . '">' . "\n";
+    if (current_user_can('administrator')) {
+        global $template;
+        echo '<!-- TEMPLATE ACTIVO: ' . basename($template) . ' -->';
     }
-}
-add_action('wp_head', 'custom_seo_meta_tags');
 
+}, 1);
+add_action('wp_head', function () {
+    if (!is_page_template('template-establecimiento.php')) {
+        return;
+    }
+
+    global $establecimiento_meta;
+
+
+    if (empty($establecimiento_meta)) {
+        return;
+    }
+
+    $title       = esc_html($establecimiento_meta['titulo'] ?? '');
+    $description = esc_attr($establecimiento_meta['descripcion'] ?? '');
+    $image       = esc_url($establecimiento_meta['imagen'] ?? '');
+    $url         = esc_url(home_url(add_query_arg([], $_SERVER['REQUEST_URI'])));
+
+    // TITLE
+    echo "<title>{$title}</title>\n";
+
+    // META DESCRIPTION
+    echo "<meta name='description' content='{$description}' />\n";
+
+    // META KEYWORDS (si quieres agregar categoría como keywords)
+    if (!empty($establecimiento_meta['keywords'])) {
+        $keywords = esc_attr($establecimiento_meta['keywords']);
+        echo "<meta name='keywords' content='{$keywords}' />\n";
+    }
+
+    // OPEN GRAPH
+    echo "<meta property='og:title' content='{$title}' />\n";
+    echo "<meta property='og:description' content='{$description}' />\n";
+    echo "<meta property='og:image' content='{$image}' />\n";
+    echo "<meta property='og:url' content='{$url}' />\n";
+    echo "<meta property='og:type' content='article' />\n";
+
+    // TWITTER
+    echo "<meta name='twitter:card' content='summary_large_image' />\n";
+    echo "<meta name='twitter:title' content='{$title}' />\n";
+    echo "<meta name='twitter:description' content='{$description}' />\n";
+    echo "<meta name='twitter:image' content='{$image}' />\n";
+
+}, 1);
 // En functions.php
 function custom_sitemap_rewrite() {
     add_rewrite_rule('^sitemap\.xml$', 'index.php?sitemap=1', 'top');
@@ -506,3 +534,21 @@ add_action('wp_enqueue_scripts', 'cargar_fontawesome');
 
 add_theme_support('post-thumbnails');
 add_image_size('galeria_thumb', 400, 300, true);
+add_filter('pre_get_document_title', function ($title) {
+  global $establecimiento_meta;
+
+  if (!empty($establecimiento_meta['titulo'])) {
+    return $establecimiento_meta['titulo'];
+  }
+
+  return $title;
+});
+remove_action('wp_head', 'wp_generator');
+add_action('wp_head', function () {
+  global $establecimiento_meta;
+
+  if (empty($establecimiento_meta['descripcion'])) return;
+
+  $desc = esc_attr(wp_trim_words($establecimiento_meta['descripcion'], 25));
+  echo "<meta name='description' content='$desc'>\n";
+}, 1);

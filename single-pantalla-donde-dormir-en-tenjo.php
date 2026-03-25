@@ -95,7 +95,8 @@ $matchCategoria = in_array($categoria, $categoriasPermitidas, true);
 
 // --- CONDICIÓN FINAL ---
 if ($matchCampo || $matchCategoria) {
-    echo '<a href="/establecimiento/' . $item["id"] . '" class="restaurante-card">';
+     $alias = sanitize_title($nombre);
+   echo '<a href="/establecimiento/' . $alias  .'/' . $item["id"] . '" class="restaurante-card">';
     echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
     echo '<div class="restaurante-card__overlay">';
     echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
