@@ -18,8 +18,7 @@
 <!-- Sección de introducción -->
 <section class="gastronomia-intro">
   <div class="gastronomia-intro__container">
-   <?php $description = get_the_content($post->ID); ?>
-            <?= $description ?>
+   <?php echo apply_filters('the_content', get_post_field('post_content', $post->ID)); ?>
   </div>
 </section>
 

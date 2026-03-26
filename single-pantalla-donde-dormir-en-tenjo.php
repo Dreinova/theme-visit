@@ -78,17 +78,17 @@ $categoriasPermitidas = ['alojamiento', 'viviendas'];
 $matchCategoria = in_array($categoria, $categoriasPermitidas, true);
 
         // --- Traer imágenes desde $datos['fotos'] ---
-          $img_url = 'https://placehold.co/1080x1920'; // fallback
-          $fotos = normalize_json($datos["fotos"]);
-          if (!empty($fotos)) {
-              foreach ($fotos as $foto) {
-                  if ($foto) {
-                      $img_url = $foto; // tomar la primera imagen no nula
-                      break;
-                  }
-              }
-          }
-
+        $img_url = 'https://placehold.co/1080x1920';
+        $imagenes_api = $item["imagenes"] ?? [];
+        if (is_string($imagenes_api)) $imagenes_api = json_decode($imagenes_api, true);
+        if (!empty($imagenes_api[0]["url_imagen"])) {
+            $img_url = "https://apisitur.visitatenjo.com" . $imagenes_api[0]["url_imagen"];
+        } else {
+            foreach (normalize_json($datos["fotos"]) as $foto) {
+                if (is_array($foto) && !empty($foto["url"])) { $img_url = $foto["url"]; break; }
+                if (is_string($foto) && $foto)               { $img_url = $foto; break; }
+            }
+        }
           // Nombre a mostrar en el overlay
           $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
 

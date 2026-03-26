@@ -18,76 +18,156 @@
 <!-- Sección de introducción -->
 <section class="gastronomia-intro">
   <div class="gastronomia-intro__container">
-   <?php $description = get_the_content($post->ID); ?>
-            <?= $description ?>
+   <?php echo apply_filters('the_content', get_post_field('post_content', $post->ID)); ?>
   </div>
 </section>
 
 <!-- Grid de restaurantes gastronómicos -->
 <section class="gastronomia-grid">
   <div class="gastronomia-grid__container">
-   <?php
+<?php
+
+function normalize_json($value) {
+    if (is_string($value)) {
+        $decoded = json_decode($value, true);
+        return json_last_error() === JSON_ERROR_NONE ? $decoded : [];
+    }
+
+    return is_array($value) ? $value : [];
+}
+
+// 🔹 Categorías permitidas (puedes modificarlas aquí)
+$categoriasPermitidas = [
+    'gastronomico',
+    'gastronómico',
+    'turismo_gastronomico',
+    'turismo_gastronómico',
+    'restaurantes',
+    'bares'
+];
+
+// 🔹 Valores a buscar en el campo dinámico
+$buscarCampo = [
+    'gastronomico',
+    'gastronómico',
+    'turismo_gastronomico',
+    'turismo_gastronómico'
+];
+
 $response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico", [
     "headers" => [
-        "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
+         "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
     ],
     "timeout" => 20
 ]);
 
-if (!is_wp_error($response)) {
-    $body = wp_remote_retrieve_body($response);
-    $data = json_decode($body, true);
-
-    if ($data["success"] && !empty($data["data"])) {
-        foreach ($data["data"] as $item) {
-            $datos = json_decode($item["datos"], true);
-           if (isset($datos['data']['field_1766013834262']) || $datos['categoria_rnt'] == 'restaurantes' || $datos["categoria_rnt"] == "bares") {
-            if($datos['data']['field_1766013834262'][0] == 'turismo_gastronómico'){
-              // --- Traer imágenes desde $datos['fotos'] ---
-              $img_url = 'https://placehold.co/1080x1920'; // fallback
-              if (!empty($datos["fotos"])) {
-                  foreach ($datos["fotos"] as $foto) {
-                      if ($foto) {
-                          $img_url = $foto; // tomar la primera imagen no nula
-                          break;
-                      }
-                  }
-              }
-    
-              // Nombre a mostrar en el overlay
-              $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
-                  $alias = sanitize_title($nombre);
-                  echo '<a href="/establecimiento/' . $alias  .'/' . $item["id"] . '" class="restaurante-card">';
-                  echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
-                  echo '<div class="restaurante-card__overlay">';
-                  echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
-                  echo '</div>';
-                  echo '</a>';
-            }
-          }
-
-        }
-    } else {
-        echo "No hay establecimientos disponibles.";
-    }
-} else {
+if (is_wp_error($response)) {
     echo "Error en la API: " . $response->get_error_message();
+    return;
 }
+
+$body = wp_remote_retrieve_body($response);
+$data = json_decode($body, true);
+if (empty($data["success"]) || empty($data["data"])) {
+    echo "No hay establecimientos disponibles.";
+    return;
+}
+
+foreach ($data["data"] as $item) {
+
+    $datos = normalize_json($item["datos"]);
+    $dataInterna = normalize_json($datos['data'] ?? []);
+
+    // 🔹 Campo dinámico
+    $campo = $dataInterna['field_1766013834262'] ?? [];
+    if (!is_array($campo)) {
+        $campo = [];
+    }
+
+    $matchCampo = false;
+    foreach ($campo as $valorCampo) {
+        foreach ($buscarCampo as $valorBuscar) {
+            if (stripos($valorCampo, $valorBuscar) !== false) {
+                $matchCampo = true;
+                break 2;
+            }
+        }
+    }
+
+    // 🔹 Categoría
+    $categoria = strtolower($datos['categoria_rnt'] ?? '');
+    $matchCategoria = in_array($categoria, $categoriasPermitidas, true);
+
+    // 🔹 Validación final
+    if (!$matchCampo && !$matchCategoria) {
+        continue;
+    }
+
+    // 🔹 Imagen
+  $img_url = 'https://placehold.co/1080x1920';
+
+// Normalizar imagenes (puede venir como string JSON o array)
+$imagenes = $item["imagenes"] ?? [];
+
+if (is_string($imagenes)) {
+    $imagenes = json_decode($imagenes, true);
+}
+
+if (is_array($imagenes) && !empty($imagenes)) {
+
+    $primera = $imagenes[0] ?? null;
+
+    if (!empty($primera["url_imagen"])) {
+        $img_url = "https://apisitur.visitatenjo.com" . $primera["url_imagen"];
+    }
+
+} else {
+   // 🔁 Fallback sistema viejo
+$fotos = $datos["fotos"] ?? [];
+
+// Si viene como string JSON → decodificar
+if (is_string($fotos)) {
+    $decoded = json_decode($fotos, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        $fotos = $decoded;
+    }
+}
+
+// Ahora sí validar como array real
+if (is_array($fotos) && !empty($fotos)) {
+
+    foreach ($fotos as $foto) {
+
+        // Caso 1: array con ['url' => ...]
+        if (is_array($foto) && !empty($foto["url"])) {
+            $img_url = $foto["url"];
+            break;
+        }
+
+        // Caso 2: string directo con URL
+        if (is_string($foto)) {
+            $img_url = $foto;
+            break;
+        }
+    }
+}
+}
+
+    // 🔹 Nombre
+    $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
+    $alias = sanitize_title($nombre);
+
+    // 🔹 Render
+    echo '<a href="/establecimiento/' . $alias . '/' . $item["id"] . '" class="restaurante-card">';
+    echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
+    echo '<div class="restaurante-card__overlay">';
+    echo '<h3 class="restaurante-card__title">' . esc_html($nombre) . '</h3>';
+    echo '</div>';
+    echo '</a>';
+}
+
 ?>
 
-  </div>
-</section>
-<section class="situr-banner">
-  <div class="situr-banner__content">
-    <h2 class="situr-banner__title">
-      ¿Quieres ver aquí tu establecimiento?
-    </h2>
-    <p class="situr-banner__text">
-       <strong>Visitatenjo.com</strong> muestra los establecimientos turísticos de Tenjo pertenecientes al Sistema de Información Turística SITUR del municpio."  ¿Quieres ver aquí tu establecimiento? Registralo en minutos a través de
-    </p>
-    <a href="https://situr.visitatenjo.com" target="_blank" class="situr-banner__button">
-      Regístralo en minutos
-    </a>
   </div>
 </section>
 <?php get_footer(); ?>

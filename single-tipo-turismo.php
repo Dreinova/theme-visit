@@ -53,24 +53,28 @@ if (!is_wp_error($response)) {
 
     if ($data["success"] && !empty($data["data"])) {
         foreach ($data["data"] as $item) {
-            $datos = json_decode($item["datos"], true);
-           if (isset($datos['data']['field_1766013834262'])) {
-           
-            
+            $datos     = is_string($item["datos"]) ? (json_decode($item["datos"], true) ?: []) : ($item["datos"] ?? []);
+            $datosData = is_string($datos['data'] ?? null) ? (json_decode($datos['data'], true) ?: []) : ($datos['data'] ?? []);
+
+           if (isset($datosData['field_1766013834262'])) {
+
             if( $valor_turismo &&
-    isset($datos['data']['field_1766013834262']) &&
-    is_array($datos['data']['field_1766013834262']) &&
-    in_array($valor_turismo, $datos['data']['field_1766013834262'], true)){
+    isset($datosData['field_1766013834262']) &&
+    is_array($datosData['field_1766013834262']) &&
+    in_array($valor_turismo, $datosData['field_1766013834262'], true)){
               // --- Traer imágenes desde $datos['fotos'] ---
-              $img_url = 'https://placehold.co/1080x1920'; // fallback
-              if (!empty($datos["fotos"])) {
-                  foreach ($datos["fotos"] as $foto) {
-                      if ($foto) {
-                          $img_url = $foto; // tomar la primera imagen no nula
-                          break;
-                      }
-                  }
-              }
+             $img_url = 'https://placehold.co/1080x1920';
+            $imagenes_api = $item["imagenes"] ?? [];
+            if (is_string($imagenes_api)) $imagenes_api = json_decode($imagenes_api, true);
+            if (!empty($imagenes_api[0]["url_imagen"])) {
+                $img_url = "https://apisitur.visitatenjo.com" . $imagenes_api[0]["url_imagen"];
+            } else {
+                $fotos = is_array($datos["fotos"]) ? $datos["fotos"] : (json_decode($datos["fotos"] ?? '[]', true) ?: []);
+                foreach ($fotos as $foto) {
+                    if (is_array($foto) && !empty($foto["url"])) { $img_url = $foto["url"]; break; }
+                    if (is_string($foto) && $foto)               { $img_url = $foto; break; }
+                }
+            }
     
               // Nombre a mostrar en el overlay
               $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");

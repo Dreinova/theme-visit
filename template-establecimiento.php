@@ -53,14 +53,11 @@ $dataNormalizada = normalize_json($datos['data'] ?? []);
 $imagenes = [];
 $fotos = normalize_json($datos["fotos"]);
 if (!empty($fotos)) {
-    foreach ($fotos as $foto) {
-        if ($foto) { // ignorar null
-            $imagenes[] = [
-                "full" => $foto,
-                "thumb" => $foto
-            ];
-        }
-    }
+  foreach ($fotos as $foto) {
+    if (!$foto) continue;
+    $url = is_array($foto) ? ($foto["url"] ?? null) : $foto;
+    if ($url) $imagenes[] = ["full" => $url, "thumb" => $url];
+}
 }
 // Imagen fallback si no hay imágenes
 $hero_img = !empty($imagenes)
@@ -113,8 +110,7 @@ get_header();
 <?php
 
 $imagenes = [];
-
-$imagenesRaw = $item["imagenes"] ?? [];
+$imagenesRaw = $api_body["data"]["imagenes"] ?? [];
 
 // Si viene como string JSON
 if (is_string($imagenesRaw)) {
@@ -252,12 +248,15 @@ if (!empty($datos['coordenadas_x']) && !empty($datos['coordenadas_y'])) {
         </div>
     </div>
     <?php endif; ?>
-    <?php if (!empty($datos['redes_sociales'])): ?>
+    <?php 
+        $redes_sociales = normalize_json($datos['redes_sociales'] ?? []);
+        if (!empty($redes_sociales)):
+    ?>
        <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon"></div>
         <div class="parque-ubicacion__details">
             <h4>Redes sociales</h4>
-             <?php foreach ($datos['redes_sociales'] as $red): ?>
+             <?php foreach ($redes_sociales as $red): ?>
             <?php
             $nombre = $red['red'] ?? '';
             $url    = $red['url'] ?? '';
