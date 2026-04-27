@@ -1,34 +1,34 @@
 <?php
 /*
-Template Name: Recorridos y Actividades Prediseñadas
+Template Name: Agencias de Viajes y Operadoras de Turismo
 */
 get_header();
 ?>
 
 <section
-  class="hero hero--recorridos"
-  style="background-image: url('/wp-content/uploads/2025/11/recorridos_bg.png')"
+  class="hero hero--agencias"
+  style="background-image: url('<?php echo esc_url(get_field('imagen_banner') ?: '/wp-content/uploads/2025/11/recorridos_bg.png'); ?>')"
 >
   <div class="hero__overlay"></div>
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
       <h1 class="hero__title">
-        <span class="hero__title--red">RECORRIDOS Y</span>
-        <span class="hero__title--white">ACTIVIDADES PREDISEÑADAS</span>
+        <span class="hero__title--red">AGENCIAS DE VIAJES</span>
+        <span class="hero__title--white">Y OPERADORAS DE TURISMO</span>
       </h1>
     </div>
   </div>
 </section>
 
-<section class="recorridos-intro">
-  <div class="recorridos-intro__container">
+<section class="gastronomia-intro">
+  <div class="gastronomia-intro__container">
     <?php echo apply_filters('the_content', get_post_field('post_content', $post->ID)); ?>
   </div>
 </section>
 
-<section class="recorridos-grid">
-  <div class="recorridos-grid__container">
-    <?php situr_render_recorridos_visit(); ?>
+<section class="gastronomia-grid">
+  <div class="gastronomia-grid__container">
+    <?php situr_render_establecimientos('agencias-de-viajes'); ?>
   </div>
 </section>
 <section class="situr-banner">

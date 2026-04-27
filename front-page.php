@@ -243,7 +243,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     </a>
 
     <!-- Card 5: Agencias de viajes y operadoras de turismo -->
-    <a href="/recorridos-y-actividades-predisenadas/" class="services__card" data-aos="fade-down">
+    <a href="/agencia-de-viajes-y-operadoras-de-turismo/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
         <img src="/wp-content/uploads/2025/11/recorridos.png" alt="Agencias de viajes y operadoras de turismo"
           class="services__image" />
@@ -260,7 +260,7 @@ $queryImperdibles = new WP_Query($argsImperdibles);
     </a>
 
     <!-- Card 6: Guías turísticos -->
-    <a href="/recorridos-y-actividades-predisenadas/" class="services__card" data-aos="fade-down">
+    <a href="/guias-turisticos/" class="services__card" data-aos="fade-down">
       <div class="services__image-wrapper">
         <img src="/wp-content/uploads/2025/11/11-GUIA-DE-TURISMO.png" alt="Guías turísticos"
           class="services__image" />

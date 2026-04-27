@@ -1,18 +1,27 @@
 <?php
-/*
-Template Name: Página de FAQ
-*/
+$today = date('Ymd'); 
+
 $args = array(
-  'post_type' => 'eventos-visit',
+  'post_type'      => 'eventos-visit',
   'posts_per_page' => -1,
-  'orderby' => 'menu_order',
-  'order' => 'ASC',
+  'meta_key'       => 'fecha',
+  'orderby'        => 'meta_value',
+  'order'          => 'ASC',
+  'meta_query'     => array(
+      array(
+          'key'     => 'fecha',
+          'compare' => '>=',
+          'value'   => $today,
+          'type'    => 'DATE'
+      )
+  ),
 );
 
 $events_query = new WP_Query($args);
-if ($events_query->have_posts()):
-  ?>
-  <?php get_header(); ?>
+
+// 1. EL HEADER SIEMPRE DEBE CARGAR, haya eventos o no
+get_header();
+?>
   <!-- Hero con imagen de fondo -->
   <section class="hero hero--agenda" style="background-image: url('/wp-content/uploads/2025/11/8-AGENDA-DE-EVENTOS.png')">
     <div class="hero__overlay"></div>
@@ -25,6 +34,10 @@ if ($events_query->have_posts()):
       </div>
     </div>
   </section>
+  <?php 
+// 2. AHORA SÍ, VALIDAMOS SI HAY EVENTOS
+if ($events_query->have_posts()): 
+?>
 
   <!-- Filtros de búsqueda -->
   <section class="filtros-eventos">

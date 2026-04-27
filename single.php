@@ -93,42 +93,50 @@ for ($i = 1; $i <= 10; $i++) {
     </div>
     <!-- Información de contacto -->
     <div class="parque-ubicacion__info" data-aos="fade-left">
-      <div class="parque-ubicacion__item">
-        <div class="parque-ubicacion__icon">
-          <img src="/wp-content/uploads/2025/11/reloj.png" alt="icono de horario" />
+      <?php if (!empty(get_field("horario"))): ?>
+        <div class="parque-ubicacion__item">
+          <div class="parque-ubicacion__icon">
+            <img src="/wp-content/uploads/2025/11/reloj.png" alt="icono de horario" />
+          </div>
+          <div class="parque-ubicacion__details">
+            <h4>Horario</h4>
+            <?= get_field("horario") ?>
+          </div>
         </div>
-        <div class="parque-ubicacion__details">
-          <h4>Horario</h4>
-          <?= get_field("horario") ?>
+<?php endif; ?>
+         <?php if (!empty(get_field("correo"))): ?>
+          <div class="parque-ubicacion__item">
+            <div class="parque-ubicacion__icon">
+              <img src="/wp-content/uploads/2025/11/email.png" alt="icono de correo" />
+            </div>
+            <div class="parque-ubicacion__details">
+              <h4>Correo</h4>
+              <p><a href="mailto:<?= get_field("correo") ?>"><?= get_field("correo") ?></a></p>
+            </div>
+          </div>
+<?php endif; ?>
+      <?php if (!empty(get_field("telefono"))): ?>
+        <div class="parque-ubicacion__item">
+          <div class="parque-ubicacion__icon">
+            <img src="/wp-content/uploads/2025/11/telefono.png" alt="icono de teléfono" />
+          </div>
+          <div class="parque-ubicacion__details">
+            <h4>Teléfono</h4>
+            <p><a href="tel:<?= get_field("telefono") ?>"><?= get_field("telefono") ?></a></p>
+          </div>
         </div>
-      </div>
-      <div class="parque-ubicacion__item">
-        <div class="parque-ubicacion__icon">
-          <img src="/wp-content/uploads/2025/11/email.png" alt="icono de correo" />
+<?php endif; ?>
+      <?php if (!empty(get_field("whatsapp"))): ?>
+        <div class="parque-ubicacion__item">
+          <div class="parque-ubicacion__icon">
+            <img src="/wp-content/uploads/2025/11/whatsapp.png" alt="icono de whatsapp" />
+          </div>
+          <div class="parque-ubicacion__details">
+            <h4>WhatsApp</h4>
+            <p><?= get_field("whatsapp") ?></p>
+          </div>
         </div>
-        <div class="parque-ubicacion__details">
-          <h4>Correo</h4>
-          <p><a href="mailto:<?= get_field("correo") ?>"><?= get_field("correo") ?></a></p>
-        </div>
-      </div>
-      <div class="parque-ubicacion__item">
-        <div class="parque-ubicacion__icon">
-          <img src="/wp-content/uploads/2025/11/telefono.png" alt="icono de teléfono" />
-        </div>
-        <div class="parque-ubicacion__details">
-          <h4>Teléfono</h4>
-          <p><a href="tel:<?= get_field("telefono") ?>"><?= get_field("telefono") ?></a></p>
-        </div>
-      </div>
-      <div class="parque-ubicacion__item">
-        <div class="parque-ubicacion__icon">
-          <img src="/wp-content/uploads/2025/11/whatsapp.png" alt="icono de whatsapp" />
-        </div>
-        <div class="parque-ubicacion__details">
-          <h4>WhatsApp</h4>
-          <p><?= get_field("whatsapp") ?></p>
-        </div>
-      </div>
+ <?php endif; ?>
       <div class="parque-ubicacion__item">
         <div class="parque-ubicacion__icon">
           <img src="/wp-content/uploads/2025/11/ubicacion.png" alt="icono de ubicación" />

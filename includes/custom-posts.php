@@ -4,20 +4,20 @@ function myPostTypes()
 {
 
     // 1. Banners principales 
-    create_post_types('Banners Principales', 'Banner', 'dashicons-slides', 'banners-visit');
+    create_post_types('Banners Principales', 'Banner', 'dashicons-slides', 'banners-visit',true,true,'banners-visit');
     // 2. Nuevo único post type para SITUR
-    create_post_types('Lugares', 'Lugar', 'dashicons-location-alt', 'lugares-visit');
-    create_post_types('Tipo de turismo', 'tipos', 'dashicons-location-alt', 'tipo-turismo',true,false);
-    create_post_types('Pantallas', 'Pantalla', 'dashicons-location-alt', 'pantalla',true,false);
+    create_post_types('Lugares', 'Lugar', 'dashicons-location-alt', 'lugares-visit',true,true,'lugares-visit');
+    create_post_types('Tipo de turismo', 'tipos', 'dashicons-location-alt', 'tipo-turismo',true,false,'tipo-turismo');
+    create_post_types('Pantallas', 'Pantalla', 'dashicons-location-alt', 'pantalla',true,false,'que-hacer');
     // 3. Agenda 
-    create_post_types('Agenda', 'Evento', 'dashicons-calendar-alt', 'eventos-visit');
+    create_post_types('Agenda', 'Evento', 'dashicons-calendar-alt', 'eventos-visit',true,true,'eventos-visit');
     // 4. Recorridos
-    create_post_types('Recorridos', 'Recorrido', 'dashicons-groups', 'recorridos-visit');
+    create_post_types('Recorridos', 'Recorrido', 'dashicons-groups', 'recorridos-visit',true,true,'recorridos-visit');
     //5.Paquetes
-    create_post_types('Paquetes', 'Pauqete', 'dashicons-tickets', 'paquetes-visit');
+    create_post_types('Paquetes', 'Pauqete', 'dashicons-tickets', 'paquetes-visit',true,true,'paquetes-visit');
     //6. Preguntas Frecuentes
-    create_post_types('Preguntas Frecuentes', 'Pregunta Frecuente', 'dashicons-editor-help', 'preguntas-visit');
-    create_post_types('Banco de imagenes', 'Imagenes', 'dashicons-format-image', 'imagenes-visit');
+    create_post_types('Preguntas Frecuentes', 'Pregunta Frecuente', 'dashicons-editor-help', 'preguntas-visit',true,true,'preguntas-visit');
+    create_post_types('Banco de imagenes', 'Imagenes', 'dashicons-format-image', 'imagenes-visit',true,true,'imagenes-visit');
 }
 
 // Agregar los submenús debajo de los CPTs principales
@@ -83,7 +83,7 @@ add_action('admin_menu', 'add_custom_submenus');
 // }
 // add_action('init', 'create_noticias_taxonomy');
 
-function create_post_types($name, $singularName, $icon, $slug, $showUI = true, $show_in_menu = true)
+function create_post_types($name, $singularName, $icon, $slug, $showUI = true, $show_in_menu = true, $url="")
 {
     register_post_type($slug, array(
         'exclude_from_search' => true,
@@ -108,7 +108,7 @@ function create_post_types($name, $singularName, $icon, $slug, $showUI = true, $
         'show_ui' => $showUI,
         'show_in_menu' => $show_in_menu,
         'capability_type' => 'post',
-        'rewrite' => array('slug' => $slug),
+        'rewrite' => array('slug' => $url),
         'rest_controller_class' => 'WP_REST_Posts_Controller',
         'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'revisions'),
     ));

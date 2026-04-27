@@ -40,7 +40,7 @@ $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
 <section class="gastronomia-grid">
   <div class="gastronomia-grid__container">
    <?php
-$response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico", [
+$response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/aprobados", [
     "headers" => [
         "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
     ],

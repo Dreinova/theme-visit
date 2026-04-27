@@ -1,17 +1,5 @@
 <?php
 /* Template Name: Establecimiento Interno */
-   function normalize_json($value) {
-    if (is_string($value)) {
-        $decoded = json_decode($value, true);
-        return json_last_error() === JSON_ERROR_NONE ? $decoded : [];
-    }
-
-    if (is_array($value)) {
-        return $value;
-    }
-
-    return [];
-}
 
 // OBTENER ID desde URL /establecimiento/{id}
 $est_id = get_query_var('est_id');
@@ -42,16 +30,16 @@ if (!$api_body["success"]) {
     get_footer();
     exit;
 }
-$datos = normalize_json($api_body["data"]["datos"]);
+$datos = situr_normalize_json($api_body["data"]["datos"]);
 
-$dataNormalizada = normalize_json($datos['data'] ?? []);
+$dataNormalizada = situr_normalize_json($datos['data'] ?? []);
 
 
 // ─────────────────────────────────────────────
 // 2. USAR FOTOS DEL CAMPO "fotos"
 // ─────────────────────────────────────────────
 $imagenes = [];
-$fotos = normalize_json($datos["fotos"]);
+$fotos = situr_normalize_json($datos["fotos"]);
 if (!empty($fotos)) {
   foreach ($fotos as $foto) {
     if (!$foto) continue;
@@ -249,7 +237,7 @@ if (!empty($datos['coordenadas_x']) && !empty($datos['coordenadas_y'])) {
     </div>
     <?php endif; ?>
     <?php 
-        $redes_sociales = normalize_json($datos['redes_sociales'] ?? []);
+        $redes_sociales = situr_normalize_json($datos['redes_sociales'] ?? []);
         if (!empty($redes_sociales)):
     ?>
        <div class="parque-ubicacion__item">

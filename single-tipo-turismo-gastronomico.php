@@ -27,15 +27,6 @@
   <div class="gastronomia-grid__container">
 <?php
 
-function normalize_json($value) {
-    if (is_string($value)) {
-        $decoded = json_decode($value, true);
-        return json_last_error() === JSON_ERROR_NONE ? $decoded : [];
-    }
-
-    return is_array($value) ? $value : [];
-}
-
 // 🔹 Categorías permitidas (puedes modificarlas aquí)
 $categoriasPermitidas = [
     'gastronomico',
@@ -54,7 +45,7 @@ $buscarCampo = [
     'turismo_gastronómico'
 ];
 
-$response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico", [
+$response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/aprobados", [
     "headers" => [
          "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
     ],
@@ -69,14 +60,14 @@ if (is_wp_error($response)) {
 $body = wp_remote_retrieve_body($response);
 $data = json_decode($body, true);
 if (empty($data["success"]) || empty($data["data"])) {
-    echo "No hay establecimientos disponibles.";
+    echo '';
     return;
 }
 
 foreach ($data["data"] as $item) {
 
-    $datos = normalize_json($item["datos"]);
-    $dataInterna = normalize_json($datos['data'] ?? []);
+    $datos = situr_normalize_json($item["datos"]);
+    $dataInterna = situr_normalize_json($datos['data'] ?? []);
 
     // 🔹 Campo dinámico
     $campo = $dataInterna['field_1766013834262'] ?? [];
@@ -95,8 +86,21 @@ foreach ($data["data"] as $item) {
     }
 
     // 🔹 Categoría
-    $categoria = strtolower($datos['categoria_rnt'] ?? '');
-    $matchCategoria = in_array($categoria, $categoriasPermitidas, true);
+    $categorias = situr_normalize_json($datos['categoria_rnt'] ?? []);
+    $matchCategoria = false;
+
+    foreach ($categorias as $cat) {
+        $cat = strtolower(str_replace('_', ' ', $cat));
+
+        foreach ($categoriasPermitidas as $permitida) {
+            $permitida = strtolower(str_replace('_', ' ', $permitida));
+
+            if (strpos($cat, $permitida) !== false) {
+                $matchCategoria = true;
+                break 2;
+            }
+        }
+    }
 
     // 🔹 Validación final
     if (!$matchCampo && !$matchCategoria) {

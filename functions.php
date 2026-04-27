@@ -36,6 +36,7 @@ add_action('after_setup_theme', 'gymsonline_theme_support');
 include get_template_directory() . '/includes/cleanup.php';
 include get_template_directory() . '/includes/enqueue.php';
 include get_template_directory() . '/includes/custom-posts.php';
+require_once get_template_directory() . '/includes/situr-helpers.php';
 
 add_action('init', function () {
     add_rewrite_rule(
@@ -552,3 +553,31 @@ add_action('wp_head', function () {
   $desc = esc_attr(wp_trim_words($establecimiento_meta['descripcion'], 25));
   echo "<meta name='description' content='$desc'>\n";
 }, 1);
+
+add_action('wp_ajax_filtrar_establecimientos', 'situr_ajax_filtrar_establecimientos');
+add_action('wp_ajax_nopriv_filtrar_establecimientos', 'situr_ajax_filtrar_establecimientos');
+
+function situr_ajax_filtrar_establecimientos() {
+
+    $filtros = isset($_POST['filtros']) ? $_POST['filtros'] : [];
+
+    if (!is_array($filtros)) {
+        $filtros = [$filtros];
+    }
+
+    ob_start();
+
+    // 👇 reutilizas tu helper
+    situr_render_establecimientos($filtros);
+
+    $html = ob_get_clean();
+
+    wp_send_json_success($html);
+}
+add_action('wp_enqueue_scripts', function() {
+    wp_enqueue_script('filtros-ajax', get_template_directory_uri() . '/js/filtros.js', [], null, true);
+
+    wp_localize_script('filtros-ajax', 'ajaxData', [
+        'url' => admin_url('admin-ajax.php')
+    ]);
+});

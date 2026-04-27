@@ -1,5 +1,5 @@
 <?php get_header(); ?>
-<!-- Hero con imagen de fondo -->
+
 <section
   class="hero hero--turismo-gastronomico"
   style="background-image: url('/wp-content/uploads/2025/11/7-DONDE-DORMIR.jpeg')"
@@ -15,105 +15,16 @@
   </div>
 </section>
 
-<!-- Sección de introducción -->
 <section class="gastronomia-intro">
   <div class="gastronomia-intro__container">
-   <?php $description = get_the_content($post->ID); ?>
-            <?= $description ?>
+    <?php echo apply_filters('the_content', get_post_field('post_content', $post->ID)); ?>
   </div>
 </section>
 
-<!-- Grid de restaurantes gastronómicos -->
 <section class="gastronomia-grid">
   <div class="gastronomia-grid__container">
-   <?php
-   function normalize_json($value) {
-    if (is_string($value)) {
-        $decoded = json_decode($value, true);
-        return json_last_error() === JSON_ERROR_NONE ? $decoded : [];
-    }
-
-    if (is_array($value)) {
-        return $value;
-    }
-
-    return [];
-}
-$response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico", [
-    "headers" => [
-        "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
-    ],
-    "timeout" => 20
-]);
-
-if (!is_wp_error($response)) {
-    $body = wp_remote_retrieve_body($response);
-    $data = json_decode($body, true);
-
-    if ($data["success"] && !empty($data["data"])) {
-        foreach ($data["data"] as $item) {
-          $datos = normalize_json($item["datos"]);
-            $dataNormalizada = normalize_json($datos['data'] ?? []);
-        // --- VALIDACIÓN CAMPO DINÁMICO ---
-        $campo = $dataNormalizada['field_1766013834262'] ?? [];
-if (!is_array($campo)) {
-    $campo = [];
-}
-
-$buscarCampo = ['alojamiento', 'hoteles'];
-$matchCampo = false;
-
-foreach ($campo as $valorCampo) {
-    foreach ($buscarCampo as $valorBuscar) {
-        if (stripos($valorCampo, $valorBuscar) !== false) {
-            $matchCampo = true;
-            break 2;
-        }
-    }
-}
-
-// --- VALIDACIÓN CATEGORÍA RNT ---
-$categoria = strtolower($datos['categoria_rnt'] ?? '');
-$categoriasPermitidas = ['alojamiento', 'viviendas'];
-$matchCategoria = in_array($categoria, $categoriasPermitidas, true);
-
-        // --- Traer imágenes desde $datos['fotos'] ---
-        $img_url = 'https://placehold.co/1080x1920';
-        $imagenes_api = $item["imagenes"] ?? [];
-        if (is_string($imagenes_api)) $imagenes_api = json_decode($imagenes_api, true);
-        if (!empty($imagenes_api[0]["url_imagen"])) {
-            $img_url = "https://apisitur.visitatenjo.com" . $imagenes_api[0]["url_imagen"];
-        } else {
-            foreach (normalize_json($datos["fotos"]) as $foto) {
-                if (is_array($foto) && !empty($foto["url"])) { $img_url = $foto["url"]; break; }
-                if (is_string($foto) && $foto)               { $img_url = $foto; break; }
-            }
-        }
-          // Nombre a mostrar en el overlay
-          $nombre = strtoupper($datos["nombre"] ?? "SIN NOMBRE");
-
-
-// --- CONDICIÓN FINAL ---
-if ($matchCampo || $matchCategoria) {
-     $alias = sanitize_title($nombre);
-   echo '<a href="/establecimiento/' . $alias  .'/' . $item["id"] . '" class="restaurante-card">';
-    echo '<img src="' . esc_url($img_url) . '" alt="' . esc_attr($nombre) . '" class="restaurante-card__image" />';
-    echo '<div class="restaurante-card__overlay">';
-    echo '<h3 class="restaurante-card__title">' . $nombre . '</h3>';
-    echo '</div>';
-    echo '</a>';
-}
-
-
-        }
-    } else {
-        echo "No hay establecimientos disponibles.";
-    }
-} else {
-    echo "Error en la API: " . $response->get_error_message();
-}
-?>
-
+    <?php situr_render_establecimientos('alojamiento'); ?>
   </div>
 </section>
+
 <?php get_footer(); ?>
