@@ -23,13 +23,9 @@ function gamedugg_load_assets() {
         null
     );
 
-    wp_enqueue_style(
-        'aos-css',
-        'https://unpkg.com/aos@2.3.1/dist/aos.css',
-        [],
-        null
-    );
-
+    wp_enqueue_style('aos-css', get_template_directory_uri() . '/assets/aos/aos.css', [], '2.3.1');
+    wp_enqueue_script('aos-js', get_template_directory_uri() . '/assets/aos/aos.js', [], '2.3.1', true);
+    
     wp_enqueue_style(
         'bureau-google-fonts',
         'https://fonts.googleapis.com/css2?family=Gabarito:wght@400..900&display=swap',
@@ -63,14 +59,6 @@ function gamedugg_load_assets() {
     );
 
     wp_enqueue_script(
-        'aos-js',
-        'https://unpkg.com/aos@2.3.1/dist/aos.js',
-        [],
-        null,
-        true
-    );
-
-    wp_enqueue_script(
         'front-script',
         get_template_directory_uri() . '/js/custom.js',
         ['aos-js','splide-js','splide-auto-scroll-js'],
@@ -79,3 +67,17 @@ function gamedugg_load_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'gamedugg_load_assets');
+
+/**
+ * Añade defer a scripts no críticos para mejorar LCP/TBT (mejor SEO).
+ */
+function visit_defer_scripts($tag, $handle) {
+    $defer = array('splide-js', 'splide-auto-scroll-js', 'aos-js', 'aos-init', 'front-script', 'filtros-ajax');
+    if (in_array($handle, $defer, true)) {
+        if (strpos($tag, ' defer') === false) {
+            $tag = str_replace(' src=', ' defer src=', $tag);
+        }
+    }
+    return $tag;
+}
+add_filter('script_loader_tag', 'visit_defer_scripts', 10, 2);

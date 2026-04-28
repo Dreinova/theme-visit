@@ -5,10 +5,8 @@ Template Name: Guías Turísticos
 get_header();
 ?>
 
-<section
-  class="hero hero--guias"
-  style="background-image: url('<?php echo esc_url(get_field('imagen_banner') ?: '/wp-content/uploads/2025/11/recorridos_bg.png'); ?>')"
->
+<section class="hero hero--guias">
+  <?php visit_render_hero_image(get_field('imagen_banner') ?: '/wp-content/uploads/2025/11/recorridos_bg.png', 'Guías turísticos en Tenjo'); ?>
   <div class="hero__overlay"></div>
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
@@ -26,23 +24,137 @@ get_header();
   </div>
 </section>
 
-<section class="gastronomia-grid">
-  <div class="gastronomia-grid__container">
-    <?php situr_render_establecimientos('guias-turisticos'); ?>
+<?php
+$current_slug = get_post_field('post_name', get_post());
+$config = situr_get_screen_config($current_slug);
+
+if (!$config) {
+    $subcategorias = [];
+} else {
+    $subcategorias = [];
+
+    foreach ($config['subcategorias'] as $sub) {
+        $subcategorias[$sub] = ucwords(str_replace('_', ' ', $sub));
+    }
+}
+?>
+<div class="turismo-layout">
+  <!-- FILTROS -->
+  <aside class="filtros">
+  <form method="GET">
+    <h3>Tipo de experiencia</h3>
+
+    <?php
+$conteos = situr_get_conteo_filtros(array_keys($subcategorias));
+?>
+
+<?php foreach ($subcategorias as $slug => $label): ?>
+
+  <?php if (!empty($conteos[$slug])): // 👈 SOLO mostrar si tiene resultados ?>
+
+    <label>
+      <input
+        type="checkbox"
+        name="filtro[]"
+        value="<?= $slug ?>"
+        <?= in_array($slug, $filtros) ? 'checked' : '' ?>
+      >
+      <?= $label ?> (<?= $conteos[$slug] ?>)
+    </label>
+
+  <?php endif; ?>
+
+<?php endforeach; ?>
+
+    <!-- <button type="submit">Filtrar</button> -->
+  </form>
+</aside>
+
+  <!-- RESULTADOS -->
+  <div class="resultados">
+    <section class="gastronomia-grid">
+      <div class="gastronomia-grid__container">
+   <?php
+$filtros_activos = $_GET['filtro'] ?? [];
+
+$current_slug = get_post_field('post_name', get_post());
+$config = situr_get_screen_config($current_slug);
+
+
+
+if (!$config) {
+    echo '<p>No hay configuración</p>';
+    return;
+}
+
+// 👇 BASE de la pantalla
+$filtros_base = array_merge(
+    $config['categorias'],
+    $config['subcategorias']
+);
+
+// 👇 SI el usuario no selecciona nada → usar base
+$filtros_finales = !empty($filtros_activos)
+    ? $filtros_activos
+    : $filtros_base;
+
+situr_render_establecimientos($filtros_finales);
+?>
+      </div>
+    </section>
   </div>
-</section>
-<section class="situr-banner">
-  <div class="situr-banner__content">
-    <h2 class="situr-banner__title">
-      ¿Quieres ver aquí tu establecimiento?
-    </h2>
-    <p class="situr-banner__text">
-       <strong>Visitatenjo.com</strong> muestra los establecimientos turísticos de Tenjo pertenecientes al Sistema de Información Turística SITUR del municpio."  ¿Quieres ver aquí tu establecimiento? Registralo en minutos a través de
-    </p>
-    <a href="https://situr.visitatenjo.com" target="_blank" class="situr-banner__button">
-      Regístralo en minutos
-    </a>
-  </div>
-</section>
+
+</div>
 
 <?php get_footer(); ?>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+
+  const checkboxes = document.querySelectorAll('.filtros input[type="checkbox"]');
+  const container = document.querySelector('.gastronomia-grid__container');
+
+  function obtenerFiltros() {
+    let valores = [];
+    checkboxes.forEach(cb => {
+      if (cb.checked) valores.push(cb.value);
+    });
+    return valores;
+  }
+
+  function cargarEstablecimientos() {
+
+  let filtros = obtenerFiltros();
+
+  // 👇 si no hay filtros, mandar TODOS
+  if (filtros.length === 0) {
+    filtros = Array.from(checkboxes).map(cb => cb.value);
+  }
+
+  container.innerHTML = '<div class="loader"></div>';
+
+const params = new URLSearchParams();
+params.append('action', 'filtrar_establecimientos');
+
+filtros.forEach(f => params.append('filtros[]', f));
+
+fetch(ajaxData.url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  },
+  body: params
+})
+  .then(res => res.json())
+  .then(data => {
+    container.innerHTML = data.success ? data.data : '<p>Error</p>';
+  });
+}
+
+  // Evento en checkboxes
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', cargarEstablecimientos);
+  });
+
+});
+</script>

@@ -2,8 +2,8 @@
 /* Template Name: Establecimiento Interno */
 
 // OBTENER ID desde URL /establecimiento/{id}
-$est_id = get_query_var('est_id');
-if (!$est_id) {
+$est = get_query_var('est');
+if (!$est) {
     echo "<h2>No se encontró el establecimiento.</h2>";
     get_footer();
     exit;
@@ -12,7 +12,7 @@ if (!$est_id) {
 // ─────────────────────────────────────────────
 // 1. CONSULTAR INFORMACIÓN DEL ESTABLECIMIENTO
 // ─────────────────────────────────────────────
-$api_response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico/$est_id", [
+$api_response = wp_remote_get("https://apisitur.visitatenjo.com/establecimientos/publico/$est", [
     "headers" => [
         "X-API-KEY" => "d96e31d732b5329a5bfffaf30d8da427821693107aae19c1344eae7fe3446bd5"
     ]
@@ -73,7 +73,7 @@ global $establecimiento_meta;
 
 
 $establecimiento_meta = [
- 'titulo'       => $titulo ?? '',
+ 'titulo'       => $titulo . '- Visita Tenjo' ?? '',
   'descripcion'  => wp_strip_all_tags($datos['descripcion'] ?? ''),
   'imagen'       => $hero_img ?? '',
   'keywords'     => $datos['categoria_rnt'] ?? '',
@@ -85,7 +85,8 @@ get_header();
 ?>
 
 <!-- HERO -->
-<section class="hero hero--parque-tenjo" style="background-image:url('<?= $hero_img ?>');">
+<section class="hero hero--parque-tenjo">
+  <?php visit_render_hero_image($hero_img, $titulo); ?>
   <div class="hero__overlay"></div>
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">
@@ -247,7 +248,10 @@ if (!empty($datos['coordenadas_x']) && !empty($datos['coordenadas_y'])) {
              <?php foreach ($redes_sociales as $red): ?>
             <?php
             $nombre = $red['red'] ?? '';
-            $url    = $red['url'] ?? '';
+            $url = $red['url'] ?? '';
+            preg_match('/https?:\/\/[^\s"]+/', $url, $matches);
+            $url = $matches[0] ?? '';
+            
             $icono  = $iconos[$nombre] ?? 'fas fa-share-alt'; // icono por defecto
             ?>
 

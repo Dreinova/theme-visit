@@ -12,10 +12,8 @@ $titulo_sin_resaltar = trim($titulo_sin_resaltar); // Limpia espacios dobles
 ?>
 
  <!-- Hero con imagen de fondo -->
-    <section
-      class="hero hero--turismo-cultural"
-      style="background-image: url(<?=$imagen_fondo?>)"
-    >
+    <section class="hero hero--turismo-cultural">
+      <?php visit_render_hero_image($imagen_fondo, $titulo); ?>
       <div class="hero__overlay"></div>
       <div class="hero__content" data-aos="fade-right">
         <div class="hero__left">

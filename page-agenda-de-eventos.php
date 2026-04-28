@@ -23,7 +23,8 @@ $events_query = new WP_Query($args);
 get_header();
 ?>
   <!-- Hero con imagen de fondo -->
-  <section class="hero hero--agenda" style="background-image: url('/wp-content/uploads/2025/11/8-AGENDA-DE-EVENTOS.png')">
+  <section class="hero hero--agenda">
+    <?php visit_render_hero_image('/wp-content/uploads/2025/11/8-AGENDA-DE-EVENTOS.png', 'Agenda de eventos en Tenjo'); ?>
     <div class="hero__overlay"></div>
     <div class="hero__content" data-aos="fade-right">
       <div class="hero__left">

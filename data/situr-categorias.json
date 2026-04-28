@@ -1,0 +1,271 @@
+{
+    "categoriasRNT": [
+        {
+            "value": "turismo_bienestar"
+        },
+        {
+            "value": "establecimientos_gastronomia"
+        },
+        {
+            "value": "empresas_transporte"
+        },
+        {
+            "value": "tiempo_compartido"
+        },
+        {
+            "value": "captadoras_ahorro_viajes"
+        },
+        {
+            "value": "companias_intercambio_vacacional"
+        },
+        {
+            "value": "concesionarios_parque"
+        },
+        {
+            "value": "usuarios_zonas_francas"
+        },
+        {
+            "value": "arrendadores"
+        },
+        {
+            "value": "oficinas_representacion"
+        },
+        {
+            "value": "alojamiento"
+        },
+        {
+            "value": "viviendas"
+        },
+        {
+            "value": "agencias"
+        },
+        {
+            "value": "guias"
+        },
+        {
+            "value": "restaurantes"
+        },
+        {
+            "value": "bares"
+        },
+        {
+            "value": "parques"
+        }
+    ],
+    "subcategoriasRNT": {
+        "turismo_bienestar": [
+            {
+                "value": "terapias_alternativas"
+            }
+        ],
+        "establecimientos_gastronomia": [
+            {
+                "value": "restaurante"
+            },
+            {
+                "value": "r_autoservicio"
+            },
+            {
+                "value": "r_comida_rapida"
+            },
+            {
+                "value": "bar_restaurante"
+            },
+            {
+                "value": "cafe"
+            },
+            {
+                "value": "camion_comida"
+            },
+            {
+                "value": "comida_callejera"
+            },
+            {
+                "value": "cevicheria_pescaderia"
+            },
+            {
+                "value": "fruteria"
+            },
+            {
+                "value": "heladeria"
+            },
+            {
+                "value": "panaderia"
+            },
+            {
+                "value": "piqueteadero"
+            }
+        ],
+        "empresas_transporte": [
+            {
+                "value": "chivas"
+            },
+            {
+                "value": "yipaos"
+            },
+            {
+                "value": "operador_especial"
+            }
+        ],
+        "tiempo_compartido": [
+            {
+                "value": "comercializadora"
+            },
+            {
+                "value": "promotora"
+            },
+            {
+                "value": "promotora_comercializadora"
+            }
+        ],
+        "captadoras_ahorro_viajes": [
+            {
+                "value": "captadoras_ahorro_viajes"
+            }
+        ],
+        "companias_intercambio_vacacional": [
+            {
+                "value": "companias_intercambio_vacacional"
+            }
+        ],
+        "concesionarios_parque": [
+            {
+                "value": "concesionarios_parque"
+            }
+        ],
+        "usuarios_zonas_francas": [
+            {
+                "value": "usuario_desarrollador"
+            },
+            {
+                "value": "usuario_industrial"
+            },
+            {
+                "value": "usuario_operador"
+            }
+        ],
+        "arrendadores": [
+            {
+                "value": "arrendadores"
+            }
+        ],
+        "oficinas_representacion": [
+            {
+                "value": "oficinas_representacion"
+            }
+        ],
+        "alojamiento": [
+            {
+                "value": "hotel"
+            },
+            {
+                "value": "hostal"
+            },
+            {
+                "value": "apartahotel"
+            },
+            {
+                "value": "cabanas"
+            },
+            {
+                "value": "camping"
+            },
+            {
+                "value": "glamping"
+            },
+            {
+                "value": "centro_vacacional"
+            },
+            {
+                "value": "campamento"
+            },
+            {
+                "value": "refugio"
+            },
+            {
+                "value": "albergue"
+            },
+            {
+                "value": "otros"
+            }
+        ],
+        "viviendas": [
+            {
+                "value": "apartamento_turistico"
+            },
+            {
+                "value": "casa_turistica"
+            },
+            {
+                "value": "finca_turistica"
+            },
+            {
+                "value": "otro_tipo_vivienda"
+            },
+            {
+                "value": "otros_tipos_hospedaje"
+            }
+        ],
+        "agencias": [
+            {
+                "value": "operadora"
+            },
+            {
+                "value": "mayorista"
+            },
+            {
+                "value": "operadora_mayorista"
+            },
+            {
+                "value": "agencia_vt"
+            }
+        ],
+        "guias": [
+            {
+                "value": "guia_profesional"
+            }
+        ],
+        "restaurantes": [
+            {
+                "value": "restaurante"
+            },
+            {
+                "value": "bar_restaurante"
+            },
+            {
+                "value": "cafeteria"
+            }
+        ],
+        "bares": [
+            {
+                "value": "bar"
+            },
+            {
+                "value": "discoteca"
+            },
+            {
+                "value": "taberna"
+            },
+            {
+                "value": "gastrobar"
+            },
+            {
+                "value": "bar_social"
+            },
+            {
+                "value": "bar_musica"
+            }
+        ],
+        "parques": [
+            {
+                "value": "parque_tematico"
+            },
+            {
+                "value": "parque_agroturismo"
+            },
+            {
+                "value": "parque_ecoturismo"
+            }
+        ]
+    }
+}

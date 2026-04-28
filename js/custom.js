@@ -143,9 +143,18 @@ if (btnDescargar && modalDescarga) {
       // document.body.style.overflow = "";
     }
   });
-
+  function downloadImage(url, filename) {
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename || "imagen.jpg";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
   // Confirmar descarga
   btnConfirmar?.addEventListener("click", function () {
+
+
     // Limpiar errores previos
     clearErrors();
 
@@ -200,6 +209,8 @@ if (btnDescargar && modalDescarga) {
       // Cambiar a "ENVIADO"
       btnConfirmar.textContent = "ENVIADO";
       btnConfirmar.style.background = "#4caf50";
+      const imageUrl = btnDescargar.dataset.image;
+      downloadImage(imageUrl, "imagen.jpg");
 
       // Aquí puedes agregar la lógica de descarga real
       console.log("Descarga confirmada:", {

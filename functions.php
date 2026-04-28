@@ -30,6 +30,8 @@ function gymsonline_theme_support()
     add_theme_support('title-tag');
     // Add custom Logo support
     add_theme_support('custom-logo');
+    add_theme_support('automatic-feed-links');
+    add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption', 'script', 'style'));
 }
 add_action('after_setup_theme', 'gymsonline_theme_support');
 
@@ -40,14 +42,14 @@ require_once get_template_directory() . '/includes/situr-helpers.php';
 
 add_action('init', function () {
     add_rewrite_rule(
-        '^establecimiento/([^/]+)/([^/]+)/?$',
-        'index.php?pagename=establecimiento&est_id=$matches[2]',
+        '^establecimiento/([^/]+)/?$',
+        'index.php?pagename=establecimiento',
         'top'
     );
 });
 
 add_filter('query_vars', function ($vars) {
-    $vars[] = 'est_id';
+    $vars[] = 'est';
     return $vars;
 });
 
@@ -187,41 +189,50 @@ add_action('wp_head', function () {
 
     global $establecimiento_meta;
 
-
     if (empty($establecimiento_meta)) {
         return;
     }
 
-    $title       = esc_html($establecimiento_meta['titulo'] ?? '');
-    $description = esc_attr($establecimiento_meta['descripcion'] ?? '');
+    $title       = esc_attr($establecimiento_meta['titulo'] ?? '');
+    $description = esc_attr(wp_trim_words($establecimiento_meta['descripcion'] ?? '', 30));
     $image       = esc_url($establecimiento_meta['imagen'] ?? '');
-    $url         = esc_url(home_url(add_query_arg([], $_SERVER['REQUEST_URI'])));
-
-    // TITLE
-    echo "<title>{$title}</title>\n";
+    $url         = esc_url(home_url($_SERVER['REQUEST_URI'] ?? ''));
 
     // META DESCRIPTION
-    echo "<meta name='description' content='{$description}' />\n";
+    if ($description) {
+        echo "<meta name=\"description\" content=\"{$description}\" />\n";
+    }
 
-    // META KEYWORDS (si quieres agregar categoría como keywords)
+    // CANONICAL
+    echo "<link rel=\"canonical\" href=\"{$url}\" />\n";
+
+    // META KEYWORDS (opcional)
     if (!empty($establecimiento_meta['keywords'])) {
         $keywords = esc_attr($establecimiento_meta['keywords']);
-        echo "<meta name='keywords' content='{$keywords}' />\n";
+        echo "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
     }
 
     // OPEN GRAPH
-    echo "<meta property='og:title' content='{$title}' />\n";
-    echo "<meta property='og:description' content='{$description}' />\n";
-    echo "<meta property='og:image' content='{$image}' />\n";
-    echo "<meta property='og:url' content='{$url}' />\n";
-    echo "<meta property='og:type' content='article' />\n";
+    echo "<meta property=\"og:title\" content=\"{$title}\" />\n";
+    if ($description) {
+        echo "<meta property=\"og:description\" content=\"{$description}\" />\n";
+    }
+    if ($image) {
+        echo "<meta property=\"og:image\" content=\"{$image}\" />\n";
+    }
+    echo "<meta property=\"og:url\" content=\"{$url}\" />\n";
+    echo "<meta property=\"og:type\" content=\"article\" />\n";
+    echo "<meta property=\"og:site_name\" content=\"" . esc_attr(get_bloginfo('name')) . "\" />\n";
 
     // TWITTER
-    echo "<meta name='twitter:card' content='summary_large_image' />\n";
-    echo "<meta name='twitter:title' content='{$title}' />\n";
-    echo "<meta name='twitter:description' content='{$description}' />\n";
-    echo "<meta name='twitter:image' content='{$image}' />\n";
-
+    echo "<meta name=\"twitter:card\" content=\"summary_large_image\" />\n";
+    echo "<meta name=\"twitter:title\" content=\"{$title}\" />\n";
+    if ($description) {
+        echo "<meta name=\"twitter:description\" content=\"{$description}\" />\n";
+    }
+    if ($image) {
+        echo "<meta name=\"twitter:image\" content=\"{$image}\" />\n";
+    }
 }, 1);
 // En functions.php
 function custom_sitemap_rewrite() {
@@ -236,20 +247,51 @@ function custom_sitemap_query_vars($vars) {
 add_filter('query_vars', 'custom_sitemap_query_vars');
 
 function custom_sitemap_template() {
-    if (get_query_var('sitemap')) {
-        header('Content-Type: application/xml; charset=utf-8');
-        echo '<?xml version="1.0" encoding="UTF-8"?>';
-        echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-        $posts = get_posts(['post_type' => 'post', 'post_status' => 'publish', 'numberposts' => -1]);
-        foreach ($posts as $post) {
-            echo '<url>';
-            echo '<loc>' . get_permalink($post) . '</loc>';
-            echo '<lastmod>' . get_the_modified_date('c', $post) . '</lastmod>';
-            echo '</url>';
-        }
-        echo '</urlset>';
-        exit;
+    if (!get_query_var('sitemap')) {
+        return;
     }
+
+    header('Content-Type: application/xml; charset=utf-8');
+    echo '<?xml version="1.0" encoding="UTF-8"?>';
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+    // Home
+    echo '<url><loc>' . esc_url(home_url('/')) . '</loc><changefreq>daily</changefreq><priority>1.0</priority></url>';
+
+    $sitemap_post_types = apply_filters('visit_sitemap_post_types', array(
+        'post',
+        'page',
+        'lugares-visit',
+        'eventos-visit',
+        'recorridos-visit',
+        'paquetes-visit',
+        'preguntas-visit',
+        'imagenes-visit',
+        'tipo-turismo',
+        'pantalla',
+        'proyectos',
+    ));
+
+    $posts = get_posts(array(
+        'post_type'      => $sitemap_post_types,
+        'post_status'    => 'publish',
+        'numberposts'    => -1,
+        'orderby'        => 'modified',
+        'order'          => 'DESC',
+        'no_found_rows'  => true,
+        'suppress_filters' => true,
+    ));
+
+    foreach ($posts as $p) {
+        $url = get_permalink($p);
+        if (!$url) continue;
+        echo '<url>';
+        echo '<loc>' . esc_url($url) . '</loc>';
+        echo '<lastmod>' . esc_html(get_the_modified_date('c', $p)) . '</lastmod>';
+        echo '</url>';
+    }
+    echo '</urlset>';
+    exit;
 }
 add_action('template_redirect', 'custom_sitemap_template');
 
@@ -258,28 +300,23 @@ function auto_alt_images($content) {
         '/<img([^>]+)>/i',
         function ($matches) {
             $tag = $matches[0];
-            if (!preg_match('/alt=/', $tag)) {
-                preg_match('/src="([^"]+)"/', $tag, $src);
-                $alt = basename($src[1], '.jpg');
-                $alt = str_replace(['-', '_'], ' ', $alt);
-                $tag = str_replace('<img', '<img alt="' . esc_attr($alt) . '"', $tag);
+            // Respeta alt existente (incluso vacío para imágenes decorativas)
+            if (preg_match('/\salt=/i', $tag)) {
+                return $tag;
             }
-            return $tag;
+            if (!preg_match('/src=["\']([^"\']+)["\']/i', $tag, $src)) {
+                return $tag;
+            }
+            $filename = basename(parse_url($src[1], PHP_URL_PATH));
+            $alt = preg_replace('/\.(jpe?g|png|webp|gif|svg)$/i', '', $filename);
+            $alt = str_replace(array('-', '_'), ' ', $alt);
+            $alt = trim(preg_replace('/\d+/', '', $alt));
+            return str_replace('<img', '<img alt="' . esc_attr(ucfirst($alt)) . '"', $tag);
         },
         $content
     );
 }
 add_filter('the_content', 'auto_alt_images');
-
-
-function custom_robots_txt($output, $public) {
-    $output .= "User-agent: *\n";
-    $output .= "Disallow: /wp-admin/\n";
-    $output .= "Allow: /wp-admin/admin-ajax.php\n";
-    $output .= "Sitemap: " . home_url('/sitemap.xml') . "\n";
-    return $output;
-}
-add_filter('robots_txt', 'custom_robots_txt', 10, 2);
 
 function visit_theme_customize_register($wp_customize) {
 
@@ -524,12 +561,7 @@ function custom_admin_bar_link($wp_admin_bar) {
 }
 
 function cargar_fontawesome() {
-    wp_enqueue_style(
-        'fontawesome',
-        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-        [],
-        '6.5.1'
-    );
+  wp_enqueue_style('fontawesome', get_template_directory_uri() . '/assets/fontawesome/css/all.min.css', [], '6.5.1');
 }
 add_action('wp_enqueue_scripts', 'cargar_fontawesome');
 
@@ -545,14 +577,6 @@ add_filter('pre_get_document_title', function ($title) {
   return $title;
 });
 remove_action('wp_head', 'wp_generator');
-add_action('wp_head', function () {
-  global $establecimiento_meta;
-
-  if (empty($establecimiento_meta['descripcion'])) return;
-
-  $desc = esc_attr(wp_trim_words($establecimiento_meta['descripcion'], 25));
-  echo "<meta name='description' content='$desc'>\n";
-}, 1);
 
 add_action('wp_ajax_filtrar_establecimientos', 'situr_ajax_filtrar_establecimientos');
 add_action('wp_ajax_nopriv_filtrar_establecimientos', 'situr_ajax_filtrar_establecimientos');
@@ -580,4 +604,236 @@ add_action('wp_enqueue_scripts', function() {
     wp_localize_script('filtros-ajax', 'ajaxData', [
         'url' => admin_url('admin-ajax.php')
     ]);
+    wp_enqueue_script(
+    'situr-load-more',
+    get_stylesheet_directory_uri() . '/js/load-more.js',
+    ['jquery'],
+    null,
+    true
+  );
+
+  wp_localize_script('situr-load-more', 'situr_ajax', [
+    'ajax_url' => admin_url('admin-ajax.php')
+  ]);
 });
+
+/**
+ * Imprime la imagen LCP de un hero como <img>/<picture> con dimensiones y fetchpriority.
+ * Acepta URL string, array ACF (con 'url' y 'sizes') o ID de attachment.
+ * Reemplaza el patrón antiguo <section style="background-image:url(...)">.
+ */
+function visit_render_hero_image($source, $alt = '', $width = 1920, $height = 1080) {
+    $url = '';
+    $srcset = '';
+    $sizes = '(max-width: 768px) 100vw, 100vw';
+
+    if (is_numeric($source)) {
+        $url    = wp_get_attachment_image_url($source, 'full');
+        $srcset = wp_get_attachment_image_srcset($source, 'full');
+    } elseif (is_array($source)) {
+        $url = $source['url'] ?? '';
+        if (!empty($source['ID'])) {
+            $srcset = wp_get_attachment_image_srcset($source['ID'], 'full');
+        }
+        if (!empty($source['width']))  $width  = (int) $source['width'];
+        if (!empty($source['height'])) $height = (int) $source['height'];
+        if (empty($alt) && !empty($source['alt'])) $alt = $source['alt'];
+    } else {
+        $url = (string) $source;
+        // Si la URL es de la propia media library, intentar resolver attachment para srcset
+        $att_id = function_exists('attachment_url_to_postid') ? attachment_url_to_postid($url) : 0;
+        if ($att_id) {
+            $srcset = wp_get_attachment_image_srcset($att_id, 'full');
+            $meta   = wp_get_attachment_metadata($att_id);
+            if (!empty($meta['width']))  $width  = (int) $meta['width'];
+            if (!empty($meta['height'])) $height = (int) $meta['height'];
+        }
+    }
+
+    if (!$url) return;
+
+    printf(
+        '<img class="hero__media" src="%1$s"%2$s sizes="%3$s" width="%4$d" height="%5$d" alt="%6$s" fetchpriority="high" decoding="async" />',
+        esc_url($url),
+        $srcset ? ' srcset="' . esc_attr($srcset) . '"' : '',
+        esc_attr($sizes),
+        $width,
+        $height,
+        esc_attr($alt)
+    );
+}
+
+/**
+ * SEO global: canonical, meta description y Open Graph para Home/page/single/archive.
+ * No emite nada en template-establecimiento.php (ese template tiene su propio bloque de meta).
+ */
+add_action('wp_head', function () {
+    if (is_page_template('template-establecimiento.php')) {
+        return;
+    }
+
+    $title = wp_get_document_title();
+    $url   = '';
+    $desc  = '';
+    $image = '';
+    $type  = 'website';
+
+    if (is_singular()) {
+        $url  = get_permalink();
+        $type = is_single() ? 'article' : 'website';
+
+        $raw_desc = get_post_field('post_excerpt', get_queried_object_id());
+        if (empty($raw_desc)) {
+            $raw_desc = get_post_field('post_content', get_queried_object_id());
+        }
+        $desc = wp_strip_all_tags(strip_shortcodes($raw_desc));
+        $desc = wp_trim_words($desc, 30, '');
+
+        if (has_post_thumbnail(get_queried_object_id())) {
+            $image = get_the_post_thumbnail_url(get_queried_object_id(), 'full');
+        }
+    } elseif (is_home() || is_front_page()) {
+        $url  = home_url('/');
+        $desc = get_bloginfo('description');
+    } elseif (is_archive()) {
+        $url  = home_url(add_query_arg([], $_SERVER['REQUEST_URI'] ?? ''));
+        $desc = wp_strip_all_tags(get_the_archive_description());
+        $desc = wp_trim_words($desc, 30, '');
+    } else {
+        $url = home_url(add_query_arg([], $_SERVER['REQUEST_URI'] ?? ''));
+    }
+
+    if ($url) {
+        echo '<link rel="canonical" href="' . esc_url($url) . '" />' . "\n";
+    }
+    if ($desc) {
+        echo '<meta name="description" content="' . esc_attr($desc) . '" />' . "\n";
+    }
+
+    // Open Graph
+    echo '<meta property="og:locale" content="' . esc_attr(get_locale()) . '" />' . "\n";
+    echo '<meta property="og:type" content="' . esc_attr($type) . '" />' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr($title) . '" />' . "\n";
+    if ($desc) {
+        echo '<meta property="og:description" content="' . esc_attr($desc) . '" />' . "\n";
+    }
+    if ($url) {
+        echo '<meta property="og:url" content="' . esc_url($url) . '" />' . "\n";
+    }
+    echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '" />' . "\n";
+    if ($image) {
+        echo '<meta property="og:image" content="' . esc_url($image) . '" />' . "\n";
+    }
+
+    // Twitter Card
+    echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr($title) . '" />' . "\n";
+    if ($desc) {
+        echo '<meta name="twitter:description" content="' . esc_attr($desc) . '" />' . "\n";
+    }
+    if ($image) {
+        echo '<meta name="twitter:image" content="' . esc_url($image) . '" />' . "\n";
+    }
+}, 2);
+
+/**
+ * Schema.org JSON-LD básico (Organization en home + LocalBusiness en singles tipo "lugares-visit").
+ */
+add_action('wp_head', function () {
+    if (is_front_page()) {
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type'    => 'Organization',
+            'name'     => get_bloginfo('name'),
+            'url'      => home_url('/'),
+            'logo'     => function_exists('get_custom_logo') && has_custom_logo()
+                ? wp_get_attachment_image_url(get_theme_mod('custom_logo'), 'full')
+                : '',
+            'sameAs'   => array_values(array_filter(array(
+                get_theme_mod('visit_facebook_url'),
+                get_theme_mod('visit_instagram_url'),
+                get_theme_mod('visit_twitter_url'),
+                get_theme_mod('visit_youtube_url'),
+            ))),
+        );
+        echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+    }
+
+    if (is_singular(array('lugares-visit', 'eventos-visit', 'recorridos-visit'))) {
+        $post_id = get_queried_object_id();
+        $schema  = array(
+            '@context'    => 'https://schema.org',
+            '@type'       => is_singular('eventos-visit') ? 'Event' : 'TouristAttraction',
+            'name'        => get_the_title($post_id),
+            'url'         => get_permalink($post_id),
+            'description' => wp_trim_words(wp_strip_all_tags(get_post_field('post_content', $post_id)), 30, ''),
+        );
+        if (has_post_thumbnail($post_id)) {
+            $schema['image'] = get_the_post_thumbnail_url($post_id, 'full');
+        }
+        if (is_singular('eventos-visit') && function_exists('get_field')) {
+            $fecha = get_field('fecha', $post_id);
+            if ($fecha) {
+                $schema['startDate'] = $fecha;
+            }
+            $direccion = get_field('direccion', $post_id);
+            if ($direccion) {
+                $schema['location'] = array(
+                    '@type'   => 'Place',
+                    'name'    => 'Tenjo',
+                    'address' => $direccion,
+                );
+            }
+        }
+        echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>' . "\n";
+    }
+}, 3);
+
+
+add_action('wp_ajax_load_more_images', 'load_more_images');
+add_action('wp_ajax_nopriv_load_more_images', 'load_more_images');
+
+function load_more_images() {
+
+  $paged = isset($_POST['page']) ? intval($_POST['page']) + 1 : 1;
+
+  $args = [
+    'post_type'      => 'imagenes-visit',
+    'posts_per_page' => 12,
+    'paged'          => $paged,
+    'orderby'        => 'menu_order',
+    'order'          => 'ASC',
+  ];
+
+  $query = new WP_Query($args);
+
+  ob_start();
+
+  if ($query->have_posts()):
+    while ($query->have_posts()): $query->the_post();
+      ?>
+      <div class="galeria__item">
+        <a href="<?php the_permalink(); ?>" class="galeria__image-wrapper">
+          <?php
+            echo wp_get_attachment_image(
+              get_post_thumbnail_id(get_the_ID()),
+              'galeria_thumb',
+              false,
+              [
+                'class' => 'galeria__image',
+                'loading' => 'lazy',
+                'decoding' => 'async'
+              ]
+            );
+          ?>
+        </a>
+      </div>
+      <?php
+    endwhile;
+  endif;
+
+  wp_reset_postdata();
+
+  echo ob_get_clean();
+  wp_die();
+}
