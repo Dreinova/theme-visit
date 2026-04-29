@@ -1,9 +1,7 @@
 <?php get_header(); ?>
 <!-- Hero con imagen de fondo -->
-<section
-  class="hero hero--turismo-gastronomico"
-  style="background-image: url('/wp-content/uploads/2025/11/turismo_gastronomico_bg.png')"
->
+<section class="hero hero--turismo-gastronomico">
+  <?php visit_render_hero_image('/wp-content/uploads/2025/11/turismo_gastronomico_bg.png', 'Turismo gastronómico en Tenjo'); ?>
   <div class="hero__overlay"></div>
   <div class="hero__content" data-aos="fade-right">
     <div class="hero__left">

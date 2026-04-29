@@ -15,10 +15,8 @@ if ($faq_query->have_posts()) :
 ?>
 <?php get_header(); ?>
 <!-- Hero con imagen de fondo -->
-    <section
-      class="hero hero--faq"
-      style="background-image: url('/wp-content/uploads/2025/11/faq-bg.jpg')"
-    >
+    <section class="hero hero--faq">
+      <?php visit_render_hero_image('/wp-content/uploads/2025/11/faq-bg.jpg', 'Preguntas frecuentes Visita Tenjo'); ?>
       <div class="hero__overlay"></div>
       <div class="hero__content" data-aos="fade-right">
         <div class="hero__left">

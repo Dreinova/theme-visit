@@ -1,7 +1,8 @@
 <?php get_header(); ?>
-   <?php 
-   $description = get_the_content($post->ID); 
+   <?php
+   $description = get_the_content($post->ID);
    $image = get_the_post_thumbnail_url($post->ID);
+   $titulo_img = get_the_title();
    ?>
             
   <div class="interna__shadow"></div>
@@ -19,16 +20,22 @@
     <div class="interna__layout">
       <!-- Imagen a la izquierda -->
       <div class="interna__image-wrapper">
-        <img id="internaImagen" src="<?=$image?>" alt="imagen oso polar" class="interna__image" />
+        <img id="internaImagen" src="<?= esc_url($image) ?>" alt="<?= esc_attr($titulo_img) ?>" class="interna__image" loading="lazy" decoding="async" />
       </div>
 
       <!-- Panel lateral derecho -->
       <div class="interna__panel">
-        <h1 class="interna__title">¡Obtén esta imagen / video GRATIS!</h1>
+        <h1 class="interna__title"><?= esc_html($titulo_img) ?></h1>
+        <p class="interna__subtitle">¡Obtén esta imagen / video GRATIS!</p>
         <?= $description ?>
-        <a href="#" id="btnDescargar" class="interna__btn-descargar" download>
-          DESCARGAR IMAGEN
-        </a>
+      <a 
+  href="#" 
+  id="btnDescargar" 
+  class="interna__btn-descargar"
+  data-image="<?= esc_url($image) ?>"
+>
+  DESCARGAR IMAGEN
+</a>
       </div>
     </div>
   </div>
