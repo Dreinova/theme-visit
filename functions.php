@@ -554,6 +554,30 @@ add_action('wp_head', function () {
   echo "<meta name='description' content='$desc'>\n";
 }, 1);
 
+// Meta description para página Agenda de Eventos
+add_action('wp_head', function () {
+  if (!is_page('agenda-de-eventos')) {
+    return;
+  }
+
+  $meta_desc = get_field('meta_description');
+
+  // Fallback si el campo ACF está vacío
+  if (empty($meta_desc)) {
+    $meta_desc = 'Agenda de eventos culturales, gastronómicos, deportivos y más en Tenjo, Cundinamarca. Consulta fechas, horarios y categorías.';
+  }
+
+  $meta_desc = esc_attr(wp_trim_words($meta_desc, 25));
+  $url       = esc_url(home_url($_SERVER['REQUEST_URI']));
+  $title     = esc_attr(get_the_title());
+
+  echo "<meta name='description' content='{$meta_desc}' />\n";
+  echo "<meta property='og:title' content='{$title}' />\n";
+  echo "<meta property='og:description' content='{$meta_desc}' />\n";
+  echo "<meta property='og:url' content='{$url}' />\n";
+  echo "<meta property='og:type' content='website' />\n";
+}, 1);
+
 add_action('wp_ajax_filtrar_establecimientos', 'situr_ajax_filtrar_establecimientos');
 add_action('wp_ajax_nopriv_filtrar_establecimientos', 'situr_ajax_filtrar_establecimientos');
 

@@ -34,6 +34,20 @@ get_header();
       </div>
     </div>
   </section>
+
+  <?php 
+  // Descripción de la página (campo ACF de la página)
+  $page_id = get_the_ID();
+  $desc_pagina = get_field('descripcion_pagina', $page_id);
+  if ($desc_pagina): 
+  ?>
+  <section class="agenda-descripcion" data-aos="fade-up">
+    <div class="agenda-descripcion__container">
+      <p class="agenda-descripcion__texto"><?= esc_html($desc_pagina); ?></p>
+    </div>
+  </section>
+  <?php endif; ?>
+
   <?php 
 // 2. AHORA SÍ, VALIDAMOS SI HAY EVENTOS
 if ($events_query->have_posts()): 
